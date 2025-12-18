@@ -133,20 +133,21 @@ void SYS_Initialize ( void* data )
     NVMCTRL_REGS->NVMCTRL_CTRLB = NVMCTRL_CTRLB_RWS(3UL);
 
   
+    PORT_Initialize();
 
     CLOCK_Initialize();
 
 
 
 
-    TCC1_PWMInitialize();
+    TCC1_TimerInitialize();
 
     NVMCTRL_Initialize( );
 
     SERCOM1_USART_Initialize();
 
-
     SERCOM0_USART_Initialize();
+
 
     EIC_Initialize();
 

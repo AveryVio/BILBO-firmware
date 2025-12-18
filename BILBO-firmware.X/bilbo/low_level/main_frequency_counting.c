@@ -30,6 +30,6 @@ uint16_t freq_counter_handle(uint16_t previous_freq){
     }   
 }
 
-int main(){
+int freq_init(){
     EIC_CallbackRegister(COMPARATOR_OUT_PIN, eic_comparator_out_callback, (uintptr_t) NULL);
 }

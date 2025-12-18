@@ -52,7 +52,7 @@ int handle_button_input(){
     }
 }
 
-int main(){
+int button_init(){
     EIC_CallbackRegister(BT_BUTT_PIN, eic_bt_butt_callback, (uintptr_t) NULL);
     EIC_CallbackRegister(MODE_BUTT_PIN, eic_mode_butt_callback, (uintptr_t) NULL);
     
