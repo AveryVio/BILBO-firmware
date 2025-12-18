@@ -23,7 +23,7 @@ void eic_bt_butt_callback(){
     }
     eic_bt_butt_second_interrupt = 0;
     eic_bt_butt_flag = 1;
-    if(tc_bt_butt_timer_value < (TC3_Timer16bitCounterGet() + BT_BUTTON_LONG_PRESS_DEFAULT_DELAY)){
+    if(tc_bt_butt_timer_value < (TC3_Timer16bitCounterGet() + TC3_DELAY(BT_BUTTON_LONG_PRESS_DEFAULT_DELAY))){
         eic_bt_butt_long_press = 0;
         return;
     }
@@ -57,6 +57,6 @@ int button_init(){
     EIC_CallbackRegister(MODE_BUTT_PIN, eic_mode_butt_callback, (uintptr_t) NULL);
     
     //TC3_TimerCallbackRegister(tc_bt_butt_timer_callback, (uintptr_t) NULL);
-    TC3_Timer16bitPeriodSet(BT_BUTTON_LONG_PRESS_DEFAULT_DELAY);
+    TC3_Timer16bitPeriodSet(TC3_DELAY(BT_BUTTON_LONG_PRESS_DEFAULT_DELAY));
     TC3_TimerStart();
 }
