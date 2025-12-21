@@ -6,7 +6,6 @@
                    projectFiles="true">
       <logicalFolder name="bilbo" displayName="bilbo" projectFiles="true">
         <logicalFolder name="libraries" displayName="libraries" projectFiles="true">
-          <itemPath>bilbo/libraries/ring_buffer.h</itemPath>
         </logicalFolder>
         <logicalFolder name="low_level" displayName="low_level" projectFiles="true">
         </logicalFolder>
@@ -172,7 +171,6 @@
                    projectFiles="true">
       <logicalFolder name="bilbo" displayName="bilbo" projectFiles="true">
         <logicalFolder name="libraries" displayName="libraries" projectFiles="true">
-          <itemPath>bilbo/libraries/ring_buffer.c</itemPath>
         </logicalFolder>
         <logicalFolder name="low_level" displayName="low_level" projectFiles="true">
           <itemPath>bilbo/low_level/main_frequency_counting.c</itemPath>
