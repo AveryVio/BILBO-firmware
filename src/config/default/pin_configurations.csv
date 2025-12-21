@@ -15,7 +15,7 @@ Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,D
 16,PA11,,Available,,,,,,NORMAL
 19,PB10,,Available,,,,,,NORMAL
 20,PB11,,Available,,,,,,NORMAL
-21,PA12,BLE_MODE,GPIO,Digital,In/Out,Low,,,NORMAL
+21,PA12,BLE_MODE,GPIO,Digital,Out,Low,,,NORMAL
 22,PA13,LED_RE1,GPIO,Digital,Out,Low,,,NORMAL
 23,PA14,LED_OR1,GPIO,Digital,Out,Low,,,NORMAL
 24,PA15,LED_GREE,GPIO,Digital,Out,Low,,,NORMAL

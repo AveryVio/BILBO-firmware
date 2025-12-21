@@ -1,3 +1,6 @@
+// enable power preserving features
+//#define POWER_PRESERVE
+
 // -(input time in ms * (clock freq / prescaler))  
 //
 //--disguised: (input time in ms)/(period of(clock freq / 1000 / prescaler))  
