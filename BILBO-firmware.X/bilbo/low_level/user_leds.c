@@ -1,4 +1,3 @@
-
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
 

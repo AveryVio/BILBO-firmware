@@ -66,8 +66,8 @@
         &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;eic&quot; x=&quot;47&quot; y=&quot;396&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;evsys&quot; x=&quot;180&quot; y=&quot;20&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;nvmctrl&quot; x=&quot;20&quot; y=&quot;20&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;sercom0&quot; x=&quot;622&quot; y=&quot;435&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;sercom1&quot; x=&quot;617&quot; y=&quot;239&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;sercom0&quot; x=&quot;320&quot; y=&quot;202&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;sercom1&quot; x=&quot;319&quot; y=&quot;443&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;tc3&quot; x=&quot;52&quot; y=&quot;205&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;tcc1&quot; x=&quot;45&quot; y=&quot;454&quot;/&gt;
       &lt;/ElementPositions&gt;

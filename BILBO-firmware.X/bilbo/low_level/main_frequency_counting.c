@@ -1,6 +1,5 @@
-
 #include "../bilbo_config.h"
-#include "../libraries/ring_buffer.h"
+#include "../bilbo_generics.h"
 
 #include <bits/alltypes.h>
 
