@@ -1,11 +1,11 @@
-#include "../bilbo_config.h"
-#include "../bilbo_generics.h"
-
 #include <bits/alltypes.h>
 
 #include "peripheral/eic/plib_eic.h"
 #include "peripheral/port/plib_port.h"
 #include "peripheral/tc/plib_tc3.h"
+
+#include "../bilbo_config.h"
+#include "../bilbo_generics.h"
 
 volatile uint16_t tcc1_comparator_timer_flag = 0;
 
