@@ -20,8 +20,8 @@ int bilbo_init(){}
 
 int bilbo_tasks(){
     /* TODO:
-     * handle freq
-     *      a variable holds the current freq, the freq is saved there
+     * X handle freq
+     *      X a variable holds the current freq, the freq is saved there
      * handle tuning
      *      recognise the current note
      *      compare witth the current note
