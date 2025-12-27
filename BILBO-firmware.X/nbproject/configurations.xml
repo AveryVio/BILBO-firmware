@@ -180,6 +180,7 @@
           <itemPath>bilbo/low_level/bt_communication.c</itemPath>
           <itemPath>bilbo/low_level/frop.c</itemPath>
         </logicalFolder>
+        <itemPath>bilbo/bilbo_app.c</itemPath>
       </logicalFolder>
       <logicalFolder name="config" displayName="config" projectFiles="true">
         <logicalFolder name="default" displayName="default" projectFiles="true">
