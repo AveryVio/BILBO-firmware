@@ -86,9 +86,9 @@ struct change_profile_s {
     uint8_t block_data_range;
 };
 
-// range change (required: NoF = 2, "R" [1], range [1])
+// range profile (required: NoF = , )
 typedef union change_profile_u {
     uint8_t data[10];
-    uint8_t tuning_data_s;
+    uint8_t change_profile_s;
 } change_profile ;
 */
