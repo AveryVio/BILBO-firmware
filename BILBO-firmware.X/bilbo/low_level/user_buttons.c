@@ -1,3 +1,5 @@
+#include "user_buttons.h"
+
 #include <bits/alltypes.h>
 
 #include "peripheral/eic/plib_eic.h"

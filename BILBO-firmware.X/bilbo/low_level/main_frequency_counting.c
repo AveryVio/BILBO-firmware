@@ -1,3 +1,5 @@
+#include "main_frequency_counting.h"
+
 #include <bits/alltypes.h>
 
 #include "peripheral/eic/plib_eic.h"
@@ -19,7 +21,7 @@ void tcc1_comparator_timer_callback(){
     tcc1_comparator_timer_flag = 1;
 }
 
-uint16_t freq_counter_handle(uint16_t previous_freq){
+uint16_t handle_freq_counter(uint16_t previous_freq){
     if(tcc1_comparator_timer_flag){
         uint16_t eic_freq_intermediary = eic_comparator_out_flag * 10;
         return eic_freq_intermediary;

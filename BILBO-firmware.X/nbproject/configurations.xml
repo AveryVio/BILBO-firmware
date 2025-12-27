@@ -9,6 +9,11 @@
           <itemPath>bilbo/libraries/frop_types.h</itemPath>
         </logicalFolder>
         <logicalFolder name="low_level" displayName="low_level" projectFiles="true">
+          <itemPath>bilbo/low_level/bt_communication.h</itemPath>
+          <itemPath>bilbo/low_level/frop.h</itemPath>
+          <itemPath>bilbo/low_level/main_frequency_counting.h</itemPath>
+          <itemPath>bilbo/low_level/user_buttons.h</itemPath>
+          <itemPath>bilbo/low_level/user_leds.h</itemPath>
         </logicalFolder>
         <itemPath>bilbo/bilbo_config.h</itemPath>
         <itemPath>bilbo/bilbo_generics.h</itemPath>

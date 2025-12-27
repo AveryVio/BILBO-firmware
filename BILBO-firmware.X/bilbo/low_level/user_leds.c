@@ -1,3 +1,5 @@
+#include "user_leds.h"
+
 #include <bits/alltypes.h>
 
 #include "peripheral/eic/plib_eic.h"
