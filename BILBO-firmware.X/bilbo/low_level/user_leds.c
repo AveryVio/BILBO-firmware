@@ -1,11 +1,11 @@
-#include "../bilbo_config.h"
-#include "../bilbo_generics.h"
-
 #include <bits/alltypes.h>
 
 #include "peripheral/eic/plib_eic.h"
 #include "peripheral/port/plib_port.h"
 #include "peripheral/tc/plib_tc3.h"
+
+#include "../bilbo_config.h"
+#include "../bilbo_generics.h"
 
 uint16_t range_leds_timer_value = 0;
 uint16_t range_leds_on_status = 0;
