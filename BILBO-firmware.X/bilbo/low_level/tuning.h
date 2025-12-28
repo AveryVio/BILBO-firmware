@@ -10,6 +10,6 @@
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
 
-int tune_init();
+uint8_t tune_init();
 
 #endif

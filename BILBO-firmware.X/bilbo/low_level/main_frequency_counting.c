@@ -21,9 +21,9 @@ void tcc1_comparator_timer_callback(){
     tcc1_comparator_timer_flag = 1;
 }
 
-uint16_t handle_freq_counter(uint16_t previous_freq){
+freq_t handle_freq_counter(freq_t previous_freq){
     if(tcc1_comparator_timer_flag){
-        uint16_t eic_freq_intermediary = eic_comparator_out_flag * 10;
+        freq_t eic_freq_intermediary = eic_comparator_out_flag * 10;
         return eic_freq_intermediary;
     }
     else {
@@ -31,6 +31,6 @@ uint16_t handle_freq_counter(uint16_t previous_freq){
     }   
 }
 
-int freq_init(){
+uint8_t freq_init(){
     EIC_CallbackRegister(COMPARATOR_OUT_PIN, eic_comparator_out_callback, (uintptr_t) NULL);
 }

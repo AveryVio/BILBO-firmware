@@ -1,6 +1,8 @@
 #ifndef BILBO_GENERICS_H
 #define BILBO_GENERICS_H
 
+typedef uint16_t freq_t;
+
 #define TUNE_RANGE_NULL 0
 #define TUNE_RANGE_PLACEHOLDER 1
 #define TUNE_RANGE_BASS 2

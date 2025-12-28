@@ -10,8 +10,8 @@
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
 
-uint16_t handle_freq_counter(uint16_t previous_freq);
+freq_t handle_freq_counter(uint16_t previous_freq);
 
-int freq_init();
+uint8_t freq_init();
 
 #endif

@@ -10,11 +10,11 @@
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
 
-uint8_t calculate_cents(uint16_t freq_one, uint16_t freq_two){
+uint8_t calculate_cents(freq_t freq_one, freq_t freq_two){
     return 1200 * log(((double)freq_one)/((double)freq_two));
 }
 
 
 
-int tuning_init(){
+uint8_t tuning_init(){
 }
