@@ -6,3 +6,5 @@
 #define TUNE_RANGE_BASS 2
 #define TUNE_RANGE_GUITAR 3
 #define TUNE_RANGE_HIGH 4
+
+#endif

@@ -28,3 +28,5 @@ void init_bt_communication(){
     SERCOM0_USART_ReadThresholdSet(1);
     SERCOM0_USART_ReadNotificationEnable(true, false);
 }
+
+#endif

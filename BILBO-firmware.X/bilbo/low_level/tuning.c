@@ -14,5 +14,7 @@ uint8_t calculate_cents(uint16_t freq_one, uint16_t freq_two){
     return 1200 * log(((double)freq_one)/((double)freq_two));
 }
 
+
+
 int tuning_init(){
 }

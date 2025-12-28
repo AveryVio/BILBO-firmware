@@ -13,3 +13,5 @@
 uint16_t handle_freq_counter(uint16_t previous_freq);
 
 int freq_init();
+
+#endif

@@ -18,3 +18,5 @@ void handle_tuning_output_leds(int8_t level);
 void handle_range_leds_out(uint8_t range);
 
 int led_init();
+
+#endif

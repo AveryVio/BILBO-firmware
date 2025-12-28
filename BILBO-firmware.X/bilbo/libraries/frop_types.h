@@ -1,3 +1,6 @@
+#ifndef BILBO_FROP_TYPES_H
+#define BILBO_FROP_TYPES_H
+
 // response messages
 
 struct short_error_message_s {
@@ -9,7 +12,7 @@ struct short_error_message_s {
 };
 
 // short error message (error code required)
-typedef union short_error_message_u {
+typedef union {
     uint8_t data[6];
     uint8_t short_error_message_s;
 } short_error_message;
@@ -23,7 +26,7 @@ struct ok_response_s {
 };
 
 // ok response (no intput required)
-typedef union ok_response_u {
+typedef union {
     uint8_t data[5];
     uint8_t ok_response_s;
 } ok_response ;
@@ -48,7 +51,7 @@ struct tuning_data_s {
 };
 
 // tuning data (required: NoF = 4, "T" [1], note [2], frequency [2], tune offset [1])
-typedef union tuning_data_u {
+typedef union {
     uint8_t data[16];
     uint8_t tuning_data_s;
 } tuning_data ;
@@ -67,7 +70,7 @@ struct range_change_s {
 };
 
 // range change (required: NoF = 2, "R" [1], range [1])
-typedef union range_change_u {
+typedef union {
     uint8_t data[10];
     uint8_t tuning_data_s;
 } range_change ;
@@ -87,8 +90,10 @@ struct change_profile_s {
 };
 
 // range profile (required: NoF = , )
-typedef union change_profile_u {
+typedef union {
     uint8_t data[10];
     uint8_t change_profile_s;
 } change_profile ;
 */
+
+#endif
