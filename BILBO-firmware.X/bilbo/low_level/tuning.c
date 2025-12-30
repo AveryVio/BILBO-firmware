@@ -15,7 +15,7 @@
 musical_octive calculate_single_octive(musical_note octive_reference_note){
     musical_octive calculated_octive;
     
-    for(uint8_t j = 0; j <= 12; j++){
+    for(uint8_t j = 1; j <= 12; j++){
         calculated_octive.notes[j].freq = (octive_reference_note.freq * (freq_t) pow( 2.00 , ((double) j - (double) octive_reference_note.position_in_octive)/12.00 ));
     }
     
@@ -53,7 +53,7 @@ tuning_profile calculate_base_tuning_profile(musical_note reference_note, int8_t
  * handle the error outputs
  */
 musical_note find_currently_playing_note(freq_t current_note_freq, tuning_profile *profile){
-    if(current_note_freq == 0) return (musical_note) NOTE_DEF_NULL;
+    if(current_note_freq == 0) return (musical_note) NOTE_DEF_UNDER_ABSOLUTE;
     if(current_note_freq > 30000) return (musical_note) NOTE_DEF_OVER_ABSOLUTE;
     
     freq_t minimum_freq = (freq_t) (profile->reference_note.freq / ( pow(2.00, 5.00 + ((double) (12 - profile->reference_note.position_in_octive) / 12))));
@@ -117,8 +117,8 @@ uint8_t calculate_cents(freq_t freq_one, freq_t freq_two){
  * orange -> +-7 cents
  * red -> +-14 cents (mabye 13 or 12 idk) 
  */
-uint8_t decide_tuning_level(musical_note current_note, musical_note calculated_note,  tuning_profile *profile){
-    uint8_t diff_in_cents = calculate_cents(calculated_note.freq, current_note.freq);
+uint8_t decide_tuning_level_in_cents(freq_t current_note_freq, freq_t calculated_note_freq){
+    uint8_t diff_in_cents = calculate_cents(calculated_note_freq, current_note_freq);
     
     if(diff_in_cents >= 14) return TUNE_DIFF_OVER_2;
     if(diff_in_cents >= 7) return TUNE_DIFF_OVER_1;
