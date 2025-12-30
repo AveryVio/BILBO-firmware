@@ -114,14 +114,16 @@ uint8_t calculate_cents(freq_t freq_one, freq_t freq_two){
 }
 
 /* tuning
- * orange -> +-20 cents
- * red -> +-50 cents
+ * orange -> +-7 cents
+ * red -> +-14 cents (mabye 13 or 12 idk) 
  */
-uint8_t decide_tuning(musical_note current_note, tuning_profile *profile){
-    musical_note calculated_note = find_currently_playing_note(current_note.freq, profile);
+uint8_t decide_tuning_level(musical_note current_note, musical_note calculated_note,  tuning_profile *profile){
+    uint8_t diff_in_cents = calculate_cents(calculated_note.freq, current_note.freq);
     
+    if(diff_in_cents >= 14) return TUNE_DIFF_OVER_2;
+    if(diff_in_cents >= 7) return TUNE_DIFF_OVER_1;
+    if(diff_in_cents <= 7) return TUNE_DIFF_UNDER_1;
+    if(diff_in_cents <= 14) return TUNE_DIFF_UNDER_2;
     
-}
-
-uint8_t tuning_init(){
+    return TUNE_DIFF_LEVEL;
 }
