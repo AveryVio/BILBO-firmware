@@ -27,6 +27,9 @@
 #include <stdlib.h>                     // Defines EXIT_FAILURE
 #include "definitions.h"                // SYS function prototypes
 
+#include "../bilbo_config.h"
+#include "../bilbo_generics.h"
+
 
 // *****************************************************************************
 // *****************************************************************************

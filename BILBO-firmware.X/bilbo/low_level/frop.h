@@ -1,0 +1,20 @@
+#ifndef BILBO_FROP_H
+#define BILBO_FROP_H
+
+#include <bits/alltypes.h>
+
+#include "peripheral/eic/plib_eic.h"
+#include "peripheral/port/plib_port.h"
+#include "peripheral/tc/plib_tc3.h"
+
+#include "../bilbo_config.h"
+#include "../bilbo_generics.h"
+#include "../libraries/frop_types.h"
+
+short_error_message build_short_error_message(uint8_t error_code);
+
+ok_response build_ok_response();
+
+tuning_data build_tuning_data(uint8_t note[2], uint16_t frequency, uint8_t tune_offset);
+
+range_change build_range_change(uint8_t range);

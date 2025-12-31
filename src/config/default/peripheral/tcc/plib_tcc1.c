@@ -1,5 +1,5 @@
 /*******************************************************************************
-  TCC Peripheral Library Interface Source File
+  Timer/Counter(TCC1) PLIB
 
   Company
     Microchip Technology Inc.
@@ -8,12 +8,15 @@
     plib_tcc1.c
 
   Summary
-    TCC1 peripheral library source file.
+    TCC1 PLIB Implementation File.
 
   Description
-    This file implements the interface to the TCC peripheral library.  This
+    This file defines the interface to the TCC peripheral library. This
     library provides access to and control of the associated peripheral
     instance.
+
+  Remarks:
+    None.
 
 *******************************************************************************/
 
@@ -42,109 +45,101 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-
-/*  This section lists the other files that are included in this file.
+/* This section lists the other files that are included in this file.
 */
+
 #include "interrupts.h"
 #include "plib_tcc1.h"
 
+// *****************************************************************************
+// *****************************************************************************
+// Section: Global Data
+// *****************************************************************************
+// *****************************************************************************
 
+volatile static TCC_CALLBACK_OBJECT TCC1_CallbackObject;
 
-/* Initialize TCC module */
-void TCC1_PWMInitialize(void)
+// *****************************************************************************
+// *****************************************************************************
+// Section: TCC1 Implementation
+// *****************************************************************************
+// *****************************************************************************
+
+// *****************************************************************************
+/* Initialize the TCC module in Timer mode */
+void TCC1_TimerInitialize( void )
 {
     /* Reset TCC */
     TCC1_REGS->TCC_CTRLA = TCC_CTRLA_SWRST_Msk;
-    while ((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_SWRST_Msk) != 0U)
+
+    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_SWRST_Msk) == TCC_SYNCBUSY_SWRST_Msk)
     {
-        /* Wait for sync */
+        /* Wait for Write Synchronization */
     }
-    /* Clock prescaler */
-    TCC1_REGS->TCC_CTRLA = TCC_CTRLA_PRESCALER_DIV1 
-                            | TCC_CTRLA_PRESCSYNC_PRESC ;
 
-    TCC1_REGS->TCC_WAVE = TCC_WAVE_WAVEGEN_NPWM | TCC_WAVE_RAMP_RAMP1;
+    /* Configure counter mode & prescaler */
+    TCC1_REGS->TCC_CTRLA = TCC_CTRLA_PRESCALER_DIV2 ;
+    /* Configure in Match Frequency Mode */
+    TCC1_REGS->TCC_WAVE = TCC_WAVE_WAVEGEN_NFRQ;
+
+    /* Configure timer period */
+    TCC1_REGS->TCC_PER = 2399999U;
+
+    /* Clear all interrupt flags */
+    TCC1_REGS->TCC_INTFLAG = TCC_INTFLAG_Msk;
+
+    TCC1_CallbackObject.callback_fn = NULL;
+    /* Enable interrupt*/
+    TCC1_REGS->TCC_INTENSET = (TCC_INTENSET_OVF_Msk);
 
 
-    /* Configure duty cycle values */
-    TCC1_REGS->TCC_CC[0] = 0U;
-    TCC1_REGS->TCC_CC[1] = 0U;
-    TCC1_REGS->TCC_PER = 2399U;
-
-
-
-    while (TCC1_REGS->TCC_SYNCBUSY != 0U)
+    while((TCC1_REGS->TCC_SYNCBUSY) != 0U)
     {
-        /* Wait for sync */
+        /* Wait for Write Synchronization */
     }
 }
 
-
-/* Start the PWM generation */
-void TCC1_PWMStart(void)
+/* Enable the TCC counter */
+void TCC1_TimerStart( void )
 {
     TCC1_REGS->TCC_CTRLA |= TCC_CTRLA_ENABLE_Msk;
-    while ((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_ENABLE_Msk) != 0U)
+    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_ENABLE_Msk) == TCC_SYNCBUSY_ENABLE_Msk)
     {
-        /* Wait for sync */
+        /* Wait for Write Synchronization */
     }
 }
 
-/* Stop the PWM generation */
-void TCC1_PWMStop (void)
+/* Disable the TCC counter */
+void TCC1_TimerStop( void )
 {
     TCC1_REGS->TCC_CTRLA &= ~TCC_CTRLA_ENABLE_Msk;
-    while ((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_ENABLE_Msk) != 0U)
+    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_ENABLE_Msk) == TCC_SYNCBUSY_ENABLE_Msk)
     {
-        /* Wait for sync */
+        /* Wait for Write Synchronization */
     }
 }
 
-/* Configure PWM period */
-bool TCC1_PWM24bitPeriodSet (uint32_t period)
+uint32_t TCC1_TimerFrequencyGet( void )
 {
-    bool status = false;
-    if ((TCC1_REGS->TCC_STATUS & (TCC_STATUS_PERBV_Msk)) == 0U)
+    return (uint32_t)(24000000U);
+}
+
+void TCC1_TimerCommandSet(TCC_COMMAND command)
+{
+    TCC1_REGS->TCC_CTRLBSET = (uint8_t)((uint32_t)command << TCC_CTRLBSET_CMD_Pos);
+    while((TCC1_REGS->TCC_SYNCBUSY) != 0U)
     {
-        TCC1_REGS->TCC_PERB = period & 0xFFFFFFU;
-        status = true;
+        /* Wait for Write Synchronization */
     }    
-    return status;
 }
 
-
-/* Read TCC period */
-uint32_t TCC1_PWM24bitPeriodGet (void)
-{
-    while ((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_PER_Msk) != 0U)
-    {
-        /* Wait for sync */
-    }
-    return (TCC1_REGS->TCC_PER & 0xFFFFFFU);
-}
-
-
-bool TCC1_PWMPatternSet(uint8_t pattern_enable, uint8_t pattern_output)
-{
-    bool status = false;
-    if ((TCC1_REGS->TCC_STATUS & (TCC_STATUS_PATTBV_Msk)) == 0U)
-    {
-        TCC1_REGS->TCC_PATTB = (uint16_t)(pattern_enable | ((uint32_t)pattern_output << 8U));
-        status = true;
-    }   
-    return status; 
-}
-
-
-
-/* Get the current counter value */
-uint32_t TCC1_PWM24bitCounterGet( void )
+/* Get the current timer counter value */
+uint32_t TCC1_Timer24bitCounterGet( void )
 {
     /* Write command to force COUNT register read synchronization */
     TCC1_REGS->TCC_CTRLBSET |= (uint8_t)TCC_CTRLBSET_CMD_READSYNC;
@@ -158,55 +153,66 @@ uint32_t TCC1_PWM24bitCounterGet( void )
     {
         /* Wait for CMD to become zero */
     }
-
+    
     /* Read current count value */
     return TCC1_REGS->TCC_COUNT;
+
 }
 
-/* Set the counter*/
-void TCC1_PWM24bitCounterSet (uint32_t countVal)
+/* Configure timer counter value */
+void TCC1_Timer24bitCounterSet( uint32_t countVal )
 {
     TCC1_REGS->TCC_COUNT = countVal & 0xFFFFFFU;
-    while ((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_COUNT_Msk) != 0U)
+
+    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_COUNT_Msk) == TCC_SYNCBUSY_COUNT_Msk)
     {
-        /* Wait for sync */
+        /* Wait for Write Synchronization */
     }
 }
 
-/* Enable forced synchronous update */
-void TCC1_PWMForceUpdate(void)
+/* Configure timer period */
+void TCC1_Timer24bitPeriodSet( uint32_t period )
 {
-    TCC1_REGS->TCC_CTRLBSET |= (uint8_t)TCC_CTRLBCLR_CMD_UPDATE;
-    while ((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_CTRLB_Msk) != 0U)
+    TCC1_REGS->TCC_PER = period & 0xFFFFFFU;
+    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_PER_Msk) == TCC_SYNCBUSY_PER_Msk)
     {
-        /* Wait for sync */
+        /* Wait for Write Synchronization */
     }
 }
 
-/* Enable the period interrupt - overflow or underflow interrupt */
-void TCC1_PWMPeriodInterruptEnable(void)
+/* Read the timer period value */
+uint32_t TCC1_Timer24bitPeriodGet( void )
 {
-    TCC1_REGS->TCC_INTENSET = TCC_INTENSET_OVF_Msk;
+    return TCC1_REGS->TCC_PER;
 }
 
-/* Disable the period interrupt - overflow or underflow interrupt */
-void TCC1_PWMPeriodInterruptDisable(void)
+
+
+/* Register callback function */
+void TCC1_TimerCallbackRegister( TCC_CALLBACK callback, uintptr_t context )
 {
-    TCC1_REGS->TCC_INTENCLR = TCC_INTENCLR_OVF_Msk;
+    TCC1_CallbackObject.callback_fn = callback;
+
+    TCC1_CallbackObject.context = context;
 }
 
-/* Read interrupt flags */
-uint32_t TCC1_PWMInterruptStatusGet(void)
+/* Timer Interrupt handler */
+void __attribute__((used)) TCC1_InterruptHandler( void )
 {
-    uint32_t interrupt_status;
-    interrupt_status = TCC1_REGS->TCC_INTFLAG;
+    uint32_t status;
+    /* Additional local variable to prevent MISRA C violations (Rule 13.x) */
+    uintptr_t context;
+    context = TCC1_CallbackObject.context;
+    status = TCC1_REGS->TCC_INTFLAG;
     /* Clear interrupt flags */
-    TCC1_REGS->TCC_INTFLAG = interrupt_status;
+    TCC1_REGS->TCC_INTFLAG = TCC_INTFLAG_Msk;
     (void)TCC1_REGS->TCC_INTFLAG;
-    return interrupt_status;
+    if( TCC1_CallbackObject.callback_fn != NULL)
+    {
+        TCC1_CallbackObject.callback_fn(status, context);
+    }
+
 }
+  
 
 
-/**
- End of File
-*/

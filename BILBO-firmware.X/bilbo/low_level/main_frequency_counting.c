@@ -1,12 +1,13 @@
-
-#include "../bilbo_config.h"
-#include "../libraries/ring_buffer.h"
+#include "main_frequency_counting.h"
 
 #include <bits/alltypes.h>
 
 #include "peripheral/eic/plib_eic.h"
 #include "peripheral/port/plib_port.h"
 #include "peripheral/tc/plib_tc3.h"
+
+#include "../bilbo_config.h"
+#include "../bilbo_generics.h"
 
 volatile uint16_t tcc1_comparator_timer_flag = 0;
 
@@ -20,9 +21,9 @@ void tcc1_comparator_timer_callback(){
     tcc1_comparator_timer_flag = 1;
 }
 
-uint16_t freq_counter_handle(uint16_t previous_freq){
+freq_t handle_freq_counter(freq_t previous_freq){
     if(tcc1_comparator_timer_flag){
-        uint16_t eic_freq_intermediary = eic_comparator_out_flag * 10;
+        freq_t eic_freq_intermediary = eic_comparator_out_flag * 10;
         return eic_freq_intermediary;
     }
     else {
@@ -30,6 +31,6 @@ uint16_t freq_counter_handle(uint16_t previous_freq){
     }   
 }
 
-int main(){
+uint8_t freq_init(){
     EIC_CallbackRegister(COMPARATOR_OUT_PIN, eic_comparator_out_callback, (uintptr_t) NULL);
 }
