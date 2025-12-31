@@ -41,14 +41,6 @@ void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
     }
 }
 
-void bt_usart_read_handler(){
-    if(bt_usart_read_done){
-        // TODO: parse the bt data
-        bt_usart_read_done = 0;
-        bt_temp_buffer_rx_index = 0;
-    }
-}
-
 uint8_t bt_start_transparent_uart(){
     SERCOM0_USART_Write("$$$\n", 4);
     
@@ -84,6 +76,14 @@ uint8_t bt_start_transparent_uart(){
     SERCOM0_USART_Write("---\n", 4);
     
     return 0;
+}
+
+void bt_usart_read_handler(){
+    if(bt_usart_read_done){
+        // TODO: parse the bt data
+        bt_usart_read_done = 0;
+        bt_temp_buffer_rx_index = 0;
+    }
 }
 
 void init_bt_communication(){
