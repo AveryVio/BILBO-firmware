@@ -1,3 +1,5 @@
+#include "user_leds.h"
+
 #include <bits/alltypes.h>
 
 #include "peripheral/eic/plib_eic.h"
@@ -93,6 +95,6 @@ void handle_range_leds_out(uint8_t range){
 #endif
 }
 
-int led_init(){
+uint8_t led_init(){
     LED_GREE_Set();
 }

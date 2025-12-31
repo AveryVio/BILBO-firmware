@@ -1,3 +1,5 @@
+#include "user_buttons.h"
+
 #include <bits/alltypes.h>
 
 #include "peripheral/eic/plib_eic.h"
@@ -34,7 +36,7 @@ void eic_mode_butt_callback(){
     eic_mode_butt_flag = 1;
 }
 
-int handle_button_input(){
+uint8_t handle_button_input(){
     // handle mode button input
     if(eic_mode_butt_flag){
         eic_mode_butt_flag = 0;
@@ -52,7 +54,7 @@ int handle_button_input(){
     }
 }
 
-int button_init(){
+uint8_t button_init(){
     EIC_CallbackRegister(BT_BUTT_PIN, eic_bt_butt_callback, (uintptr_t) NULL);
     EIC_CallbackRegister(MODE_BUTT_PIN, eic_mode_butt_callback, (uintptr_t) NULL);
     

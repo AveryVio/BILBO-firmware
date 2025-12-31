@@ -1,3 +1,6 @@
+#ifndef BILBO_CONFIG_H
+#define BILBO_CONFIG_H
+
 // enable power preserving features
 //#define POWER_PRESERVE
 
@@ -20,3 +23,5 @@
 
 #define SERCOM0_USART_WRITE_BUFFER_SIZE     RN4870_READ_WRITE_BUFFER_SIZE
 #define SERCOM0_USART_WRITE_BUFFER_9BIT_SIZE  (RN4870_READ_WRITE_BUFFER_SIZE >> 1U)
+
+#endif
