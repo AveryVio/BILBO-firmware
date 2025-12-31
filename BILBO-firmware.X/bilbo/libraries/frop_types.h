@@ -96,4 +96,13 @@ typedef union {
 } change_profile ;
 */
 
+#define FROP_MSG_NULL 0
+#define FROP_MSG_D_NULL 0x10
+#define FROP_MSG_R_NULL 0x20
+#define FROP_MSG_D_PROFILE_CHANGE 1
+#define FROP_MSG_D_RANGE_CHANGE 2
+#define FROP_MSG_D_TUNING_DATA 3
+#define FROP_MSG_R_OK 4
+#define FROP_MSG_R_SHORT_ERROR 5
+
 #endif

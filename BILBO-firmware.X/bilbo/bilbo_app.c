@@ -44,4 +44,6 @@ int bilbo_tasks(){
     
     calculated_note = find_currently_playing_note(current_freq, &current_profile);
     current_tuning_level_in_cents = decide_tuning_level_in_cents(current_freq, calculated_note.freq);
+    
+    //comm
 }

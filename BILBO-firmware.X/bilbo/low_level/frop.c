@@ -32,7 +32,44 @@ tuning_data build_tuning_data(uint8_t note[2], uint16_t frequency, uint8_t tune_
 
 range_change build_range_change(uint8_t range) {
     short_error_message message;
-    message.data = {'F', 'D', 0x10, 2, 'D', 1, "T", 1, range};
+    message.data = {'F', 'D', 0x10, 2, 'D', 1, "C", 1, range};
     return message;
 }
 
+uint8_t decide_incoming_message_type(uint8_t *message){
+    if(message[1] == 'D'){
+        if(message[6] == 'P') return FROP_MSG_D_PROFILE_CHANGE;
+        else return FROP_MSG_D_NULL;
+    } else if(message[1] == 'R'){
+        if(message[2] == 0x2) return FROP_MSG_R_SHORT_ERROR;
+        else if(message[2] == 0x1) return FROP_MSG_R_OK;
+        else return FROP_MSG_R_NULL;
+    } else return FROP_MSG_NULL;
+}
+
+void parse_frop_message(){
+    uint8_t message[128];
+    
+    switch( decide_incoming_message_type(&message) ){
+        case FROP_MSG_NULL:
+            // throw error
+            // handle error
+            break;
+        case FROP_MSG_D_NULL:
+            // throw error
+            // handle error
+            break;
+        case FROP_MSG_R_NULL:
+            // throw error
+            // handle error
+            break;
+        case FROP_MSG_D_PROFILE_CHANGE:
+            break;
+        case FROP_MSG_R_OK:
+            // handle ok of last message
+            break;
+        case FROP_MSG_R_SHORT_ERROR:
+            // handle error of last message
+            break;
+    }
+}
