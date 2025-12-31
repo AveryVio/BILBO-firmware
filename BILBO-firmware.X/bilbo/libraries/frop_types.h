@@ -14,7 +14,7 @@ struct short_error_message_s {
 // short error message (error code required)
 typedef union {
     uint8_t data[5];
-    uint8_t short_error_message_s;
+    short_error_message_s structured;
 } short_error_message;
 
 
@@ -28,7 +28,7 @@ struct ok_response_s {
 // ok response (no intput required)
 typedef union {
     uint8_t data[4];
-    uint8_t ok_response_s;
+    ok_response_s structured;
 } ok_response ;
 
 // data messages
@@ -55,7 +55,7 @@ struct tuning_data_s {
 // tuning data (required: NoF = 5, "T" [1], note octive [1], note position in octive [1], frequency [2], tune offset [1])
 typedef union {
     uint8_t data[16];
-    uint8_t tuning_data_s;
+    tuning_data_s structured;
 } tuning_data ;
 
 
@@ -74,7 +74,7 @@ struct range_change_s {
 // range change (required: NoF = 2, "R" [1], range [1])
 typedef union {
     uint8_t data[9];
-    uint8_t tuning_data_s;
+    tuning_data_s structured;
 } range_change ;
 
 
@@ -97,7 +97,7 @@ struct change_profile_s {
 // change profile (required: NoF = 2, "P" [1], reference note [2], reference note octive [1] )
 typedef union {
     uint8_t data[16];
-    uint8_t change_profile_s;
+    change_profile_s structured;
 } change_profile ;
 
 #define FROP_MSG_NULL 0
