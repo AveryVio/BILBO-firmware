@@ -31,6 +31,6 @@ freq_t handle_freq_counter(freq_t previous_freq){
     }   
 }
 
-uint8_t freq_init(){
+void freq_init(){
     EIC_CallbackRegister(COMPARATOR_OUT_PIN, eic_comparator_out_callback, (uintptr_t) NULL);
 }

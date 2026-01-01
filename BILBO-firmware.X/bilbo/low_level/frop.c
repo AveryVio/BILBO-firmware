@@ -12,28 +12,55 @@
 
 short_error_message build_short_error_message(uint8_t error_code) {
     short_error_message message;
-    message.data = {'F', 'R', 0x2, error_code, 'D'};
+    message.structured.start_of_message = 'F';
+    message.structured.frop_message_type = 'R';
+    message.structured.frop_message_format = 0x2;
+    message.structured.error_code = error_code;
+    message.structured.end_of_header = 'D';
     return message;
 }
 
 ok_response build_ok_response() {
     ok_response message;
-    message.data = {'F', 'R', 0x1, 'D'};
+    message.structured.start_of_message = 'F';
+    message.structured.frop_message_type = 'R';
+    message.structured.frop_message_format = 0x1;
+    message.structured.end_of_header = 'D';
     return message;
 }
 
-tuning_data build_tuning_data(uint8_t note_octive, uint8_t note_position_in_octive, uint16_t frequency, uint8_t tune_offset) {
-    uint8_t frequency_byte_one = (uint8_t)(frequency >> 8);
-    uint8_t frequency_byte_two = (uint8_t)frequency;
+tuning_data build_tuning_data(uint8_t note_octive, uint8_t note_position_in_octive, freq_t frequency, uint8_t tune_offset) {
     
     tuning_data message;
-    message.data = {'F', 'D', 0x10, 5, 'D', 1, "T", 1, note_octive, 1, note_position_in_octive, 2, frequency_byte_one, frequency_byte_two, 1, tune_offset};
+    message.structured.start_of_message = 'F';
+    message.structured.frop_message_type = 'D';
+    message.structured.frop_message_format = 0x10;
+    message.structured.number_of_fields = 5;
+    message.structured.end_of_header = 'D';
+    message.structured.block_length_setting = 1;
+    message.structured.block_data_setting = 'T';
+    message.structured.block_length_note_oct = 1;
+    message.structured.block_data_note_oct = note_octive;
+    message.structured.block_length_note_pos = 1;
+    message.structured.block_data_note_pos = note_position_in_octive;
+    message.structured.block_length_freq = 2;
+    message.structured.block_data_freq = frequency;
+    message.structured.block_length_diff = 1;
+    message.structured.block_data_diff = tune_offset;
     return message;
 }
 
 range_change build_range_change(uint8_t range) {
     range_change message;
-    message.data = {'F', 'D', 0x10, 2, 'D', 1, "R", 1, range};
+    message.structured.start_of_message = 'F';
+    message.structured.frop_message_type = 'D';
+    message.structured.frop_message_format = 0x10;
+    message.structured.number_of_fields = 2;
+    message.structured.end_of_header = 'D';
+    message.structured.block_length_setting = 1;
+    message.structured.block_data_setting = 'R';
+    message.structured.block_length_range = 1;
+    message.structured.block_data_range = range;
     return message;
 }
 
@@ -53,10 +80,13 @@ uint8_t last_sent_message = FROP_MSG_NULL;
 
 void parse_frop_message(){
     uint8_t message[128];
+    message[0] = 'F';
     
     if(message[0] != 'F');//bad message
     
-    switch( decide_incoming_message_type(&message) ){
+    uint8_t incoming_message_type = decide_incoming_message_type(message);
+    
+    switch( incoming_message_type ){
         case FROP_MSG_NULL:
             // throw error
             // handle error
@@ -69,9 +99,9 @@ void parse_frop_message(){
             // throw error
             // handle error
             break;
-        case FROP_MSG_D_PROFILE_CHANGE:
+        case FROP_MSG_D_PROFILE_CHANGE: {
             change_profile frop_organised_message;
-            for(uint8_t i = 16; i >= 0; i--) frop_organised_message[i] = message[i];
+            for(uint8_t i = 16; i >= 0; i--) frop_organised_message.data[i] = message[i];
             
             // this is not proper sanitation, but i don't have enough time to care to make an effecient way for it. let's just collectively pretend that bluetooth is perfect and has no issues at all
             
@@ -91,7 +121,7 @@ void parse_frop_message(){
             //check ref oct validity
             //check ref validity
             //check 
-            
+        }
             break;
         case FROP_MSG_R_OK:
             // handle ok of last message

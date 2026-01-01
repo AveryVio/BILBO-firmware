@@ -42,7 +42,7 @@ void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
 }
 
 uint8_t bt_start_transparent_uart(){
-    SERCOM0_USART_Write("$$$\n", 4);
+    SERCOM0_USART_Write((uint8_t*)"$$$\n", 4);
     
     uint8_t cmdmode_success_check[5];
     cmdmode_success_check[0] = 1;
@@ -53,7 +53,7 @@ uint8_t bt_start_transparent_uart(){
     if(cmdmode_success_check[3] != '>') return 1;
     if(cmdmode_success_check[4] != '\n') return 1;
     
-    SERCOM0_USART_Write("&R\n", 3);
+    SERCOM0_USART_Write((uint8_t*) "&R\n", 3);
     
     uint8_t rndmac_success_check[4];
     rndmac_success_check[0] = 1;
@@ -63,7 +63,7 @@ uint8_t bt_start_transparent_uart(){
     if(rndmac_success_check[2] != 'K') return 1;
     if(rndmac_success_check[3] != '\n') return 1;
     
-    SERCOM0_USART_Write("S-,BILBO\n", 9);
+    SERCOM0_USART_Write((uint8_t*) "S-,BILBO\n", 9);
     
     uint8_t devname_success_check[4];
     devname_success_check[0] = 1;
@@ -73,7 +73,7 @@ uint8_t bt_start_transparent_uart(){
     if(devname_success_check[2] != 'K') return 1;
     if(devname_success_check[3] != '\n') return 1;
     
-    SERCOM0_USART_Write("---\n", 4);
+    SERCOM0_USART_Write((uint8_t*) "---\n", 4);
     
     return 0;
 }

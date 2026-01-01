@@ -12,6 +12,6 @@
 
 uint8_t handle_button_input();
 
-uint8_t button_init();
+void button_init();
 
 #endif

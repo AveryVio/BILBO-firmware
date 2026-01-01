@@ -4,8 +4,8 @@
 #include "peripheral/port/plib_port.h"
 #include "peripheral/tc/plib_tc3.h"
 
-#include "../bilbo_config.h"
-#include "../bilbo_generics.h"
+#include "bilbo_config.h"
+#include "bilbo_generics.h"
 
 #include "low_level/main_frequency_counting.h"
 #include "libraries/tuning_types.h"
@@ -23,7 +23,7 @@ uint8_t current_tuning_level_in_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
 tuning_profile current_profile = PROFILE_DEF_NULL;
 
-int bilbo_init(){}
+int bilbo_init(){return 0;}
 
 int bilbo_tasks(){
     /* TODO:
@@ -46,4 +46,6 @@ int bilbo_tasks(){
     current_tuning_level_in_cents = decide_tuning_level_in_cents(current_freq, calculated_note.freq);
     
     //comm
+    
+    return 0;
 }

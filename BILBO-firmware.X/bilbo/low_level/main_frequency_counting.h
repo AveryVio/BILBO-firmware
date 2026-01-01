@@ -12,6 +12,6 @@
 
 freq_t handle_freq_counter(uint16_t previous_freq);
 
-uint8_t freq_init();
+void freq_init();
 
 #endif

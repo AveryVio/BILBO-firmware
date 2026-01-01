@@ -52,9 +52,11 @@ uint8_t handle_button_input(){
             // toggle on off bluetooth
         }
     }
+    
+    return 0;
 }
 
-uint8_t button_init(){
+void button_init(){
     EIC_CallbackRegister(BT_BUTT_PIN, eic_bt_butt_callback, (uintptr_t) NULL);
     EIC_CallbackRegister(MODE_BUTT_PIN, eic_mode_butt_callback, (uintptr_t) NULL);
     

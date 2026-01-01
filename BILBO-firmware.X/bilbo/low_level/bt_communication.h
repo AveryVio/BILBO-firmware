@@ -14,19 +14,8 @@
 extern uint8_t bt_usart_read_buffer[RN4870_READ_WRITE_BUFFER_SIZE];
 
 
-void bt_usart_read_handler(){
-    if(bt_usart_read_done){
-        // TODO: parse the bt data
-        bt_usart_read_done = 0;
-        bt_temp_buffer_rx_index = 0;
-    }
-}
+void bt_usart_read_handler();
 
-void init_bt_communication(){
-    bt_start_transparent_uart();
-    SERCOM0_USART_ReadCallbackRegister(bt_usart_read_callback, (uintptr_t) NULL);
-    SERCOM0_USART_ReadThresholdSet(1);
-    SERCOM0_USART_ReadNotificationEnable(true, false);
-}
+void init_bt_communication();
 
 #endif

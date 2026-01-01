@@ -95,6 +95,6 @@ void handle_range_leds_out(uint8_t range){
 #endif
 }
 
-uint8_t led_init(){
+void led_init(){
     LED_GREE_Set();
 }
