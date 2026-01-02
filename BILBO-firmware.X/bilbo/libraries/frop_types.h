@@ -94,7 +94,7 @@ struct change_profile_s {
     uint8_t block_data_ref_oct;
 };
 
-// change profile (required: NoF = 3, LoD = 4, Chksm = , "P" [1], reference note [2], reference note octive [1] )
+// change profile (required: NoF = 3, LoD = 4, Chksm = , "P" [1], reference note freq [2], reference note octive [1] )
 typedef union {
     uint8_t data[16];
     struct change_profile_s structured;
