@@ -15,4 +15,19 @@ typedef uint16_t freq_t;
 #define TUNE_DIFF_OVER_2 2
 #define TUNE_DIFF_OVER_1 1
 
+typedef struct {
+    uint8_t code;
+    uint8_t source;
+} global_error_handle;
+
+typedef struct {
+    global_error_handle error_queue[9];
+    uint8_t queue_length;
+} global_error_queue;
+
+#define FROP_SOURCE_NULL 1
+#define FROP_SOURCE_DEVICE 1
+#define FROP_SOURCE_APP 2
+
+
 #endif

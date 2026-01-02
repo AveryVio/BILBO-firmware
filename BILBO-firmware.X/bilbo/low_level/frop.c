@@ -9,6 +9,7 @@
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
 #include "../libraries/frop_types.h"
+#include "peripheral/sercom/usart/plib_sercom0_usart.h"
 
 short_error_message build_short_error_message(uint8_t error_code) {
     short_error_message message;
@@ -78,26 +79,53 @@ uint8_t decide_incoming_message_type(uint8_t *message){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 uint8_t last_sent_message = FROP_MSG_NULL;
 
+global_error_queue init_error_queue(){
+    global_error_queue q;
+    for(uint8_t i = 9; i >=0; i--){
+        q.error_queue[i].code = 0;
+        q.error_queue[i].source = FROP_SOURCE_NULL;
+    }
+    q.queue_length = 0;
+    return q;
+}
+
+global_error_queue frop_error_queue = init_error_queue();
+
+short_error_message throw_error(uint8_t error_code, uint8_t source){
+    frop_error_queue.error_queue[frop_error_queue.queue_length + 1].code = error_code;
+    frop_error_queue.error_queue[frop_error_queue.queue_length + 1].source = source;
+    
+    return build_short_error_message(error_code);
+}
+
+void send_error(short_error_message *message, uint8_t queue_index){
+    SERCOM0_USART_Write(message, 5);
+    
+    for(uint8_t i = queue_index; i < frop_error_queue.queue_length; i++){
+        frop_error_queue.error_queue[i].code = frop_error_queue.error_queue[i + 1].code;
+        frop_error_queue.error_queue[i].source = frop_error_queue.error_queue[i + 1].source;
+    }
+    // last index doesn't have to be fixes since it won't be read.
+}
+
 void parse_frop_message(){
     uint8_t message[128];
     message[0] = 'F';
     
-    if(message[0] != 'F');//bad message
+    if(message[0] != 'F') throw_error(1,FROP_SOURCE_APP);;
     
     uint8_t incoming_message_type = decide_incoming_message_type(message);
+    uint8_t error_level_generated = 0;
     
     switch( incoming_message_type ){
         case FROP_MSG_NULL:
-            // throw error
-            // handle error
+            throw_error(2,FROP_SOURCE_APP);
             break;
         case FROP_MSG_D_NULL:
-            // throw error
-            // handle error
+            throw_error(20,FROP_SOURCE_APP);
             break;
         case FROP_MSG_R_NULL:
-            // throw error
-            // handle error
+            throw_error(20,FROP_SOURCE_APP);
             break;
         case FROP_MSG_D_PROFILE_CHANGE: {
             change_profile frop_organised_message;
@@ -105,18 +133,17 @@ void parse_frop_message(){
             
             // this is not proper sanitation, but i don't have enough time to care to make an effecient way for it. let's just collectively pretend that bluetooth is perfect and has no issues at all
             
-            if(frop_organised_message.structured.number_of_fields != 3); // throw error
+            if(frop_organised_message.structured.number_of_fields != 3) throw_error(3,FROP_SOURCE_APP);
             
-            if(frop_organised_message.structured.length_of_data != 4); // throw error
+            if(frop_organised_message.structured.length_of_data != 4) throw_error(4,FROP_SOURCE_APP);
             
-            if(frop_organised_message.structured.header_checksum != 0xB1); // throw error
+            if(frop_organised_message.structured.header_checksum != 0xB1) throw_error(5,FROP_SOURCE_APP);
 
-            if(frop_organised_message.structured.block_length_setting != 1); // throw error
+            if(frop_organised_message.structured.block_length_setting != 1) throw_error(6,FROP_SOURCE_APP);
 
+            if(frop_organised_message.structured.block_length_ref != 2) throw_error(6,FROP_SOURCE_APP);
             
-            if(frop_organised_message.structured.block_length_ref != 2); // throw error
-            
-            if(frop_organised_message.structured.block_length_ref_oct != 1); // throw error
+            if(frop_organised_message.structured.block_length_ref_oct != 1) throw_error(6,FROP_SOURCE_APP);
 
             //check ref oct validity
             //check ref validity
