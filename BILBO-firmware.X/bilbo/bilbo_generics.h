@@ -17,17 +17,12 @@ typedef uint16_t freq_t;
 
 typedef struct {
     uint8_t code;
-    uint8_t source;
 } global_error_handle;
 
 typedef struct {
     global_error_handle error_queue[9];
     uint8_t queue_length;
 } global_error_queue;
-
-#define FROP_SOURCE_NULL 1
-#define FROP_SOURCE_DEVICE 1
-#define FROP_SOURCE_APP 2
 
 
 #endif

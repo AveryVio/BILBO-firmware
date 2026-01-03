@@ -90,8 +90,8 @@ struct change_profile_s {
     uint8_t block_data_setting;
     uint8_t block_length_ref;
     uint16_t block_data_ref;
-    uint8_t block_length_ref_oct;
-    uint8_t block_data_ref_oct;
+    int8_t block_length_ref_oct;
+    int8_t block_data_ref_oct;
 };
 
 // change profile (required: NoF = 3, LoD = 4, Chksm = , "P" [1], reference note freq [2], reference note octive [1] )
