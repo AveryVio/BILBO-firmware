@@ -11,6 +11,7 @@
 #include "../bilbo_generics.h"
 
 uint8_t bt_usart_read_buffer[RN4870_READ_WRITE_BUFFER_SIZE];
+uint8_t bt_usart_read_buffer_length = 0;
 
 uint8_t bt_temp_buffer[RN4870_READ_WRITE_BUFFER_SIZE];
 uint16_t bt_temp_buffer_rx_index = 0;
@@ -80,7 +81,8 @@ uint8_t bt_start_transparent_uart(){
 
 void bt_usart_read_handler(){
     if(bt_usart_read_done){
-        // TODO: parse the bt data
+        bt_usart_read_buffer_length = bt_temp_buffer_rx_index;
+        
         bt_usart_read_done = 0;
         bt_temp_buffer_rx_index = 0;
     }

@@ -76,8 +76,6 @@ uint8_t decide_incoming_message_type(uint8_t *message){
     } else return FROP_MSG_NULL;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-uint8_t last_sent_message = FROP_MSG_NULL;
 
 global_error_queue init_error_queue(){
     global_error_queue q;
@@ -90,7 +88,7 @@ global_error_queue init_error_queue(){
 
 global_error_queue frop_error_queue = init_error_queue();
 
-short_error_message throw_error(uint8_t error_code, uint8_t source){
+short_error_message throw_error(uint8_t error_code){
     frop_error_queue.error_queue[frop_error_queue.queue_length + 1].code = error_code;
     
     return build_short_error_message(error_code);
@@ -149,48 +147,4 @@ uint8_t validate_profile_change(change_profile *new_profile_adept){
     }
     
     return 0;
-}
-
-/*to be relocated*/
-
-void parse_frop_message(){
-    uint8_t message[128];
-    message[0] = 'F';
-    
-    if(message[0] != 'F') {
-        throw_error(1);
-        return;
-    }
-    
-    uint8_t incoming_message_type = decide_incoming_message_type(message);
-    uint8_t error_level_generated = 0;
-    
-    switch( incoming_message_type ){
-        case FROP_MSG_NULL:
-            throw_error(2);
-            break;
-        case FROP_MSG_D_NULL:
-            throw_error(20);
-            break;
-        case FROP_MSG_R_NULL:
-            throw_error(20);
-            break;
-        case FROP_MSG_D_PROFILE_CHANGE: {
-            change_profile frop_organised_message;
-            for(uint8_t i = 16; i >= 0; i--) frop_organised_message.data[i] = message[i];
-            
-            if(validate_profile_change(&frop_organised_message)){
-                /*skip to end*/
-            }
-            /*correct*/
-
-        }
-            break;
-        case FROP_MSG_R_OK:
-            // handle ok of last message
-            break;
-        case FROP_MSG_R_SHORT_ERROR:
-            // handle error of last message
-            break;
-    }
 }

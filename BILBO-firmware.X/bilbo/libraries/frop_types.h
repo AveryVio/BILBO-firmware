@@ -47,7 +47,7 @@ struct tuning_data_s {
     uint8_t block_length_note_pos;
     uint8_t block_data_note_pos;
     uint8_t block_length_freq;
-    uint16_t block_data_freq;
+    freq_t block_data_freq;
     uint8_t block_length_diff;
     uint8_t block_data_diff;
 };
@@ -89,7 +89,7 @@ struct change_profile_s {
     uint8_t block_length_setting;
     uint8_t block_data_setting;
     uint8_t block_length_ref;
-    uint16_t block_data_ref;
+    freq_t block_data_ref;
     int8_t block_length_ref_oct;
     int8_t block_data_ref_oct;
 };
