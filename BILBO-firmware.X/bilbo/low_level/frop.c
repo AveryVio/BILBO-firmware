@@ -105,17 +105,17 @@ void send_error(short_error_message *message, uint8_t queue_index){
 uint8_t validate_profile_change(change_profile *new_profile_adept){
     // this is not proper sanitation, but i don't have enough time to care to make an effecient way for it. let's just collectively pretend that bluetooth is perfect and has no issues at all
     
-    if(new_profile_adept->structured.number_of_fields != 3) {
+    if(new_profile_adept->structured.number_of_fields != 4) {
         throw_error(3);
         return 1;
     }
     
-    if(new_profile_adept->structured.length_of_data != 4) {
+    if(new_profile_adept->structured.length_of_data != 5) {
         throw_error(4);
         return 1;
     }
     
-    if(new_profile_adept->structured.header_checksum != 0xB1) {
+    if(new_profile_adept->structured.header_checksum != 0xB3) {
         throw_error(5);
         return 1;
     }
@@ -130,6 +130,11 @@ uint8_t validate_profile_change(change_profile *new_profile_adept){
         return 1;
     }
     
+    if(new_profile_adept->structured.block_length_ref_pos != 1) {
+        throw_error(6);
+        return 1;
+    }
+    
     if(new_profile_adept->structured.block_length_ref_oct != 1) {
         throw_error(6);
         return 1;
@@ -137,6 +142,11 @@ uint8_t validate_profile_change(change_profile *new_profile_adept){
     
     
     if((new_profile_adept->structured.block_data_ref_oct < -1) || (new_profile_adept->structured.block_data_ref_oct > 9)) {
+        throw_error(11);    
+        return 1;
+    }
+    
+    if((new_profile_adept->structured.block_data_ref_pos < 1) || (new_profile_adept->structured.block_data_ref_pos > 11)) {
         throw_error(11);    
         return 1;
     }

@@ -78,9 +78,9 @@ int bilbo_tasks(){
             
             if(validate_profile_change(&frop_organised_message)) break;
             
-            musical_note new_note = { .freq = frop_organised_message.structured.block_data_ref, .position_in_octive = 0/*fix this now*/};
+            musical_note new_note = { .freq = frop_organised_message.structured.block_data_ref, .position_in_octive = frop_organised_message.structured.block_data_ref_pos};
             
-            current_profile = calculate_base_tuning_profile(, frop_organised_message.structured.block_data_ref_oct);
+            current_profile = calculate_base_tuning_profile(new_note, frop_organised_message.structured.block_data_ref_oct);
         }
             break;
         case FROP_MSG_R_OK:

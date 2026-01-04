@@ -90,13 +90,15 @@ struct change_profile_s {
     uint8_t block_data_setting;
     uint8_t block_length_ref;
     freq_t block_data_ref;
+    uint8_t block_length_ref_pos;
+    uint8_t block_data_ref_pos;
     int8_t block_length_ref_oct;
     int8_t block_data_ref_oct;
 };
 
-// change profile (required: NoF = 3, LoD = 4, Chksm = , "P" [1], reference note freq [2], reference note octive [1] )
+// change profile (required: NoF = 3, LoD = 4, Chksm = , "P" [1], reference note freq [2], reference note position in octive [1], reference note octive [1] )
 typedef union {
-    uint8_t data[16];
+    uint8_t data[18];
     struct change_profile_s structured;
 } change_profile ;
 

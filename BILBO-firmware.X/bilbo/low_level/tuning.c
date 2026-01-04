@@ -26,7 +26,6 @@ musical_octive calculate_single_octive(musical_note octive_reference_note){
 // calculate profile from scratch
 // new profile should be at least 5 octives (this does 7) including the octive of the ref note
 tuning_profile calculate_base_tuning_profile(musical_note reference_note, int8_t reference_note_octive){
-    // int8_t profile_octives[3] = {reference_note_octive - 1, reference_note_octive, reference_note_octive + 1};
     tuning_profile profile;
     profile.reference_note = reference_note;
     profile.reference_note_octive = reference_note_octive;
