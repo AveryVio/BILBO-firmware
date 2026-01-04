@@ -86,7 +86,7 @@ global_error_queue init_error_queue(){
     return q;
 }
 
-global_error_queue frop_error_queue = init_error_queue();
+global_error_queue frop_error_queue = {.error_queue = { (global_error_handle) {.code = 0}, (global_error_handle) {.code = 0} }, .queue_length = 2};
 
 short_error_message throw_error(uint8_t error_code){
     frop_error_queue.error_queue[frop_error_queue.queue_length + 1].code = error_code;
@@ -95,7 +95,7 @@ short_error_message throw_error(uint8_t error_code){
 }
 
 void send_error(short_error_message *message, uint8_t queue_index){
-    SERCOM0_USART_Write(message, 5);
+    SERCOM0_USART_Write(message->data, 5);
     
     for(uint8_t i = queue_index; i < frop_error_queue.queue_length; i++){
         frop_error_queue.error_queue[i].code = frop_error_queue.error_queue[i + 1].code;

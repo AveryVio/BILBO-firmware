@@ -23,7 +23,7 @@ uint8_t current_tuning_level_in_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
 tuning_profile current_profile = PROFILE_DEF_NULL;
 
-int bilbo_init(){return 0;}
+int bilbo_init(){return 0;} /* init_error_queue()*/
 
 int bilbo_tasks(){
     /* TODO:
