@@ -53,7 +53,6 @@ int bilbo_tasks(){
     
     //comm in
     
-    
     //parsing
     if(bt_incoming_message->buffer[0] == '\0'); //skip the rest of parsing
     
@@ -83,6 +82,7 @@ int bilbo_tasks(){
             musical_note new_note = { .freq = frop_organised_message.structured.block_data_ref, .position_in_octive = frop_organised_message.structured.block_data_ref_pos};
             
             current_profile = calculate_base_tuning_profile(new_note, frop_organised_message.structured.block_data_ref_oct);
+            /*queue ok*/
         }
             break;
         case FROP_MSG_R_OK:

@@ -77,6 +77,15 @@ uint8_t bt_start_transparent_uart(){
     return 0;
 }
 
+void send_error(short_error_message *message, uint8_t queue_index){
+    SERCOM0_USART_Write(message->data, 5);
+    
+    for(uint8_t i = queue_index; i < frop_error_queue.queue_length; i++){
+        frop_error_queue.error_queue[i].code = frop_error_queue.error_queue[i + 1].code;
+    }
+    // last index doesn't have to be fixes since it won't be read.
+}
+
 void init_bt_communication(lengthy_buffer *buffer){
     buffer->buffer[0] = '\0';
     bt_start_transparent_uart();

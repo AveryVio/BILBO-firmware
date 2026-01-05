@@ -27,7 +27,7 @@ global_error_queue init_error_queue();
 
 extern global_error_queue frop_error_queue;
 
-short_error_message throw_error(uint8_t error_code);
+void throw_error(uint8_t error_code);
 
 void send_error(short_error_message *message, uint8_t queue_index);
 
