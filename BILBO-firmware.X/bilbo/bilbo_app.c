@@ -100,6 +100,13 @@ int bilbo_tasks(){
     //errors
     
     //comm out
+    /*
+     * send outgoing ok
+     * send outgoing errors
+     * send change range (when used)
+     * periodically send tuning (when possible)
+     * ...
+     */
 
     //buttons
     
