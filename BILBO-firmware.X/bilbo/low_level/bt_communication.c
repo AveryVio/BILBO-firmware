@@ -10,14 +10,13 @@
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
 
-uint8_t bt_usart_read_buffer[RN4870_READ_WRITE_BUFFER_SIZE];
-uint8_t bt_usart_read_buffer_length = 0;
-
 uint8_t bt_temp_buffer[RN4870_READ_WRITE_BUFFER_SIZE];
 uint16_t bt_temp_buffer_rx_index = 0;
 uint8_t bt_usart_read_done = 0;
 
 void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
+    lengthy_buffer *bt_usart_read_buffer = (lengthy_buffer *) context;
+    
     if (event == SERCOM_USART_EVENT_READ_THRESHOLD_REACHED){
         uint32_t number_of_bytes_available = SERCOM0_USART_ReadCountGet();
         
@@ -31,12 +30,12 @@ void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
             uint8_t c = (uint8_t)bt_temp_buffer[i];
             
             if ((c == '\n') || (c == '\r')){
-                bt_usart_read_buffer[bt_temp_buffer_rx_index] = '\0';
+                bt_usart_read_buffer->buffer[bt_temp_buffer_rx_index] = '\0';
                 bt_usart_read_done = 1;
                 bt_temp_buffer_rx_index = 0;
             }
             else{
-                if (bt_temp_buffer_rx_index < (RN4870_READ_WRITE_BUFFER_SIZE - 1)) bt_usart_read_buffer[bt_temp_buffer_rx_index++] = c;
+                if (bt_temp_buffer_rx_index < (RN4870_READ_WRITE_BUFFER_SIZE - 1)) bt_usart_read_buffer->buffer[bt_temp_buffer_rx_index++] = c;
             }
         }
     }
@@ -79,9 +78,9 @@ uint8_t bt_start_transparent_uart(){
     return 0;
 }
 
-void bt_usart_read_handler(){
+void bt_usart_read_handler(lengthy_buffer *buffer){
     if(bt_usart_read_done){
-        bt_usart_read_buffer_length = bt_temp_buffer_rx_index;
+        buffer->length = bt_temp_buffer_rx_index;
         
         bt_usart_read_done = 0;
         bt_temp_buffer_rx_index = 0;
@@ -90,7 +89,7 @@ void bt_usart_read_handler(){
 
 void init_bt_communication(){
     bt_start_transparent_uart();
-    SERCOM0_USART_ReadCallbackRegister(bt_usart_read_callback, (uintptr_t) NULL);
+    SERCOM0_USART_ReadCallbackRegister(bt_usart_read_callback, (uintptr_t) NULL /*put in reference to struct of buffer*/);
     SERCOM0_USART_ReadThresholdSet(1);
     SERCOM0_USART_ReadNotificationEnable(true, false);
 }

@@ -16,6 +16,11 @@ typedef uint16_t freq_t;
 #define TUNE_DIFF_OVER_1 1
 
 typedef struct {
+    uint8_t buffer[RN4870_READ_WRITE_BUFFER_SIZE];
+    uint8_t length;
+} lengthy_buffer;
+
+typedef struct {
     uint8_t code;
 } global_error_handle;
 
