@@ -12,7 +12,6 @@
 
 uint8_t bt_temp_buffer[RN4870_READ_WRITE_BUFFER_SIZE];
 uint16_t bt_temp_buffer_rx_index = 0;
-uint8_t bt_usart_read_done = 0;
 
 void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
     lengthy_buffer *bt_usart_read_buffer = (lengthy_buffer *) context;
@@ -25,14 +24,14 @@ void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
         if (number_of_bytes_available > RN4870_READ_WRITE_BUFFER_SIZE) number_of_bytes_available = RN4870_READ_WRITE_BUFFER_SIZE;
         SERCOM0_USART_Read(bt_temp_buffer, number_of_bytes_available);
         
-        if (bt_usart_read_done) return;
+        if (bt_usart_read_buffer->buffer[0] != '\0') return;
         for (uint32_t i = 0; i < number_of_bytes_available; i++){
             uint8_t c = (uint8_t)bt_temp_buffer[i];
             
             if ((c == '\n') || (c == '\r')){
-                bt_usart_read_buffer->buffer[bt_temp_buffer_rx_index] = '\0';
-                bt_usart_read_done = 1;
-                bt_temp_buffer_rx_index = 0;
+                bt_usart_read_buffer->length = bt_temp_buffer_rx_index - 1;
+                bt_usart_read_buffer->buffer[0] = 0x65;
+                bt_temp_buffer_rx_index = 1;
             }
             else{
                 if (bt_temp_buffer_rx_index < (RN4870_READ_WRITE_BUFFER_SIZE - 1)) bt_usart_read_buffer->buffer[bt_temp_buffer_rx_index++] = c;
@@ -78,18 +77,10 @@ uint8_t bt_start_transparent_uart(){
     return 0;
 }
 
-void bt_usart_read_handler(lengthy_buffer *buffer){
-    if(bt_usart_read_done){
-        buffer->length = bt_temp_buffer_rx_index;
-        
-        bt_usart_read_done = 0;
-        bt_temp_buffer_rx_index = 0;
-    }
-}
-
-void init_bt_communication(){
+void init_bt_communication(lengthy_buffer *buffer){
+    buffer->buffer[0] = '\0';
     bt_start_transparent_uart();
-    SERCOM0_USART_ReadCallbackRegister(bt_usart_read_callback, (uintptr_t) NULL /*put in reference to struct of buffer*/);
+    SERCOM0_USART_ReadCallbackRegister(bt_usart_read_callback, (uintptr_t) buffer /*put in reference to struct of buffer*/);
     SERCOM0_USART_ReadThresholdSet(1);
     SERCOM0_USART_ReadNotificationEnable(true, false);
 }

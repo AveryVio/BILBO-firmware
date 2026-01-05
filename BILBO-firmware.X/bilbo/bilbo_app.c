@@ -23,6 +23,9 @@ uint8_t current_tuning_level_in_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
 tuning_profile current_profile = PROFILE_DEF_NULL;
 
+lengthy_buffer bt_incoming_message[RN4870_READ_WRITE_BUFFER_SIZE];
+lengthy_buffer bt_outgoing_message[RN4870_READ_WRITE_BUFFER_SIZE];
+
 int bilbo_init(){return 0;} /* init_error_queue()*/
 
 int bilbo_tasks(){
@@ -49,18 +52,17 @@ int bilbo_tasks(){
     current_tuning_level_in_cents = decide_tuning_level_in_cents(current_freq, calculated_note.freq);
     
     //comm in
-    bt_usart_read_handler();
     
     
     //parsing
-    if(bt_usart_read_buffer[0] == '\0'); //skip the rest of parsing
+    if(bt_incoming_message->buffer[0] == '\0'); //skip the rest of parsing
     
-    if(bt_usart_read_buffer[0] != 'F') {
+    if(bt_incoming_message->buffer[0] != 'F') {
         throw_error(1);
         /*skip rest of parsing*/
     }
     
-    uint8_t incoming_message_type = decide_incoming_message_type(bt_usart_read_buffer);
+    uint8_t incoming_message_type = decide_incoming_message_type(bt_incoming_message->buffer);
     
     switch( incoming_message_type ){
         case FROP_MSG_NULL:
@@ -74,7 +76,7 @@ int bilbo_tasks(){
             break;
         case FROP_MSG_D_PROFILE_CHANGE: {
             change_profile frop_organised_message;
-            for(uint8_t i = 16; i >= 0; i--) frop_organised_message.data[i] = bt_usart_read_buffer[i];
+            for(uint8_t i = 19; i > 0; i--) frop_organised_message.data[i] = bt_incoming_message->buffer[i - 1];
             
             if(validate_profile_change(&frop_organised_message)) break;
             
@@ -91,7 +93,7 @@ int bilbo_tasks(){
             break;
     }
     
-    bt_usart_read_buffer[0] = '\0';
+    bt_incoming_message->buffer[0] = '\0';
     
     /*location to be skipped to*/
     
