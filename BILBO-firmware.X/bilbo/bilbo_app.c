@@ -46,6 +46,7 @@ int bilbo_tasks(){
      * handle parsing errors
      * handle comm outgoing
      * handle buttons
+     * handle multiplexer
      * handle leds
      */
     
@@ -121,6 +122,14 @@ int bilbo_tasks(){
     ///**/
     
     //buttons
+    
+    //multiplexer
+    
+    if(range_changed){
+        tuning_range++;
+        PORT_REGS->GROUP[0].PORT_OUT = (uint32_t)((tuning_range & 0b10U) >> 1U) << MULTIPLEX_1_PIN;
+        PORT_REGS->GROUP[0].PORT_OUT = (uint32_t)(tuning_range & 0b1U) << MULTIPLEX_0_PIN;
+    }
     
     //leds
     

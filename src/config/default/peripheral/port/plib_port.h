@@ -183,6 +183,51 @@
 #define LED_RE2_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 17U)) & 0x01U)
 #define LED_RE2_PIN                  PORT_PIN_PA17
 
+/*** Macros for MULTIPLEX_1 pin ***/
+#define MULTIPLEX_1_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 18U))
+#define MULTIPLEX_1_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 18U))
+#define MULTIPLEX_1_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 18U))
+#define MULTIPLEX_1_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 18U))
+#define MULTIPLEX_1_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 18U))
+#define MULTIPLEX_1_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 18U)) & 0x01U)
+#define MULTIPLEX_1_PIN                  PORT_PIN_PA18
+
+/*** Macros for MULTIPLEX_0 pin ***/
+#define MULTIPLEX_0_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 19U))
+#define MULTIPLEX_0_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 19U))
+#define MULTIPLEX_0_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 19U))
+#define MULTIPLEX_0_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 19U))
+#define MULTIPLEX_0_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 19U))
+#define MULTIPLEX_0_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 19U)) & 0x01U)
+#define MULTIPLEX_0_PIN                  PORT_PIN_PA19
+
+/*** Macros for MULTIPLEX_ON pin ***/
+#define MULTIPLEX_ON_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 20U))
+#define MULTIPLEX_ON_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 20U))
+#define MULTIPLEX_ON_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 20U))
+#define MULTIPLEX_ON_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 20U))
+#define MULTIPLEX_ON_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 20U))
+#define MULTIPLEX_ON_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 20U)) & 0x01U)
+#define MULTIPLEX_ON_PIN                  PORT_PIN_PA20
+
+/*** Macros for AMP_ON pin ***/
+#define AMP_ON_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 24U))
+#define AMP_ON_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 24U))
+#define AMP_ON_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 24U))
+#define AMP_ON_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 24U))
+#define AMP_ON_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 24U))
+#define AMP_ON_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 24U)) & 0x01U)
+#define AMP_ON_PIN                  PORT_PIN_PA24
+
+/*** Macros for PIEZO_MEX pin ***/
+#define PIEZO_MEX_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 25U))
+#define PIEZO_MEX_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 25U))
+#define PIEZO_MEX_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 25U))
+#define PIEZO_MEX_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 25U))
+#define PIEZO_MEX_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 25U))
+#define PIEZO_MEX_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 25U)) & 0x01U)
+#define PIEZO_MEX_PIN                  PORT_PIN_PA25
+
 /*** Macros for SVCLK pin ***/
 #define SVCLK_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 30U))
 #define SVCLK_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 30U))
