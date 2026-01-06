@@ -117,7 +117,7 @@ int bilbo_tasks(){
     
     for(uint8_t i = 0; i < frop_error_queue.queue_length; i++) send_error(0);
     
-    if(range_changed) send_message(build_range_change(tuning_range), 9 );
+    if(range_changed) send_message(build_range_change(tuning_range).data, 9 );
 
     /*tuning*/
     

@@ -92,7 +92,7 @@ void throw_error(uint8_t error_code){
     frop_error_queue.error_queue[frop_error_queue.queue_length + 1].code = error_code;
 }
 
-global_error_queue init_message_log(){
+global_message_log init_message_log(){
     global_message_log l;
     for(uint8_t i = 9; i >=0; i--){
         l.log[i].format = 0;

@@ -79,7 +79,7 @@ uint8_t bt_start_transparent_uart(){
 }
 
 void send_error(uint8_t queue_index){
-    SERCOM0_USART_Write(build_short_error_message(frop_error_queue.error_queue[queue_index]), 5);
+    SERCOM0_USART_Write(build_short_error_message(frop_error_queue.error_queue[queue_index].code).data, 5);
     
     for(uint8_t i = queue_index; i < frop_error_queue.queue_length; i++){
         frop_error_queue.error_queue[i].code = frop_error_queue.error_queue[i + 1].code;
@@ -92,7 +92,7 @@ void send_error(uint8_t queue_index){
 void send_message(uint8_t *message_data, uint8_t message_length){
     SERCOM0_USART_Write(message_data, message_length);
     
-    frop_message_log.log[frop_message_log.log_length + 1] = message_data[2];    
+    frop_message_log.log[frop_message_log.log_length + 1].format = message_data[2];    
     frop_message_log.log_length += 1;
 }
 
