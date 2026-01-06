@@ -9,6 +9,7 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 #include "frop.h"
 
 uint8_t bt_temp_buffer[RN4870_READ_WRITE_BUFFER_SIZE];

@@ -6,6 +6,7 @@
 
 #include "bilbo_config.h"
 #include "bilbo_generics.h"
+#include "bilbo_globals.h"
 
 #include "low_level/main_frequency_counting.h"
 #include "libraries/tuning_types.h"
@@ -26,6 +27,9 @@ uint8_t tuning_range = TUNE_RANGE_GUITAR;
 
 lengthy_buffer bt_incoming_message[RN4870_READ_WRITE_BUFFER_SIZE];
 lengthy_buffer bt_outgoing_message[RN4870_READ_WRITE_BUFFER_SIZE];
+
+global_error_queue frop_error_queue = {.error_queue = { (global_error_handle) {.code = 0}, (global_error_handle) {.code = 0} }, .queue_length = 2};
+global_message_log frop_message_log = {.log = { (global_message_log_entry) {.format = 0}, (global_message_log_entry) {.format = 0} }, .log_length = 2};
 
 uint8_t ok_queued = 0;
 uint8_t range_changed = 0;

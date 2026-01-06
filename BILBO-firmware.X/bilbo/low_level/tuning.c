@@ -10,6 +10,7 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 #include "../libraries/tuning_types.h"
 
 musical_octive calculate_single_octive(musical_note octive_reference_note){

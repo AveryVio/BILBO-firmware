@@ -10,6 +10,7 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 
 void send_error(uint8_t queue_index);
 

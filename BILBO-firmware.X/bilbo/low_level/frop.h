@@ -9,6 +9,7 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 #include "../libraries/frop_types.h"
 #include "peripheral/sercom/usart/plib_sercom0_usart.h"
 
@@ -25,13 +26,10 @@ uint8_t decide_incoming_message_type(uint8_t *message);
 
 global_error_queue init_error_queue();
 
-extern global_error_queue frop_error_queue;
-
 void throw_error(uint8_t error_code);
 
-global_message_log init_message_log();
 
-extern global_message_log frop_message_log;
+global_message_log init_message_log();
 
 uint8_t validate_profile_change(change_profile *new_profile_adept);
 

@@ -8,6 +8,7 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 #include "../libraries/frop_types.h"
 #include "peripheral/sercom/usart/plib_sercom0_usart.h"
 
@@ -86,11 +87,10 @@ global_error_queue init_error_queue(){
     return q;
 }
 
-global_error_queue frop_error_queue = {.error_queue = { (global_error_handle) {.code = 0}, (global_error_handle) {.code = 0} }, .queue_length = 2};
-
 void throw_error(uint8_t error_code){
     frop_error_queue.error_queue[frop_error_queue.queue_length + 1].code = error_code;
 }
+
 
 global_message_log init_message_log(){
     global_message_log l;
@@ -101,7 +101,6 @@ global_message_log init_message_log(){
     return l;
 }
 
-global_message_log frop_message_log = {.log = { (global_message_log_entry) {.format = 0}, (global_message_log_entry) {.format = 0} }, .log_length = 2};
 
 uint8_t validate_profile_change(change_profile *new_profile_adept){
     // this is not proper sanitation, but i don't have enough time to care to make an effecient way for it. let's just collectively pretend that bluetooth is perfect and has no issues at all
