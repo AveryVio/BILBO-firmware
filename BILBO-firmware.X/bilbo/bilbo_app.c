@@ -113,11 +113,11 @@ int bilbo_tasks(){
      * periodically send tuning (when possible)
      * ...
      */
-    if(ok_queued) SERCOM0_USART_Write( build_ok_response().data, 4 );
+    if(ok_queued) send_message( build_ok_response().data, 4 );
     
     for(uint8_t i = 0; i < frop_error_queue.queue_length; i++) send_error(0);
     
-    if(range_changed) SERCOM0_USART_Write(build_range_change(tuning_range), 9 );
+    if(range_changed) send_message(build_range_change(tuning_range), 9 );
 
     /*tuning*/
     
