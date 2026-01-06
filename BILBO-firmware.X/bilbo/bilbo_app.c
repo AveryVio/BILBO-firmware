@@ -22,9 +22,14 @@ freq_t current_freq = 0;
 uint8_t current_tuning_level_in_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
 tuning_profile current_profile = PROFILE_DEF_NULL;
+uint8_t tuning_range = TUNE_RANGE_GUITAR;
 
 lengthy_buffer bt_incoming_message[RN4870_READ_WRITE_BUFFER_SIZE];
 lengthy_buffer bt_outgoing_message[RN4870_READ_WRITE_BUFFER_SIZE];
+
+uint8_t ok_queued = 0;
+uint8_t range_changed = 0;
+
 
 int bilbo_init(){return 0;} /* init_error_queue()*/
 
@@ -101,13 +106,20 @@ int bilbo_tasks(){
     
     //comm out
     /*
-     * send outgoing ok
-     * send outgoing errors
-     * send change range (when used)
+     * X send outgoing ok
+     * X send outgoing errors
+     * X send change range (when used)
      * periodically send tuning (when possible)
      * ...
      */
+    if(ok_queued) SERCOM0_USART_Write( build_ok_response().data, 4 );
+    
+    for(uint8_t i = 0; i < frop_error_queue.queue_length; i++) send_error(0);
+    
+    if(range_changed) SERCOM0_USART_Write(build_range_change(tuning_range), 9 );
 
+    ///**/
+    
     //buttons
     
     //leds
