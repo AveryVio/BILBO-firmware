@@ -29,5 +29,14 @@ typedef struct {
     uint8_t queue_length;
 } global_error_queue;
 
+typedef struct {
+    uint8_t format;
+} global_message_log_entry;
+
+typedef struct {
+    global_message_log_entry log[9];
+    uint8_t log_length;
+} global_message_log;
+
 
 #endif

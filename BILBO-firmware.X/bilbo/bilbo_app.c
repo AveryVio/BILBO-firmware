@@ -31,7 +31,7 @@ uint8_t ok_queued = 0;
 uint8_t range_changed = 0;
 
 
-int bilbo_init(){return 0;} /* init_error_queue()*/
+int bilbo_init(){return 0;} /* init_error_queue() global_error_queue init_message_log() */
 
 int bilbo_tasks(){
     /* TODO:
@@ -119,7 +119,7 @@ int bilbo_tasks(){
     
     if(range_changed) SERCOM0_USART_Write(build_range_change(tuning_range), 9 );
 
-    ///**/
+    /*tuning*/
     
     //buttons
     

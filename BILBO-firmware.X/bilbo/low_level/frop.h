@@ -29,6 +29,10 @@ extern global_error_queue frop_error_queue;
 
 void throw_error(uint8_t error_code);
 
+global_error_queue init_message_log();
+
+extern global_message_log frop_message_log;
+
 void send_error(short_error_message *message, uint8_t queue_index);
 
 uint8_t validate_profile_change(change_profile *new_profile_adept);

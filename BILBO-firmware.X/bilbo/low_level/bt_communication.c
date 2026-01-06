@@ -89,6 +89,13 @@ void send_error(uint8_t queue_index){
     frop_error_queue.queue_length -= 1;
 }
 
+void send_message(uint8_t *message_data, uint8_t message_length){
+    SERCOM0_USART_Write(message_data, message_length);
+    
+    frop_message_log.log[frop_message_log.log_length + 1] = message_data[2];    
+    frop_message_log.log_length += 1;
+}
+
 void init_bt_communication(lengthy_buffer *buffer){
     buffer->buffer[0] = '\0';
     bt_start_transparent_uart();
