@@ -140,18 +140,18 @@ void SYS_Initialize ( void* data )
 
 
 
-    TCC1_TimerInitialize();
-
     NVMCTRL_Initialize( );
 
     SERCOM1_USART_Initialize();
 
-
     SERCOM0_USART_Initialize();
+
 
     EIC_Initialize();
 
     TC3_TimerInitialize();
+
+    TC5_TimerInitialize();
 
 
 

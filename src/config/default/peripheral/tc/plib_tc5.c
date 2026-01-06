@@ -1,17 +1,17 @@
 /*******************************************************************************
-  Timer/Counter(TCC1) PLIB
+  Timer/Counter(TC5) PLIB
 
   Company
     Microchip Technology Inc.
 
   File Name
-    plib_tcc1.c
+    plib_tc5.c
 
   Summary
-    TCC1 PLIB Implementation File.
+    TC5 PLIB Implementation File.
 
   Description
-    This file defines the interface to the TCC peripheral library. This
+    This file defines the interface to the TC peripheral library. This
     library provides access to and control of the associated peripheral
     instance.
 
@@ -53,8 +53,9 @@
 /* This section lists the other files that are included in this file.
 */
 
+#include "plib_tc5.h"
 #include "interrupts.h"
-#include "plib_tcc1.h"
+
 
 // *****************************************************************************
 // *****************************************************************************
@@ -62,157 +63,150 @@
 // *****************************************************************************
 // *****************************************************************************
 
-volatile static TCC_CALLBACK_OBJECT TCC1_CallbackObject;
+volatile static TC_TIMER_CALLBACK_OBJ TC5_CallbackObject;
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: TCC1 Implementation
+// Section: TC5 Implementation
 // *****************************************************************************
 // *****************************************************************************
 
 // *****************************************************************************
-/* Initialize the TCC module in Timer mode */
-void TCC1_TimerInitialize( void )
+/* Initialize the TC module in Timer mode */
+void TC5_TimerInitialize( void )
 {
-    /* Reset TCC */
-    TCC1_REGS->TCC_CTRLA = TCC_CTRLA_SWRST_Msk;
+    /* Reset TC */
+    TC5_REGS->COUNT16.TC_CTRLA = TC_CTRLA_SWRST_Msk;
 
-    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_SWRST_Msk) == TCC_SYNCBUSY_SWRST_Msk)
+    while((TC5_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
     {
         /* Wait for Write Synchronization */
     }
 
     /* Configure counter mode & prescaler */
-    TCC1_REGS->TCC_CTRLA = TCC_CTRLA_PRESCALER_DIV2 ;
-    /* Configure in Match Frequency Mode */
-    TCC1_REGS->TCC_WAVE = TCC_WAVE_WAVEGEN_NFRQ;
+    TC5_REGS->COUNT16.TC_CTRLA = TC_CTRLA_MODE_COUNT16 | TC_CTRLA_PRESCALER_DIV1024 | TC_CTRLA_WAVEGEN_MPWM ;
 
     /* Configure timer period */
-    TCC1_REGS->TCC_PER = 2399999U;
+    TC5_REGS->COUNT16.TC_CC[0U] = 23436U;
 
     /* Clear all interrupt flags */
-    TCC1_REGS->TCC_INTFLAG = TCC_INTFLAG_Msk;
+    TC5_REGS->COUNT16.TC_INTFLAG = TC_INTFLAG_Msk;
 
-    TCC1_CallbackObject.callback_fn = NULL;
+    TC5_CallbackObject.callback = NULL;
     /* Enable interrupt*/
-    TCC1_REGS->TCC_INTENSET = (TCC_INTENSET_OVF_Msk);
+    TC5_REGS->COUNT16.TC_INTENSET = TC_INTENSET_OVF_Msk;
 
 
-    while((TCC1_REGS->TCC_SYNCBUSY) != 0U)
+    while((TC5_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
     {
         /* Wait for Write Synchronization */
     }
 }
 
-/* Enable the TCC counter */
-void TCC1_TimerStart( void )
+/* Enable the TC counter */
+void TC5_TimerStart( void )
 {
-    TCC1_REGS->TCC_CTRLA |= TCC_CTRLA_ENABLE_Msk;
-    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_ENABLE_Msk) == TCC_SYNCBUSY_ENABLE_Msk)
+    TC5_REGS->COUNT16.TC_CTRLA |= TC_CTRLA_ENABLE_Msk;
+    while((TC5_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
     {
         /* Wait for Write Synchronization */
     }
 }
 
-/* Disable the TCC counter */
-void TCC1_TimerStop( void )
+/* Disable the TC counter */
+void TC5_TimerStop( void )
 {
-    TCC1_REGS->TCC_CTRLA &= ~TCC_CTRLA_ENABLE_Msk;
-    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_ENABLE_Msk) == TCC_SYNCBUSY_ENABLE_Msk)
+    TC5_REGS->COUNT16.TC_CTRLA = ((TC5_REGS->COUNT16.TC_CTRLA) &(uint16_t)(~TC_CTRLA_ENABLE_Msk));
+    while((TC5_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
     {
         /* Wait for Write Synchronization */
     }
 }
 
-uint32_t TCC1_TimerFrequencyGet( void )
+uint32_t TC5_TimerFrequencyGet( void )
 {
-    return (uint32_t)(24000000U);
+    return (uint32_t)(46875UL);
 }
 
-void TCC1_TimerCommandSet(TCC_COMMAND command)
+void TC5_TimerCommandSet(TC_COMMAND command)
 {
-    TCC1_REGS->TCC_CTRLBSET = (uint8_t)((uint32_t)command << TCC_CTRLBSET_CMD_Pos);
-    while((TCC1_REGS->TCC_SYNCBUSY) != 0U)
+    TC5_REGS->COUNT16.TC_CTRLBSET = (uint8_t)command << TC_CTRLBSET_CMD_Pos;
+    while((TC5_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
     {
         /* Wait for Write Synchronization */
-    }    
+    }
 }
 
 /* Get the current timer counter value */
-uint32_t TCC1_Timer24bitCounterGet( void )
+uint16_t TC5_Timer16bitCounterGet( void )
 {
     /* Write command to force COUNT register read synchronization */
-    TCC1_REGS->TCC_CTRLBSET |= (uint8_t)TCC_CTRLBSET_CMD_READSYNC;
+    TC5_REGS->COUNT16.TC_READREQ = TC_READREQ_RREQ_Msk | (uint16_t)TC_COUNT16_COUNT_REG_OFST;
 
-    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_CTRLB_Msk) == TCC_SYNCBUSY_CTRLB_Msk)
+    while((TC5_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
     {
         /* Wait for Write Synchronization */
     }
 
-    while((TCC1_REGS->TCC_CTRLBSET & TCC_CTRLBSET_CMD_Msk) != 0U)
-    {
-        /* Wait for CMD to become zero */
-    }
-    
     /* Read current count value */
-    return TCC1_REGS->TCC_COUNT;
-
+    return (uint16_t)TC5_REGS->COUNT16.TC_COUNT;
 }
 
 /* Configure timer counter value */
-void TCC1_Timer24bitCounterSet( uint32_t countVal )
+void TC5_Timer16bitCounterSet( uint16_t count )
 {
-    TCC1_REGS->TCC_COUNT = countVal & 0xFFFFFFU;
+    TC5_REGS->COUNT16.TC_COUNT = count;
 
-    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_COUNT_Msk) == TCC_SYNCBUSY_COUNT_Msk)
+    while((TC5_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
     {
         /* Wait for Write Synchronization */
     }
 }
 
 /* Configure timer period */
-void TCC1_Timer24bitPeriodSet( uint32_t period )
+void TC5_Timer16bitPeriodSet( uint16_t period )
 {
-    TCC1_REGS->TCC_PER = period & 0xFFFFFFU;
-    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_PER_Msk) == TCC_SYNCBUSY_PER_Msk)
+    TC5_REGS->COUNT16.TC_CC[0] = period;
+    while((TC5_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
     {
         /* Wait for Write Synchronization */
     }
 }
 
 /* Read the timer period value */
-uint32_t TCC1_Timer24bitPeriodGet( void )
+uint16_t TC5_Timer16bitPeriodGet( void )
 {
-    return TCC1_REGS->TCC_PER;
+    /* Write command to force CC register read synchronization */
+    TC5_REGS->COUNT16.TC_READREQ = TC_READREQ_RREQ_Msk | (uint16_t)TC_COUNT16_CC_REG_OFST;
+
+    while((TC5_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
+    {
+        /* Wait for Write Synchronization */
+    }
+    return (uint16_t)TC5_REGS->COUNT16.TC_CC[0];
 }
 
 
 
 /* Register callback function */
-void TCC1_TimerCallbackRegister( TCC_CALLBACK callback, uintptr_t context )
+void TC5_TimerCallbackRegister( TC_TIMER_CALLBACK callback, uintptr_t context )
 {
-    TCC1_CallbackObject.callback_fn = callback;
+    TC5_CallbackObject.callback = callback;
 
-    TCC1_CallbackObject.context = context;
+    TC5_CallbackObject.context = context;
 }
 
 /* Timer Interrupt handler */
-void __attribute__((used)) TCC1_InterruptHandler( void )
+void __attribute__((used)) TC5_TimerInterruptHandler( void )
 {
-    uint32_t status;
-    /* Additional local variable to prevent MISRA C violations (Rule 13.x) */
-    uintptr_t context;
-    context = TCC1_CallbackObject.context;
-    status = TCC1_REGS->TCC_INTFLAG;
+    TC_TIMER_STATUS status;
+    status = (TC_TIMER_STATUS) (TC5_REGS->COUNT16.TC_INTFLAG);
     /* Clear interrupt flags */
-    TCC1_REGS->TCC_INTFLAG = TCC_INTFLAG_Msk;
-    (void)TCC1_REGS->TCC_INTFLAG;
-    if( TCC1_CallbackObject.callback_fn != NULL)
+    TC5_REGS->COUNT16.TC_INTFLAG = TC_INTFLAG_Msk;
+    if(TC5_CallbackObject.callback != NULL)
     {
-        TCC1_CallbackObject.callback_fn(status, context);
+        uintptr_t context = TC5_CallbackObject.context;
+        TC5_CallbackObject.callback(status, context);
     }
-
 }
-  
-
 

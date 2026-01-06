@@ -50,6 +50,17 @@ tuning_profile calculate_base_tuning_profile(musical_note reference_note, int8_t
     return profile;
 }
 
+musical_octive find_currently_playing_note_octive(freq_t current_note_freq, tuning_profile* profile){
+    uint8_t found_octive = 0;
+    for(uint8_t i = 0; i < profile->octive_count; i++){
+        if(abs((int8_t) current_note_freq - profile->octives[i].notes[profile->reference_note.position_in_octive].freq) > abs((int8_t) current_note_freq - profile->octives[i + 1].notes[profile->reference_note.position_in_octive].freq)) continue;
+        return profile->octives[i];
+        found_octive = 1;
+    }
+    if(!found_octive) return profile->octives[profile->octive_count];
+    return (musical_octive) OCTIVE_NULL;
+}
+
 /* TODO:
  * handle the error outputs
  */
@@ -89,14 +100,7 @@ musical_note find_currently_playing_note(freq_t current_note_freq, tuning_profil
     }
 
     
-    musical_octive current_octive;
-    uint8_t found_octive = 0;
-    for(uint8_t i = 0; i < profile->octive_count; i++){
-        if(abs((int8_t) current_note_freq - profile->octives[i].notes[profile->reference_note.position_in_octive].freq) > abs((int8_t) current_note_freq - profile->octives[i + 1].notes[profile->reference_note.position_in_octive].freq)) continue;
-        current_octive = profile->octives[i];
-        found_octive = 1;
-    }
-    if(!found_octive) current_octive = profile->octives[profile->octive_count];
+    musical_octive current_octive = find_currently_playing_note_octive(current_note_freq, profile);
     
     musical_note current_note;
     uint8_t found_note = 0;
@@ -131,4 +135,8 @@ uint8_t decide_tuning_level_in_cents(freq_t current_note_freq, freq_t calculated
     if(diff_in_cents <= 14) return TUNE_DIFF_UNDER_2;
     
     return TUNE_DIFF_LEVEL;
+}
+
+void send_tuning_data(){
+    tuning_ready = 1;
 }

@@ -22,6 +22,7 @@
 freq_t current_freq = 0;
 uint8_t current_tuning_level_in_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
+uint8_t calculated_note_octive = 0;
 tuning_profile current_profile = PROFILE_DEF_NULL;
 uint8_t tuning_range = TUNE_RANGE_GUITAR;
 
@@ -33,9 +34,10 @@ global_message_log frop_message_log = {.log = { (global_message_log_entry) {.for
 
 uint8_t ok_queued = 0;
 uint8_t range_changed = 0;
+uint8_t tuning_ready = 0;
 
 
-int bilbo_init(){return 0;} /* init_error_queue() global_error_queue init_message_log() */
+int bilbo_init(){return 0;} /* init_error_queue() global_error_queue init_message_log() \*tc callbackregister* TC3_TimerStart();*/
 
 int bilbo_tasks(){
     /* TODO:
@@ -59,6 +61,7 @@ int bilbo_tasks(){
     
     //tuning
     calculated_note = find_currently_playing_note(current_freq, &current_profile);
+    calculated_note_octive = find_currently_playing_note_octive(current_freq, &current_profile).octive_number();
     current_tuning_level_in_cents = decide_tuning_level_in_cents(current_freq, calculated_note.freq);
     
     //comm in
@@ -110,20 +113,16 @@ int bilbo_tasks(){
     //errors
     
     //comm out
-    /*
-     * X send outgoing ok
-     * X send outgoing errors
-     * X send change range (when used)
-     * periodically send tuning (when possible)
-     * ...
-     */
     if(ok_queued) send_message( build_ok_response().data, 4 );
     
     for(uint8_t i = 0; i < frop_error_queue.queue_length; i++) send_error(0);
     
     if(range_changed) send_message(build_range_change(tuning_range).data, 9 );
 
-    /*tuning*/
+    if(tuning_ready){
+        tuning_ready = 0;
+        send_message(build_tuning_data(calculated_note_octive, calculated_note.position_in_octive, current_freq, current_profile.), 16);
+    }
     
     //buttons
     

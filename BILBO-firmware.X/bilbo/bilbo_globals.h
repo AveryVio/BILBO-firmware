@@ -7,4 +7,6 @@
 extern global_error_queue frop_error_queue;
 extern global_message_log frop_message_log;
 
+extern uint8_t tuning_ready;
+
 #endif
