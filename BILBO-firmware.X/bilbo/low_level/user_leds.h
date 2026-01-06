@@ -9,6 +9,7 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 
 extern uint16_t range_leds_timer_value;
 extern uint16_t range_leds_on_status;

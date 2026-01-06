@@ -9,8 +9,7 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
-
-uint8_t handle_button_input();
+#include "../bilbo_globals.h"
 
 void button_init();
 

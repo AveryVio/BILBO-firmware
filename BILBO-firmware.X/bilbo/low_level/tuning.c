@@ -131,8 +131,8 @@ uint8_t decide_tuning_level_in_cents(freq_t current_note_freq, freq_t calculated
     
     if(diff_in_cents >= 14) return TUNE_DIFF_OVER_2;
     if(diff_in_cents >= 7) return TUNE_DIFF_OVER_1;
-    if(diff_in_cents <= 7) return TUNE_DIFF_UNDER_1;
-    if(diff_in_cents <= 14) return TUNE_DIFF_UNDER_2;
+    if(diff_in_cents <= -7) return TUNE_DIFF_UNDER_1;
+    if(diff_in_cents <= -14) return TUNE_DIFF_UNDER_2;
     
     return TUNE_DIFF_LEVEL;
 }

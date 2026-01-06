@@ -50,9 +50,9 @@ int bilbo_tasks(){
      * x handle comm incoming
      * handle parsing
      * handle parsing errors
-     * handle comm outgoing
+     * X handle comm outgoing
      * handle buttons
-     * handle multiplexer
+     * X handle multiplexer
      * handle leds
      */
     
@@ -125,6 +125,20 @@ int bilbo_tasks(){
     }
     
     //buttons
+    /*to finish*/
+    if(eic_mode_butt_flag){
+        eic_mode_butt_flag = 0;
+        //switch mode
+    }
+    
+    if(eic_bt_butt_flag){
+        eic_bt_butt_flag = 0;
+        if(eic_bt_butt_long_press == 0){
+            // handle bt pairing
+        } else {
+            // toggle on off bluetooth
+        }
+    }
     
     //multiplexer
     
@@ -135,6 +149,10 @@ int bilbo_tasks(){
     }
     
     //leds
+    /*to finish*/
+    handle_tuning_output_leds(current_tuning_level_in_cents);    
+    
+    handle_range_leds_out(tuning_range);
     
     return 0;
 }

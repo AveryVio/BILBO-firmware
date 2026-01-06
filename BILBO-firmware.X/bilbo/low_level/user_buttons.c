@@ -8,6 +8,7 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 
 volatile uint8_t eic_bt_butt_flag = 0;
 volatile uint8_t eic_mode_butt_flag = 0;
@@ -34,26 +35,6 @@ void eic_bt_butt_callback(){
 }
 void eic_mode_butt_callback(){
     eic_mode_butt_flag = 1;
-}
-
-uint8_t handle_button_input(){
-    // handle mode button input
-    if(eic_mode_butt_flag){
-        eic_mode_butt_flag = 0;
-        //switch mode
-    }
-    
-    //switch
-    if(eic_bt_butt_flag){
-        eic_bt_butt_flag = 0;
-        if(eic_bt_butt_long_press == 0){
-            // handle bt pairing
-        } else {
-            // toggle on off bluetooth
-        }
-    }
-    
-    return 0;
 }
 
 void button_init(){

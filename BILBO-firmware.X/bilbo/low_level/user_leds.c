@@ -8,6 +8,7 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 
 uint16_t range_leds_timer_value = 0;
 uint16_t range_leds_on_status = 0;
