@@ -33,7 +33,7 @@ void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
             if ((c == '\n') || (c == '\r')){
                 bt_usart_read_buffer->length = bt_temp_buffer_rx_index - 1;
                 bt_usart_read_buffer->buffer[0] = 0x65;
-                bt_temp_buffer_rx_index = 1;
+                bt_temp_buffer_rx_index = 1; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
             }
             else{
                 if (bt_temp_buffer_rx_index < (RN4870_READ_WRITE_BUFFER_SIZE - 1)) bt_usart_read_buffer->buffer[bt_temp_buffer_rx_index++] = c;

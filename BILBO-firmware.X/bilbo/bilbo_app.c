@@ -47,9 +47,9 @@ int bilbo_tasks(){
      *      X recognise the current note
      *      X compare witth the current note
      *      X decide if the note is tuned or how much it's not tuned
-     * x handle comm incoming
+     * X handle comm incoming
      * handle parsing
-     * handle parsing errors
+     * x handle parsing errors
      * X handle comm outgoing
      * handle buttons
      * X handle multiplexer
@@ -67,11 +67,11 @@ int bilbo_tasks(){
     //comm in
     
     //parsing
-    if(bt_incoming_message->buffer[0] == '\0'); //skip the rest of parsing
+    if(bt_incoming_message->buffer[0] == '\0') goto parsing_skipped;
     
     if(bt_incoming_message->buffer[0] != 'F') {
         throw_error(1);
-        /*skip rest of parsing*/
+        goto not_a_frop_message;
     }
     
     uint8_t incoming_message_type = decide_incoming_message_type(bt_incoming_message->buffer);
@@ -88,32 +88,57 @@ int bilbo_tasks(){
             break;
         case FROP_MSG_D_PROFILE_CHANGE: {
             change_profile frop_organised_message;
-            for(uint8_t i = 19; i > 0; i--) frop_organised_message.data[i] = bt_incoming_message->buffer[i - 1];
+            for(uint8_t i = 19; i > 0; i--) frop_organised_message.data[i - 1] = bt_incoming_message->buffer[i]; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
             
             if(validate_profile_change(&frop_organised_message)) break;
             
             musical_note new_note = { .freq = frop_organised_message.structured.block_data_ref, .position_in_octive = frop_organised_message.structured.block_data_ref_pos};
             
             current_profile = calculate_base_tuning_profile(new_note, frop_organised_message.structured.block_data_ref_oct);
-            /*queue ok*/
+            
+            ok_queued = 1;
         }
             break;
-        case FROP_MSG_R_OK:
-            // handle ok of last message
+        case FROP_MSG_R_OK: {
+            if(frop_message_log.log_length == 0) {
+                throw_error(28);
+                break;
+            }
+            for(uint8_t i  = 0; i < frop_message_log.log_length; i++) frop_message_log.log[i] = frop_message_log.log[i + 1];
+            frop_message_log.log_length -= 1;
+        }
             break;
-        case FROP_MSG_R_SHORT_ERROR:
-            // handle error of last message
+        case FROP_MSG_R_SHORT_ERROR: {
+            if(frop_error_queue.queue_length == 0) {
+                throw_error(29);
+                break;
+            }
+            
+            short_error_message frop_organised_message;
+            for(uint8_t i = 4; i > 0; i--) frop_organised_message.data[i - 1] = bt_incoming_message->buffer[i]; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
+            
+            if(frop_organised_message.structured.error_code == 18) break;
+            if(frop_organised_message.structured.error_code == 19) break;
+            
+            for(uint8_t i  = 0; i < frop_error_queue.queue_length; i++) frop_error_queue.error_queue[i] = frop_error_queue.error_queue[i + 1];
+            frop_error_queue.queue_length -= 1;
+        }
             break;
     }
     
+    not_a_frop_message:
+    
     bt_incoming_message->buffer[0] = '\0';
     
-    /*location to be skipped to*/
+    parsing_skipped:
     
     //errors
     
     //comm out
-    if(ok_queued) send_message( build_ok_response().data, 4 );
+    if(ok_queued) {
+        send_message( build_ok_response().data, 4 );
+        ok_queued = 0;
+    }
     
     for(uint8_t i = 0; i < frop_error_queue.queue_length; i++) send_error(0);
     
