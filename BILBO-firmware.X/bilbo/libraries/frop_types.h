@@ -1,6 +1,8 @@
 #ifndef BILBO_FROP_TYPES_H
 #define BILBO_FROP_TYPES_H
 
+#include <bits/alltypes.h>
+
 // response messages
 
 struct short_error_message_s {

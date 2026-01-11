@@ -153,6 +153,8 @@ void SYS_Initialize ( void* data )
 
     TC5_TimerInitialize();
 
+    TC4_TimerInitialize();
+
 
 
     /* MISRAC 2012 deviation block start */

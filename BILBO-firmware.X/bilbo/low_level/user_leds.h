@@ -3,7 +3,6 @@
 
 #include <bits/alltypes.h>
 
-#include "peripheral/eic/plib_eic.h"
 #include "peripheral/port/plib_port.h"
 #include "peripheral/tc/plib_tc3.h"
 

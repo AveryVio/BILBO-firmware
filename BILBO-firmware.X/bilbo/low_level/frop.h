@@ -3,15 +3,12 @@
 
 #include <bits/alltypes.h>
 
-#include "peripheral/eic/plib_eic.h"
-#include "peripheral/port/plib_port.h"
-#include "peripheral/tc/plib_tc3.h"
+#include "peripheral/sercom/usart/plib_sercom0_usart.h"
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
 #include "../bilbo_globals.h"
 #include "../libraries/frop_types.h"
-#include "peripheral/sercom/usart/plib_sercom0_usart.h"
 
 short_error_message build_short_error_message(uint8_t error_code);
 

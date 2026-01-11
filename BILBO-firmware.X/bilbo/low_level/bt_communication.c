@@ -2,14 +2,12 @@
 
 #include <bits/alltypes.h>
 
-#include "peripheral/eic/plib_eic.h"
-#include "peripheral/port/plib_port.h"
-#include "peripheral/tc/plib_tc3.h"
 #include "peripheral/sercom/usart/plib_sercom0_usart.h"
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
 #include "../bilbo_globals.h"
+
 #include "frop.h"
 
 uint8_t bt_temp_buffer[RN4870_READ_WRITE_BUFFER_SIZE];

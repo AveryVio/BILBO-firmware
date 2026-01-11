@@ -1,6 +1,8 @@
 #ifndef BILBO_GENERICS_H
 #define BILBO_GENERICS_H
 
+#include <bits/alltypes.h>
+
 typedef uint16_t freq_t;
 
 #define TUNE_RANGE_NULL 0

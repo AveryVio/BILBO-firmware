@@ -1,6 +1,8 @@
 #ifndef BILBO_GLOBALS_H
 #define BILBO_GLOBALS_H
 
+#include <bits/alltypes.h>
+
 #include "bilbo_config.h"
 #include "bilbo_generics.h"
 

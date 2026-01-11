@@ -8,12 +8,12 @@
 #include "bilbo_generics.h"
 #include "bilbo_globals.h"
 
-#include "low_level/main_frequency_counting.h"
-#include "libraries/tuning_types.h"
-#include "low_level/tuning.h"
-#include "libraries/frop_types.h"
 #include "low_level/bt_communication.h"
 #include "low_level/frop.h"
+#include "libraries/frop_types.h"
+#include "low_level/main_frequency_counting.h"
+#include "low_level/tuning.h"
+#include "libraries/tuning_types.h"
 #include "low_level/user_buttons.h"
 #include "low_level/user_leds.h"
 
@@ -36,6 +36,9 @@ uint8_t ok_queued = 0;
 uint8_t range_changed = 0;
 uint8_t tuning_ready = 0;
 
+/* to implement:
+ * sending tuning on 500 ms intervals
+ */
 
 int bilbo_init(){return 0;} /* init_error_queue() global_error_queue init_message_log() \*tc callbackregister* TC3_TimerStart();*/
 
@@ -147,7 +150,7 @@ int bilbo_tasks(){
         range_changed = 0;
     }
 
-    if(tuning_ready){
+    if(tuning_ready){ // to add timer
         tuning_ready = 0;
         send_message(build_tuning_data(calculated_note_octive, calculated_note.position_in_octive, current_freq, current_tuning_level_in_cents).data, 16);
     }
