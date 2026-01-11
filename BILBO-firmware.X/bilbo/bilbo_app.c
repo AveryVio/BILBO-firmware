@@ -61,7 +61,7 @@ int bilbo_tasks(){
     
     //tuning
     calculated_note = find_currently_playing_note(current_freq, &current_profile);
-    calculated_note_octive = find_currently_playing_note_octive(current_freq, &current_profile).octive_number();
+    calculated_note_octive = find_currently_playing_note_octive(current_freq, &current_profile).octive_number;
     current_tuning_level_in_cents = decide_tuning_level_in_cents(current_freq, calculated_note.freq);
     
     //comm in
@@ -124,7 +124,7 @@ int bilbo_tasks(){
 
     if(tuning_ready){
         tuning_ready = 0;
-        send_message(build_tuning_data(calculated_note_octive, calculated_note.position_in_octive, current_freq, current_profile.), 16);
+        send_message(build_tuning_data(calculated_note_octive, calculated_note.position_in_octive, current_freq, current_tuning_level_in_cents).data, 16);
     }
     
     //buttons

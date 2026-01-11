@@ -85,7 +85,7 @@ void send_error(uint8_t queue_index){
     for(uint8_t i = queue_index; i < frop_error_queue.queue_length; i++){
         frop_error_queue.error_queue[i].code = frop_error_queue.error_queue[i + 1].code;
     }
-    // last index doesn't have to be fixes since it won't be read.
+    // last index doesn't have to be fixed since it won't be read.
     
     frop_error_queue.queue_length -= 1;
 }
