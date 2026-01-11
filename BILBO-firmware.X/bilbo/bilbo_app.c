@@ -117,7 +117,10 @@ int bilbo_tasks(){
     
     for(uint8_t i = 0; i < frop_error_queue.queue_length; i++) send_error(0);
     
-    if(range_changed) send_message(build_range_change(tuning_range).data, 9 );
+    if(range_changed) {
+        send_message(build_range_change(tuning_range).data, 9 );
+        range_changed = 0;
+    }
 
     if(tuning_ready){
         tuning_ready = 0;
@@ -128,15 +131,15 @@ int bilbo_tasks(){
     /*to finish*/
     if(eic_mode_butt_flag){
         eic_mode_butt_flag = 0;
-        //switch mode
+        range_changed = 1;
     }
     
     if(eic_bt_butt_flag){
         eic_bt_butt_flag = 0;
         if(eic_bt_butt_long_press == 0){
-            // handle bt pairing
+            // TODO: handle bt pairing
         } else {
-            // toggle on off bluetooth
+            // TODO: toggle on off bluetooth
         }
     }
     
