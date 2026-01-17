@@ -22,7 +22,7 @@ void tc4_comparator_timer_callback(TC_TIMER_STATUS status, uintptr_t context){
     tc4_comparator_timer_flag = 1;
 }
 
-freq_t handle_freq_counter(freq_t previous_freq){
+freq_t handle_freq_counter(freq_t previous_freq){ // to relocate into tc4 callback
     if(tc4_comparator_timer_flag){
         freq_t eic_freq_intermediary = eic_comparator_out_flag * 10;
         return eic_freq_intermediary;

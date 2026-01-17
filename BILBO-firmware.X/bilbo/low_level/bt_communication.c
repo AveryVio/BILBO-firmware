@@ -16,6 +16,8 @@ uint16_t bt_temp_buffer_rx_index = 0;
 void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
     lengthy_buffer *bt_usart_read_buffer = (lengthy_buffer *) context;
     
+    if (bt_usart_read_buffer->buffer[0] != '\0') return;
+    
     if (event == SERCOM_USART_EVENT_READ_THRESHOLD_REACHED){
         uint32_t number_of_bytes_available = SERCOM0_USART_ReadCountGet();
         
@@ -24,12 +26,11 @@ void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
         if (number_of_bytes_available > RN4870_READ_WRITE_BUFFER_SIZE) number_of_bytes_available = RN4870_READ_WRITE_BUFFER_SIZE;
         SERCOM0_USART_Read(bt_temp_buffer, number_of_bytes_available);
         
-        if (bt_usart_read_buffer->buffer[0] != '\0') return;
         for (uint32_t i = 0; i < number_of_bytes_available; i++){
             uint8_t c = (uint8_t)bt_temp_buffer[i];
             
-            if ((c == '\n') || (c == '\r')){
-                bt_usart_read_buffer->length = bt_temp_buffer_rx_index - 1;
+            if (c == '\n'){
+                bt_usart_read_buffer->length = bt_temp_buffer_rx_index;
                 bt_usart_read_buffer->buffer[0] = 0x65;
                 bt_temp_buffer_rx_index = 1; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
             }

@@ -12,10 +12,12 @@
 musical_octive calculate_single_octive(musical_note octive_reference_note){
     musical_octive calculated_octive;
     
-    for(uint8_t j = 1; j <= 11; j++){
+    for(uint8_t j = 1; j < 12; j++){
         calculated_octive.notes[j].freq = (octive_reference_note.freq * (freq_t) pow( 2.00 , ((double) j - (double) octive_reference_note.position_in_octive)/12.00 ));
+        calculated_octive.notes[j].position_in_octive = j;
     }
-    calculated_octive.notes[11].freq = (octive_reference_note.freq * (freq_t) pow( 2.00 , (11.00 - (double) octive_reference_note.position_in_octive)/12.00 ));
+    calculated_octive.notes[12].freq = (octive_reference_note.freq * (freq_t) pow( 2.00 , ((double) 12 - (double) octive_reference_note.position_in_octive)/12.00 ));
+    calculated_octive.notes[12].position_in_octive = 12;
     
     return calculated_octive;
 }
@@ -97,14 +99,22 @@ musical_note find_currently_playing_note(freq_t current_note_freq, tuning_profil
     
     musical_note current_note;
     uint8_t found_note = 0;
-    for(uint8_t i = 0; i < 11; i++){
+    for(uint8_t i = 1; i < 10; i++){
         if(abs((int8_t) current_note_freq - current_octive.notes[i].freq) > abs((int8_t) current_note_freq - current_octive.notes[i + 1].freq)) continue;
         current_note = current_octive.notes[i];
         found_note = 1;
     }
-    if(!found_note) if(abs((int8_t) current_note_freq - current_octive.notes[11].freq) > abs((int8_t) current_note_freq - current_octive.notes[12].freq)){
-        current_note = current_octive.notes[11];
-        found_note = 1;
+    if(!found_note) {
+        if(abs((int8_t) current_note_freq - current_octive.notes[10].freq) > abs((int8_t) current_note_freq - current_octive.notes[11].freq)){
+            current_note = current_octive.notes[10];
+            found_note = 1;
+        }
+    }
+    if(!found_note) {
+        if(abs((int8_t) current_note_freq - current_octive.notes[11].freq) > abs((int8_t) current_note_freq - current_octive.notes[12].freq)){
+            current_note = current_octive.notes[11];
+            found_note = 1;
+        }
     }
     if(!found_note) current_note = current_octive.notes[12];
     
