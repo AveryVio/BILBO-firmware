@@ -92,8 +92,7 @@ void ifft( complex *v, int n, complex *tmp ) {
 }
 
 
-int
-main(void)
+int fft_test(void)
 {
   complex v[N], v1[N], scratch[N];
   int k;
