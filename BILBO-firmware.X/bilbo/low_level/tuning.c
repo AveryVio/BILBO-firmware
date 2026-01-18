@@ -9,6 +9,13 @@
 #include "../bilbo_globals.h"
 #include "../libraries/tuning_types.h"
 
+/*callback*/
+void tuning_callback(uintptr_t context){
+    uint8_t tuning_ready_p = (uint8_t)context;
+    
+    (*tuning_ready_p) = 1;
+}
+
 musical_octive calculate_single_octive(musical_note octive_reference_note){
     musical_octive calculated_octive;
     
@@ -140,6 +147,7 @@ uint8_t decide_tuning_level_in_cents(freq_t current_note_freq, freq_t calculated
     return TUNE_DIFF_LEVEL;
 }
 
-void send_tuning_data(){
-    tuning_ready = 1;
+/*init*//*tc5*/
+void init_tuning(uint8_t *tuning_ready_p){
+    TC5_TimerCallbackRegister(tuning_callback, (uintptr_t) tuning_ready_p);
 }

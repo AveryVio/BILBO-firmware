@@ -99,7 +99,7 @@ void send_message(uint8_t *message_data, uint8_t message_length){
 void init_bt_communication(lengthy_buffer *buffer){
     buffer->buffer[0] = '\0';
     bt_start_transparent_uart();
-    SERCOM0_USART_ReadCallbackRegister(bt_usart_read_callback, (uintptr_t) buffer /*put in reference to struct of buffer*/);
+    SERCOM0_USART_ReadCallbackRegister(bt_usart_read_callback, (uintptr_t) buffer);
     SERCOM0_USART_ReadThresholdSet(1);
     SERCOM0_USART_ReadNotificationEnable(true, false);
 }

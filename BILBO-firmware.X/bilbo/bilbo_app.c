@@ -26,8 +26,8 @@ uint8_t calculated_note_octive = 0;
 tuning_profile current_profile = PROFILE_DEF_NULL;
 uint8_t tuning_range = TUNE_RANGE_GUITAR;
 
-lengthy_buffer bt_incoming_message[RN4870_READ_WRITE_BUFFER_SIZE];
-lengthy_buffer bt_outgoing_message[RN4870_READ_WRITE_BUFFER_SIZE];
+lengthy_buffer bt_incoming_message;
+lengthy_buffer bt_outgoing_message;
 
 global_error_queue frop_error_queue = {.error_queue = { (global_error_handle) {.code = 0}, (global_error_handle) {.code = 0} }, .queue_length = 2};
 global_message_log frop_message_log = {.log = { (global_message_log_entry) {.format = 0}, (global_message_log_entry) {.format = 0} }, .log_length = 2};
@@ -40,7 +40,21 @@ uint8_t tuning_ready = 0;
  * sending tuning on 500 ms intervals
  */
 
-int bilbo_init(){return 0;} /* init_error_queue() global_error_queue init_message_log() \*tc callbackregister* TC3_TimerStart();*/
+int bilbo_init(){
+    freq_init();
+    
+    init_tuning(&tuning_ready);
+    
+    init_bt_communication(&bt_incoming_message);
+    
+    frop_error_queue = init_error_queue();
+    frop_message_log = init_message_log();
+    
+    button_init();
+    led_init();
+    
+    return 0;
+} /* init_error_queue() global_error_queue init_message_log() \*tc callbackregister* TC3_TimerStart();*/
 
 int bilbo_tasks(){
     /* TODO:
@@ -70,14 +84,14 @@ int bilbo_tasks(){
     //comm in
     
     //parsing
-    if(bt_incoming_message->buffer[0] == '\0') goto parsing_skipped;
+    if(bt_incoming_message.buffer[0] == '\0') goto parsing_skipped;
     
-    if(bt_incoming_message->buffer[0] != 'F') {
+    if(bt_incoming_message.buffer[0] != 'F') {
         throw_error(1);
         goto not_a_frop_message;
     }
     
-    uint8_t incoming_message_type = decide_incoming_message_type(bt_incoming_message->buffer);
+    uint8_t incoming_message_type = decide_incoming_message_type(bt_incoming_message.buffer);
     
     switch( incoming_message_type ){
         case FROP_MSG_NULL:
@@ -91,7 +105,7 @@ int bilbo_tasks(){
             break;
         case FROP_MSG_D_PROFILE_CHANGE: {
             change_profile frop_organised_message;
-            for(uint8_t i = 19; i > 0; i--) frop_organised_message.data[i - 1] = bt_incoming_message->buffer[i]; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
+            for(uint8_t i = 19; i > 0; i--) frop_organised_message.data[i - 1] = bt_incoming_message.buffer[i]; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
             
             if(validate_profile_change(&frop_organised_message)) break;
             
@@ -118,7 +132,7 @@ int bilbo_tasks(){
             }
             
             short_error_message frop_organised_message;
-            for(uint8_t i = 4; i > 0; i--) frop_organised_message.data[i - 1] = bt_incoming_message->buffer[i]; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
+            for(uint8_t i = 4; i > 0; i--) frop_organised_message.data[i - 1] = bt_incoming_message.buffer[i]; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
             
             if(frop_organised_message.structured.error_code == 18) break;
             if(frop_organised_message.structured.error_code == 19) break;
@@ -131,7 +145,7 @@ int bilbo_tasks(){
     
     not_a_frop_message:
     
-    bt_incoming_message->buffer[0] = '\0';
+    bt_incoming_message.buffer[0] = '\0';
     
     parsing_skipped:
     

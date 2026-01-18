@@ -23,4 +23,6 @@ uint8_t calculate_cents(freq_t freq_one, freq_t freq_two);
 
 uint8_t decide_tuning_level_in_cents(freq_t current_note_freq, freq_t calculated_note_freq);
 
+void init_tuning(uint8_t *tuning_ready_p);
+
 #endif
