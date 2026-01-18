@@ -4,16 +4,18 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include "peripheral/tc/plib_tc5.h"
+
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
 #include "../bilbo_globals.h"
 #include "../libraries/tuning_types.h"
 
 /*callback*/
-void tuning_callback(uintptr_t context){
-    uint8_t tuning_ready_p = (uint8_t)context;
+void tuning_callback(TC_TIMER_STATUS status, uintptr_t context){
+    uint8_t *tuning_ready_p = (uint8_t *)context;
     
-    (*tuning_ready_p) = 1;
+    *tuning_ready_p = 1;
 }
 
 musical_octive calculate_single_octive(musical_note octive_reference_note){

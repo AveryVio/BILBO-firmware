@@ -74,7 +74,7 @@
         &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;sercom1&quot; x=&quot;288&quot; y=&quot;319&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;tc3&quot; x=&quot;52&quot; y=&quot;205&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;tc4&quot; x=&quot;521&quot; y=&quot;318&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;10&quot; id=&quot;tc5&quot; x=&quot;509&quot; y=&quot;187&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;10&quot; id=&quot;tc5&quot; x=&quot;509&quot; y=&quot;186&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
   &lt;/UserData&gt;

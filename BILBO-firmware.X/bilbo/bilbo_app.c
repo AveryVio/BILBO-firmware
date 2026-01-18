@@ -36,10 +36,6 @@ uint8_t ok_queued = 0;
 uint8_t range_changed = 0;
 uint8_t tuning_ready = 0;
 
-/* to implement:
- * sending tuning on 500 ms intervals
- */
-
 int bilbo_init(){
     freq_init();
     
