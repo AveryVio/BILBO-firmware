@@ -144,8 +144,8 @@ void SYS_Initialize ( void* data )
 
     SERCOM1_USART_Initialize();
 
-    SERCOM0_USART_Initialize();
 
+    SERCOM0_USART_Initialize();
 
     EIC_Initialize();
 
