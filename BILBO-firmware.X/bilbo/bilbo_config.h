@@ -4,12 +4,10 @@
 // enable power preserving features
 //#define POWER_PRESERVE
 
-// -(input time in ms * (clock freq / prescaler))
+// (input time in ms) * (clock freq) / (prescaler * 1000)
 //
-// --disguised: (input time in ms)/(period of(clock freq / 1000 / prescaler))  
-//
-// make sure:
-// ---(clock freq / 1000 / prescaler) should be precalculated for less compute usage  
+// to use this, calculate:
+// ---(clock freq) / (prescaler * 1000) should be precalculated for less compute usage  
 #define TC3_DELAY(TIME_MS) (TIME_MS*187)
 
 #define BT_BUTTON_LONG_PRESS_DEFAULT_DELAY 300
