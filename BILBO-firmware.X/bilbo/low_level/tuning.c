@@ -59,8 +59,8 @@ tuning_profile calculate_base_tuning_profile(musical_note reference_note, int8_t
 
 musical_octive find_currently_playing_note_octive(freq_t current_note_freq, tuning_profile* profile){
     for(uint8_t i = 0; i < profile->octive_count; i++){
-        if(abs((int8_t) current_note_freq - profile->octives[i].notes[profile->reference_note.position_in_octive].freq) > abs((int8_t) current_note_freq - profile->octives[i + 1].notes[profile->reference_note.position_in_octive].freq)) continue;
-        return profile->octives[i];
+        if(current_note_freq >= profile->octives[i].notes[11].freq) continue;
+        return profile->octives[i - 1];
     }
     return profile->octives[profile->octive_count];
 }
