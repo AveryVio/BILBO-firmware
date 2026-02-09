@@ -246,9 +246,9 @@
 #define SVDIO_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 31U)) & 0x01U)
 #define SVDIO_PIN                  PORT_PIN_PA31
 
-/*** Macros for ADC_BUTT pin ***/
-#define ADC_BUTT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 2U)) & 0x01U)
-#define ADC_BUTT_PIN                  PORT_PIN_PB02
+/*** Macros for ADC_BATT pin ***/
+#define ADC_BATT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 2U)) & 0x01U)
+#define ADC_BATT_PIN                  PORT_PIN_PB02
 
 /*** Macros for MODE_BUTT pin ***/
 #define MODE_BUTT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 3U)) & 0x01U)

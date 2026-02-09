@@ -17,6 +17,7 @@
           <itemPath>bilbo/low_level/user_buttons.h</itemPath>
           <itemPath>bilbo/low_level/user_leds.h</itemPath>
           <itemPath>bilbo/low_level/tuning.h</itemPath>
+          <itemPath>bilbo/low_level/batt_adc.h</itemPath>
         </logicalFolder>
         <itemPath>bilbo/bilbo_config.h</itemPath>
         <itemPath>bilbo/bilbo_generics.h</itemPath>
@@ -25,6 +26,10 @@
       <logicalFolder name="config" displayName="config" projectFiles="true">
         <logicalFolder name="default" displayName="default" projectFiles="true">
           <logicalFolder name="peripheral" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="adc" displayName="adc" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/adc/plib_adc.h</itemPath>
+              <itemPath>../src/config/default/peripheral/adc/plib_adc_common.h</itemPath>
+            </logicalFolder>
             <logicalFolder name="clock" displayName="clock" projectFiles="true">
               <itemPath>../src/config/default/peripheral/clock/plib_clock.h</itemPath>
             </logicalFolder>
@@ -188,12 +193,16 @@
           <itemPath>bilbo/low_level/bt_communication.c</itemPath>
           <itemPath>bilbo/low_level/frop.c</itemPath>
           <itemPath>bilbo/low_level/tuning.c</itemPath>
+          <itemPath>bilbo/low_level/batt_adc.c</itemPath>
         </logicalFolder>
         <itemPath>bilbo/bilbo_app.c</itemPath>
       </logicalFolder>
       <logicalFolder name="config" displayName="config" projectFiles="true">
         <logicalFolder name="default" displayName="default" projectFiles="true">
           <logicalFolder name="peripheral" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="adc" displayName="adc" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/adc/plib_adc.c</itemPath>
+            </logicalFolder>
             <logicalFolder name="clock" displayName="clock" projectFiles="true">
               <itemPath>../src/config/default/peripheral/clock/plib_clock.c</itemPath>
             </logicalFolder>

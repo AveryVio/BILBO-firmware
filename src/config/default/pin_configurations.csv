@@ -35,5 +35,5 @@ Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,D
 41,PA28,,Available,,,,,,NORMAL
 45,PA30,SVCLK,GPIO,Digital,In/Out,High,,,NORMAL
 46,PA31,SVDIO,GPIO,Digital,In/Out,High,,,NORMAL
-47,PB02,ADC_BUTT,ADC_AIN10,Analog,High Impedance,n/a,,,NORMAL
+47,PB02,ADC_BATT,ADC_AIN10,Analog,High Impedance,n/a,,,NORMAL
 48,PB03,MODE_BUTT,EIC_EXTINT3,Digital,High Impedance,n/a,No,No,NORMAL
