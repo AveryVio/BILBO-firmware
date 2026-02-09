@@ -16,6 +16,7 @@
 #include "libraries/tuning_types.h"
 #include "low_level/user_buttons.h"
 #include "low_level/user_leds.h"
+#include "low_level/batt_adc.h"
 
 // tuning variables
 
@@ -36,6 +37,10 @@ uint8_t ok_queued = 0;
 uint8_t range_changed = 0;
 uint8_t tuning_ready = 0;
 
+uint8_t batt_adc_ready = 0;
+uint16_t adc_count = 0;
+float input_voltage = 0.0;
+
 int bilbo_init(){
     freq_init();
     
@@ -48,6 +53,8 @@ int bilbo_init(){
     
     button_init();
     led_init();
+    
+    batt_adc_init(&batt_adc_ready);
     
     return 0;
 } /* init_error_queue() global_error_queue init_message_log() \*tc callbackregister* TC3_TimerStart();*/
@@ -194,6 +201,8 @@ int bilbo_tasks(){
     handle_tuning_output_leds(current_tuning_level_in_cents);    
     
     handle_range_leds_out(tuning_range);
+    
+    batt_adc_handle(&batt_adc_ready, &adc_count, &input_voltage);
     
     return 0;
 }

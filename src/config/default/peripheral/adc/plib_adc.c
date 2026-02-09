@@ -101,7 +101,7 @@ void ADC_Initialize( void )
     ADC_REGS->ADC_SAMPCTRL = ADC_SAMPCTRL_SAMPLEN(3U);
 
     /* reference */
-    ADC_REGS->ADC_REFCTRL = ADC_REFCTRL_REFSEL_INT1V;
+    ADC_REGS->ADC_REFCTRL = ADC_REFCTRL_REFSEL_INTVCC1;
 
     /* positive and negative input pins */
     ADC_REGS->ADC_INPUTCTRL = (uint32_t) ADC_POSINPUT_PIN10 | (uint32_t) ADC_NEGINPUT_GND \

@@ -40,5 +40,7 @@ typedef struct {
     uint8_t log_length;
 } global_message_log;
 
+#define ADC_VREF (1.65f)
+#define ADC_MAX_COUNT 4095
 
 #endif
