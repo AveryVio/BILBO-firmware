@@ -29,7 +29,7 @@ musical_octive calculated_note_octive = (musical_octive) OCVIVE_NULL;
 tuning_profile current_profile = PROFILE_DEF_NULL;
 uint8_t tuning_range = TUNE_RANGE_GUITAR;
 
-uint8_t curent_note_check_status = NOTE_DEF_NULL_N;
+uint8_t current_note_check_status = NOTE_DEF_NULL_N;
 
 
 lengthy_buffer bt_incoming_message;
@@ -90,11 +90,12 @@ int bilbo_tasks(){
     //freq
     
     //tuning
-    curent_note_check_status = precheck_currently_playing_note(freq_array[0], &current_profile);
-    /* note check handle */
-    calculated_note_octive = find_currently_playing_note_octive(freq_array[0], &current_profile);
-    calculated_note = find_currently_playing_note(freq_array[0], &calculated_note_octive, &current_profile);
-    current_tuning_level_in_cents = decide_tuning_level_in_cents(freq_array[0], calculated_note.freq);
+    current_note_check_status = precheck_currently_playing_note(freq_array[0], &current_profile);
+    if(current_note_check_status == NOTE_CHECK_SUCCESSFULL){
+        calculated_note_octive = find_currently_playing_note_octive(freq_array[0], &current_profile);
+        calculated_note = find_currently_playing_note(freq_array[0], &calculated_note_octive, &current_profile);
+        current_tuning_level_in_cents = decide_tuning_level_in_cents(freq_array[0], calculated_note.freq);
+    } /*bad frequencies handle */
     
     //comm in
     
