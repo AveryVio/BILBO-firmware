@@ -1,24 +1,26 @@
 /*******************************************************************************
-  SERCOM Universal Synchronous/Asynchrnous Receiver/Transmitter PLIB
+  Analog-to-Digital Converter(ADC) PLIB
 
   Company
     Microchip Technology Inc.
 
   File Name
-    plib_sercom1_usart.h
+    plib_adc.h
 
   Summary
-    USART peripheral library interface.
+    ADC PLIB Header File.
 
   Description
-    This file defines the interface to the USART peripheral library. This
+    This file defines the interface to the ADC peripheral library. This
     library provides access to and control of the associated peripheral
     instance.
 
   Remarks:
     None.
+
 *******************************************************************************/
 
+// DOM-IGNORE-BEGIN
 /*******************************************************************************
 * Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
@@ -41,20 +43,24 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
+// DOM-IGNORE-END
 
-#ifndef PLIB_SERCOM1_USART_H // Guards against multiple inclusion
-#define PLIB_SERCOM1_USART_H
+#ifndef PLIB_ADC_H      // Guards against multiple inclusion
+#define PLIB_ADC_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+/* This section lists the other files that are included in this file.
+*/
 
-#include "plib_sercom_usart_common.h"
+#include "device.h"
+#include "plib_adc_common.h"
 
 // DOM-IGNORE-BEGIN
-#ifdef __cplusplus // Provide C++ Compatibility
+#ifdef __cplusplus // Provide C Compatibility
 
     extern "C" {
 
@@ -63,45 +69,52 @@
 
 // *****************************************************************************
 // *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+// *****************************************************************************
+/* The following data type definitions are used by the functions in this
+    interface and should be considered part it.
+*/
+
+// *****************************************************************************
+
+
+// *****************************************************************************
+// *****************************************************************************
 // Section: Interface Routines
 // *****************************************************************************
 // *****************************************************************************
+/* The following functions make up the methods (set of possible operations) of
+    this interface.
+*/
 
-void SERCOM1_USART_Initialize( void );
+void ADC_Initialize( void );
 
-bool SERCOM1_USART_SerialSetup( USART_SERIAL_SETUP * serialSetup, uint32_t clkFrequency );
+void ADC_Enable( void );
 
-void SERCOM1_USART_Enable( void );
+void ADC_Disable( void );
 
-void SERCOM1_USART_Disable( void );
+void ADC_ChannelSelect( ADC_POSINPUT positiveInput, ADC_NEGINPUT negativeInput );
 
-void SERCOM1_USART_TransmitterEnable( void );
+void ADC_ConversionStart( void );
 
-void SERCOM1_USART_TransmitterDisable( void );
+uint16_t ADC_ConversionResultGet( void );
 
-bool SERCOM1_USART_Write( void *buffer, const size_t size );
+void ADC_ComparisonWindowSet(uint16_t low_threshold, uint16_t high_threshold);
 
-bool SERCOM1_USART_TransmitComplete( void );
+void ADC_WindowModeSet(ADC_WINMODE mode);
+
+void ADC_InterruptsClear(ADC_STATUS interruptMask);
+
+void ADC_InterruptsEnable(ADC_STATUS interruptMask);
+
+void ADC_InterruptsDisable(ADC_STATUS interruptMask);
 
 
-bool SERCOM1_USART_TransmitterIsReady( void );
-
-void SERCOM1_USART_WriteByte( int data );
+void ADC_CallbackRegister( ADC_CALLBACK callback, uintptr_t context );
 
 
-void SERCOM1_USART_ReceiverEnable( void );
 
-void SERCOM1_USART_ReceiverDisable( void );
-
-bool SERCOM1_USART_Read( void *buffer, const size_t size );
-
-bool SERCOM1_USART_ReceiverIsReady( void );
-
-int SERCOM1_USART_ReadByte( void );
-
-USART_ERROR SERCOM1_USART_ErrorGet( void );
-
-uint32_t SERCOM1_USART_FrequencyGet( void );
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -111,4 +124,4 @@ uint32_t SERCOM1_USART_FrequencyGet( void );
 #endif
 // DOM-IGNORE-END
 
-#endif //PLIB_SERCOM1_USART_H
+#endif /* PLIB_ADC_H */

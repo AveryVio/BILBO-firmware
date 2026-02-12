@@ -112,6 +112,28 @@
 // *****************************************************************************
 // *****************************************************************************
 
+/*******************************************************************************
+  Function:
+    void STDIO_BufferModeSet ( void )
+
+  Summary:
+    Sets the buffering mode for stdin and stdout
+
+  Remarks:
+ ********************************************************************************/
+static void STDIO_BufferModeSet(void)
+{
+    /* MISRAC 2012 deviation block start */
+    /* MISRA C-2012 Rule 21.6 deviated 2 times in this file.  Deviation record ID -  H3_MISRAC_2012_R_21_6_DR_3 */
+
+    /* Make stdin unbuffered */
+    setbuf(stdin, NULL);
+
+    /* Make stdout unbuffered */
+    setbuf(stdout, NULL);
+}
+
+
 /* MISRAC 2012 deviation block end */
 
 /*******************************************************************************
@@ -132,6 +154,9 @@ void SYS_Initialize ( void* data )
 
     NVMCTRL_REGS->NVMCTRL_CTRLB = NVMCTRL_CTRLB_RWS(3UL);
 
+    STDIO_BufferModeSet();
+
+
   
     PORT_Initialize();
 
@@ -140,8 +165,6 @@ void SYS_Initialize ( void* data )
 
 
 
-    TCC1_TimerInitialize();
-
     NVMCTRL_Initialize( );
 
     SERCOM1_USART_Initialize();
@@ -149,9 +172,14 @@ void SYS_Initialize ( void* data )
     SERCOM0_USART_Initialize();
 
 
+    ADC_Initialize();
     EIC_Initialize();
 
     TC3_TimerInitialize();
+
+    TC5_TimerInitialize();
+
+    TC4_TimerInitialize();
 
 
 

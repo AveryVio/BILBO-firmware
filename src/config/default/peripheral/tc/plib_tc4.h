@@ -1,17 +1,17 @@
 /*******************************************************************************
-  Timer/Counter(TCC1) PLIB
+  Timer/Counter(TC4) PLIB
 
   Company
     Microchip Technology Inc.
 
   File Name
-    plib_tcc1.h
+    plib_tc4.h
 
   Summary
-    TCC1 PLIB Header File.
+    TC4 PLIB Header File.
 
   Description
-    This file defines the interface to the TCC peripheral library. This
+    This file defines the interface to the TC peripheral library. This
     library provides access to and control of the associated peripheral
     instance.
 
@@ -45,8 +45,16 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef PLIB_TCC1_H      // Guards against multiple inclusion
-#define PLIB_TCC1_H
+#ifndef PLIB_TC4_H      // Guards against multiple inclusion
+#define PLIB_TC4_H
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Included Files
+// *****************************************************************************
+// *****************************************************************************
+/* This section lists the other files that are included in this file.
+*/
 
 // *****************************************************************************
 // *****************************************************************************
@@ -57,7 +65,7 @@
 */
 
 #include "device.h"
-#include "plib_tcc_common.h"
+#include "plib_tc_common.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus // Provide C Compatibility
@@ -76,12 +84,6 @@
     interface and should be considered part it.
 */
 
-typedef enum
-{
-    TCC1_TIMER_STATUS_OVF = TCC_INTFLAG_OVF_Msk,
-    TCC1_TIMER_STATUS_MC_1 = TCC_INTFLAG_MC1_Msk,
-}TCC1_TIMER_STATUS;
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Interface Routines
@@ -93,29 +95,30 @@ typedef enum
 
 // *****************************************************************************
 
-void TCC1_TimerInitialize( void );
+void TC4_TimerInitialize( void );
 
-void TCC1_TimerStart( void );
+void TC4_TimerStart( void );
 
-void TCC1_TimerStop( void );
+void TC4_TimerStop( void );
 
-uint32_t TCC1_TimerFrequencyGet( void );
-
-
-void TCC1_Timer24bitPeriodSet( uint32_t period );
-
-uint32_t TCC1_Timer24bitPeriodGet( void );
-
-uint32_t TCC1_Timer24bitCounterGet( void );
-
-void TCC1_Timer24bitCounterSet( uint32_t countVal );
+uint32_t TC4_TimerFrequencyGet( void );
 
 
+void TC4_Timer16bitPeriodSet( uint16_t period );
 
-void TCC1_TimerCallbackRegister( TCC_CALLBACK callback, uintptr_t context );
+uint16_t TC4_Timer16bitPeriodGet( void );
+
+uint16_t TC4_Timer16bitCounterGet( void );
+
+void TC4_Timer16bitCounterSet( uint16_t count );
 
 
-void TCC1_TimerCommandSet(TCC_COMMAND command);
+
+
+void TC4_TimerCallbackRegister( TC_TIMER_CALLBACK callback, uintptr_t context );
+
+
+void TC4_TimerCommandSet(TC_COMMAND command);
 
 
 // DOM-IGNORE-BEGIN
@@ -126,4 +129,4 @@ void TCC1_TimerCommandSet(TCC_COMMAND command);
 #endif
 // DOM-IGNORE-END
 
-#endif /* PLIB_TCC1_H */
+#endif /* PLIB_TC4_H */
