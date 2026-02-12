@@ -9,9 +9,13 @@
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 
-uint8_t handle_button_input();
+extern volatile uint8_t eic_bt_butt_flag;
+extern volatile uint8_t eic_mode_butt_flag;
 
-uint8_t button_init();
+extern volatile uint8_t eic_bt_butt_long_press;
+
+void button_init();
 
 #endif

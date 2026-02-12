@@ -1,6 +1,8 @@
 #ifndef BILBO_FROP_TYPES_H
 #define BILBO_FROP_TYPES_H
 
+#include <bits/alltypes.h>
+
 // response messages
 
 struct short_error_message_s {
@@ -14,7 +16,7 @@ struct short_error_message_s {
 // short error message (error code required)
 typedef union {
     uint8_t data[5];
-    short_error_message_s structured;
+    struct short_error_message_s structured;
 } short_error_message;
 
 
@@ -28,7 +30,7 @@ struct ok_response_s {
 // ok response (no intput required)
 typedef union {
     uint8_t data[4];
-    ok_response_s structured;
+    struct ok_response_s structured;
 } ok_response ;
 
 // data messages
@@ -47,7 +49,7 @@ struct tuning_data_s {
     uint8_t block_length_note_pos;
     uint8_t block_data_note_pos;
     uint8_t block_length_freq;
-    uint16_t block_data_freq;
+    freq_t block_data_freq;
     uint8_t block_length_diff;
     uint8_t block_data_diff;
 };
@@ -55,7 +57,7 @@ struct tuning_data_s {
 // tuning data (required: NoF = 5, "T" [1], note octive [1], note position in octive [1], frequency [2], tune offset [1])
 typedef union {
     uint8_t data[16];
-    tuning_data_s structured;
+    struct tuning_data_s structured;
 } tuning_data ;
 
 
@@ -74,7 +76,7 @@ struct range_change_s {
 // range change (required: NoF = 2, "R" [1], range [1])
 typedef union {
     uint8_t data[9];
-    tuning_data_s structured;
+    struct range_change_s structured;
 } range_change ;
 
 
@@ -89,15 +91,17 @@ struct change_profile_s {
     uint8_t block_length_setting;
     uint8_t block_data_setting;
     uint8_t block_length_ref;
-    uint16_t block_data_ref;
-    uint8_t block_length_ref_oct;
-    uint8_t block_data_ref_oct;
+    freq_t block_data_ref;
+    uint8_t block_length_ref_pos;
+    uint8_t block_data_ref_pos;
+    int8_t block_length_ref_oct;
+    int8_t block_data_ref_oct;
 };
 
-// change profile (required: NoF = 3, LoD = 4, Chksm = , "P" [1], reference note [2], reference note octive [1] )
+// change profile (required: NoF = 3, LoD = 4, Chksm = , "P" [1], reference note freq [2], reference note position in octive [1], reference note octive [1] )
 typedef union {
-    uint8_t data[16];
-    change_profile_s structured;
+    uint8_t data[18];
+    struct change_profile_s structured;
 } change_profile ;
 
 #define FROP_MSG_NULL 0

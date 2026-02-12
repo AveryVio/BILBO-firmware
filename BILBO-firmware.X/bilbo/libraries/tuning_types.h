@@ -30,6 +30,7 @@ typedef struct {
 #define NOTE_DEF_OVER { .freq = 0xFFFF, .position_in_octive  = 14 }
 #define NOTE_DEF_OVER_OUT_OF_OCTIVES { .freq = 0xFFFF, .position_in_octive  = 15 }
 
+
 #define PROFILE_DEF_NULL { .octives = {}, .octive_count = 0, .reference_note = { .freq = 440, .position_in_octive = 10 }, .reference_note_octive = 4 }
 #define PROFILE_DEF_DEFAULT { .octives = { (musical_octive) { .notes = { \
     NOTE_DEF(261.625, 1),\

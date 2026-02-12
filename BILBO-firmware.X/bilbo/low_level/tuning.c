@@ -4,20 +4,29 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "peripheral/eic/plib_eic.h"
-#include "peripheral/port/plib_port.h"
-#include "peripheral/tc/plib_tc3.h"
+#include "peripheral/tc/plib_tc5.h"
 
 #include "../bilbo_config.h"
 #include "../bilbo_generics.h"
+#include "../bilbo_globals.h"
 #include "../libraries/tuning_types.h"
+
+/*callback*/
+void tuning_callback(TC_TIMER_STATUS status, uintptr_t context){
+    uint8_t *tuning_ready_p = (uint8_t *)context;
+    
+    *tuning_ready_p = 1;
+}
 
 musical_octive calculate_single_octive(musical_note octive_reference_note){
     musical_octive calculated_octive;
     
-    for(uint8_t j = 1; j <= 12; j++){
+    for(uint8_t j = 1; j < 12; j++){
         calculated_octive.notes[j].freq = (octive_reference_note.freq * (freq_t) pow( 2.00 , ((double) j - (double) octive_reference_note.position_in_octive)/12.00 ));
+        calculated_octive.notes[j].position_in_octive = j;
     }
+    calculated_octive.notes[12].freq = (octive_reference_note.freq * (freq_t) pow( 2.00 , ((double) 12 - (double) octive_reference_note.position_in_octive)/12.00 ));
+    calculated_octive.notes[12].position_in_octive = 12;
     
     return calculated_octive;
 }
@@ -25,7 +34,6 @@ musical_octive calculate_single_octive(musical_note octive_reference_note){
 // calculate profile from scratch
 // new profile should be at least 5 octives (this does 7) including the octive of the ref note
 tuning_profile calculate_base_tuning_profile(musical_note reference_note, int8_t reference_note_octive){
-    // int8_t profile_octives[3] = {reference_note_octive - 1, reference_note_octive, reference_note_octive + 1};
     tuning_profile profile;
     profile.reference_note = reference_note;
     profile.reference_note_octive = reference_note_octive;
@@ -49,9 +57,14 @@ tuning_profile calculate_base_tuning_profile(musical_note reference_note, int8_t
     return profile;
 }
 
-/* TODO:
- * handle the error outputs
- */
+musical_octive find_currently_playing_note_octive(freq_t current_note_freq, tuning_profile* profile){
+    for(uint8_t i = 0; i < profile->octive_count; i++){
+        if(current_note_freq > (profile->octives[i].notes[11].freq + (profile->octives[i + 1].notes[0].freq - profile->octives[i].notes[11].freq) / 2 )) continue;
+        return profile->octives[i];
+    }
+    return profile->octives[profile->octive_count];
+}
+
 musical_note find_currently_playing_note(freq_t current_note_freq, tuning_profile *profile){
     if(current_note_freq == 0) return (musical_note) NOTE_DEF_UNDER_ABSOLUTE;
     if(current_note_freq > 30000) return (musical_note) NOTE_DEF_OVER_ABSOLUTE;
@@ -60,7 +73,7 @@ musical_note find_currently_playing_note(freq_t current_note_freq, tuning_profil
     if(current_note_freq < minimum_freq) return (musical_note) NOTE_DEF_UNDER;
     
     freq_t maximum_freq = (freq_t) (profile->reference_note.freq / ( pow(2.00, -5.00 - ((double) ( profile->reference_note.position_in_octive) / 12))));
-    if(current_note_freq > minimum_freq) return (musical_note) NOTE_DEF_OVER;
+    if(current_note_freq > maximum_freq) return (musical_note) NOTE_DEF_OVER;
     
     if(profile->octive_count < 11){
         while(current_note_freq < profile->octives[0].notes[0].freq){
@@ -88,21 +101,26 @@ musical_note find_currently_playing_note(freq_t current_note_freq, tuning_profil
     }
 
     
-    musical_octive current_octive;
-    uint8_t found_octive = 0;
-    for(uint8_t i = 0; i < profile->octive_count; i++){
-        if(abs((int8_t) current_note_freq - profile->octives[i].notes[profile->reference_note.position_in_octive].freq) > abs((int8_t) current_note_freq - profile->octives[i + 1].notes[profile->reference_note.position_in_octive].freq)) continue;
-        current_octive = profile->octives[i];
-        found_octive = 1;
-    }
-    if(!found_octive) current_octive = profile->octives[profile->octive_count];
+    musical_octive current_octive = find_currently_playing_note_octive(current_note_freq, profile);
     
     musical_note current_note;
     uint8_t found_note = 0;
-    for(uint8_t i = 0; i < 12; i++){
+    for(uint8_t i = 1; i < 10; i++){
         if(abs((int8_t) current_note_freq - current_octive.notes[i].freq) > abs((int8_t) current_note_freq - current_octive.notes[i + 1].freq)) continue;
         current_note = current_octive.notes[i];
         found_note = 1;
+    }
+    if(!found_note) {
+        if(abs((int8_t) current_note_freq - current_octive.notes[10].freq) > abs((int8_t) current_note_freq - current_octive.notes[11].freq)){
+            current_note = current_octive.notes[10];
+            found_note = 1;
+        }
+    }
+    if(!found_note) {
+        if(abs((int8_t) current_note_freq - current_octive.notes[11].freq) > abs((int8_t) current_note_freq - current_octive.notes[12].freq)){
+            current_note = current_octive.notes[11];
+            found_note = 1;
+        }
     }
     if(!found_note) current_note = current_octive.notes[12];
     
@@ -122,8 +140,14 @@ uint8_t decide_tuning_level_in_cents(freq_t current_note_freq, freq_t calculated
     
     if(diff_in_cents >= 14) return TUNE_DIFF_OVER_2;
     if(diff_in_cents >= 7) return TUNE_DIFF_OVER_1;
-    if(diff_in_cents <= 7) return TUNE_DIFF_UNDER_1;
-    if(diff_in_cents <= 14) return TUNE_DIFF_UNDER_2;
+    if(diff_in_cents <= -7) return TUNE_DIFF_UNDER_1;
+    if(diff_in_cents <= -14) return TUNE_DIFF_UNDER_2;
     
     return TUNE_DIFF_LEVEL;
+}
+
+/*init*//*tc5*/
+void init_tuning(uint8_t *tuning_ready_p){
+    TC5_TimerCallbackRegister(tuning_callback, (uintptr_t) tuning_ready_p);
+    TC5_TimerStart();
 }

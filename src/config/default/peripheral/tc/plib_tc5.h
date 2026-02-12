@@ -1,20 +1,22 @@
 /*******************************************************************************
-  Timer/Counter for Control(TCC) Peripheral Library Interface Header File
+  Timer/Counter(TC5) PLIB
 
   Company
     Microchip Technology Inc.
 
   File Name
-    plib_tcc_common.h
+    plib_tc5.h
 
   Summary
-    TCC peripheral library interface.
+    TC5 PLIB Header File.
 
   Description
-    This file defines the interface to the TCC peripheral library. This
+    This file defines the interface to the TC peripheral library. This
     library provides access to and control of the associated peripheral
     instance.
 
+  Remarks:
+    None.
 
 *******************************************************************************/
 
@@ -43,22 +45,22 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef PLIB_TCC_COMMON_H    // Guards against multiple inclusion
-#define PLIB_TCC_COMMON_H
+#ifndef PLIB_TC5_H      // Guards against multiple inclusion
+#define PLIB_TC5_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-/*  This section lists the other files that are included in this file.
+/* This section lists the other files that are included in this file.
 */
 
-#include <stdbool.h>
-#include <stddef.h>
+#include "device.h"
+#include "plib_tc_common.h"
 
 // DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
+#ifdef __cplusplus // Provide C Compatibility
 
     extern "C" {
 
@@ -70,30 +72,45 @@
 // Section: Data Types
 // *****************************************************************************
 // *****************************************************************************
-/*  The following data type definitions are used by the functions in this
+/* The following data type definitions are used by the functions in this
     interface and should be considered part it.
 */
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interface Routines
+// *****************************************************************************
+// *****************************************************************************
+/* The following functions make up the methods (set of possible operations) of
+   this interface.
+*/
+
 // *****************************************************************************
 
-typedef void (*TCC_CALLBACK)( uint32_t status, uintptr_t context );
-// *****************************************************************************
+void TC5_TimerInitialize( void );
 
-typedef struct
-{
-    TCC_CALLBACK callback_fn;
-    uintptr_t context;
-}TCC_CALLBACK_OBJECT;
+void TC5_TimerStart( void );
 
-typedef enum 
-{
-    TCC_COMMAND_NONE,
-    TCC_COMMAND_START_RETRIGGER,
-    TCC_COMMAND_STOP,
-    TCC_COMMAND_FORCE_UPDATE,
-    TCC_COMMAND_READ_SYNC
-}TCC_COMMAND;
+void TC5_TimerStop( void );
+
+uint32_t TC5_TimerFrequencyGet( void );
 
 
+void TC5_Timer16bitPeriodSet( uint16_t period );
+
+uint16_t TC5_Timer16bitPeriodGet( void );
+
+uint16_t TC5_Timer16bitCounterGet( void );
+
+void TC5_Timer16bitCounterSet( uint16_t count );
+
+
+
+
+void TC5_TimerCallbackRegister( TC_TIMER_CALLBACK callback, uintptr_t context );
+
+
+void TC5_TimerCommandSet(TC_COMMAND command);
 
 
 // DOM-IGNORE-BEGIN
@@ -104,4 +121,4 @@ typedef enum
 #endif
 // DOM-IGNORE-END
 
-#endif /* PLIB_TCC_COMMON_H */
+#endif /* PLIB_TC5_H */
