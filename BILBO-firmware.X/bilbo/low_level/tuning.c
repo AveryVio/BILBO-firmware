@@ -65,9 +65,6 @@ musical_octive find_currently_playing_note_octive(freq_t current_note_freq, tuni
     return profile->octives[profile->octive_count];
 }
 
-/* TODO:
- * handle the error outputs
- */
 musical_note find_currently_playing_note(freq_t current_note_freq, tuning_profile *profile){
     if(current_note_freq == 0) return (musical_note) NOTE_DEF_UNDER_ABSOLUTE;
     if(current_note_freq > 30000) return (musical_note) NOTE_DEF_OVER_ABSOLUTE;
@@ -152,4 +149,5 @@ uint8_t decide_tuning_level_in_cents(freq_t current_note_freq, freq_t calculated
 /*init*//*tc5*/
 void init_tuning(uint8_t *tuning_ready_p){
     TC5_TimerCallbackRegister(tuning_callback, (uintptr_t) tuning_ready_p);
+    TC5_TimerStart();
 }

@@ -32,6 +32,7 @@ lengthy_buffer bt_outgoing_message;
 
 global_error_queue frop_error_queue = {.error_queue = { (global_error_handle) {.code = 0}, (global_error_handle) {.code = 0} }, .queue_length = 2};
 global_message_log frop_message_log = {.log = { (global_message_log_entry) {.format = 0}, (global_message_log_entry) {.format = 0} }, .log_length = 2};
+uint8_t last_error_code;
 
 uint8_t ok_queued = 0;
 uint8_t range_changed = 0;
@@ -50,6 +51,7 @@ int bilbo_init(){
     
     frop_error_queue = init_error_queue();
     frop_message_log = init_message_log();
+    last_error_code = 0;
     
     button_init();
     led_init();
@@ -61,19 +63,23 @@ int bilbo_init(){
 
 int bilbo_tasks(){
     /* TODO:
-     * X handle freq
-     *      X a variable holds the current freq, the freq is saved there
-     * X handle tuning
-     *      X recognise the current note
-     *      X compare witth the current note
-     *      X decide if the note is tuned or how much it's not tuned
-     * X handle comm incoming
+     * handle freq //revise to remove func from main loop (add it to tc4 callback)
+     *      smoothening of freq output - ema //todo
+     * handle tuning
+     *      recognise the current note //handle error outputs
+     *      compare witth the current note
+     *      decide if the note is tuned or how much it's not tuned //revise make more modular //output cents
+     * handle comm incoming //revise to make \n actually a thing
      * handle parsing
-     * x handle parsing errors
-     * X handle comm outgoing
-     * handle buttons
-     * X handle multiplexer
-     * handle leds
+     * handle parsing errors
+     * handle comm outgoing //revise to make \n actually a thing
+     * handle buttons //finish the bt part
+     * handle multiplexer //finish and make automatic mabye
+     * handle leds //look at adding more mabye //add power saving features
+     * handle batt adc //finish adding //fix range led init
+     */
+    /* notes for improvement:
+     * reduce magic numbers
      */
     
     //freq
@@ -89,7 +95,7 @@ int bilbo_tasks(){
     //parsing
     if(bt_incoming_message.buffer[0] == '\0') goto parsing_skipped;
     
-    if(bt_incoming_message.buffer[0] != 'F') {
+    if(bt_incoming_message.buffer[1] != 'F') {
         throw_error(1);
         goto not_a_frop_message;
     }
@@ -129,19 +135,37 @@ int bilbo_tasks(){
         }
             break;
         case FROP_MSG_R_SHORT_ERROR: {
-            if(frop_error_queue.queue_length == 0) {
-                throw_error(29);
+            short_error_message frop_organised_message;
+            for(uint8_t i = 4; i > 0; i--) frop_organised_message.data[i - 1] = bt_incoming_message.buffer[i]; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible            
+            
+            if((frop_organised_message.structured.error_code == 21) || (frop_organised_message.structured.error_code == 22) || (frop_organised_message.structured.error_code == 23)){
+                tuning_ready = 1;
                 break;
             }
             
-            short_error_message frop_organised_message;
-            for(uint8_t i = 4; i > 0; i--) frop_organised_message.data[i - 1] = bt_incoming_message.buffer[i]; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
+            if(frop_organised_message.structured.error_code == 24){
+                range_changed = 1;
+                break;
+            }
             
-            if(frop_organised_message.structured.error_code == 18) break;
-            if(frop_organised_message.structured.error_code == 19) break;
-            
-            for(uint8_t i  = 0; i < frop_error_queue.queue_length; i++) frop_error_queue.error_queue[i] = frop_error_queue.error_queue[i + 1];
-            frop_error_queue.queue_length -= 1;
+            if((frop_organised_message.structured.error_code == 18) || (frop_organised_message.structured.error_code == 19)){
+                break;
+            }
+
+            if(frop_organised_message.structured.error_code == 10) {
+                if(frop_message_log.log_length == 0) {
+                    if(frop_error_queue.queue_length == 0) {
+                        throw_error(20);
+                        break;
+                    }
+                    if(last_error_code = 20) break;
+                    throw_error(20);
+                    break;
+                }
+                //mabye there should be more, but i have a mess in the error codes i think
+                //mabye todo: revise and look at the frop manifest document, there should be changes most likely
+                break;
+            }
         }
             break;
     }
@@ -160,14 +184,17 @@ int bilbo_tasks(){
         ok_queued = 0;
     }
     
-    for(uint8_t i = 0; i < frop_error_queue.queue_length; i++) send_error(0);
+    for(uint8_t i = 0; i < frop_error_queue.queue_length; i++) {
+        last_error_code = frop_error_queue.error_queue[i]
+        send_error(0);
+        }
     
     if(range_changed) {
         send_message(build_range_change(tuning_range).data, 9 );
         range_changed = 0;
     }
 
-    if(tuning_ready){ // to add timer
+    if(tuning_ready){
         tuning_ready = 0;
         send_message(build_tuning_data(calculated_note_octive, calculated_note.position_in_octive, current_freq, current_tuning_level_in_cents).data, 16);
     }

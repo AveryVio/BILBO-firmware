@@ -64,14 +64,15 @@ range_change build_range_change(uint8_t range) {
 }
 
 uint8_t decide_incoming_message_type(uint8_t *message){
-    if(message[1] == 'D'){
-        if(message[6] == 'P') return FROP_MSG_D_PROFILE_CHANGE;
-        else return FROP_MSG_D_NULL;
-    } else if(message[1] == 'R'){
-        if(message[2] == 0x2) return FROP_MSG_R_SHORT_ERROR;
-        else if(message[2] == 0x1) return FROP_MSG_R_OK;
-        else return FROP_MSG_R_NULL;
-    } else return FROP_MSG_NULL;
+    if(message[2] == 'D'){
+        if(message[7] == 'P') return FROP_MSG_D_PROFILE_CHANGE;
+        return FROP_MSG_D_NULL;
+    } else if(message[2] == 'R'){
+        if(message[3] == 0x2) return FROP_MSG_R_SHORT_ERROR;
+        if(message[3] == 0x1) return FROP_MSG_R_OK;
+        return FROP_MSG_R_NULL;
+    }
+    return FROP_MSG_NULL;
 }
 
 
