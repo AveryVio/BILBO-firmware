@@ -43,7 +43,7 @@ uint16_t adc_count = 0;
 float input_voltage = 0.0;
 
 int bilbo_init(){
-    freq_init();
+    freq_init(&current_freq);
     
     init_tuning(&tuning_ready);
     
@@ -63,7 +63,7 @@ int bilbo_init(){
 
 int bilbo_tasks(){
     /* TODO:
-     * handle freq //revise to remove func from main loop (add it to tc4 callback)
+     * handle freq
      *      smoothening of freq output - ema //todo
      * handle tuning
      *      recognise the current note //handle error outputs
@@ -83,7 +83,6 @@ int bilbo_tasks(){
      */
     
     //freq
-    current_freq = handle_freq_counter(current_freq);
     
     //tuning
     calculated_note = find_currently_playing_note(current_freq, &current_profile);

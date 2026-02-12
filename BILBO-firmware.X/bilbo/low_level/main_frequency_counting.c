@@ -19,22 +19,16 @@ void eic_comparator_out_callback(){
 }
 
 void tc4_comparator_timer_callback(TC_TIMER_STATUS status, uintptr_t context){
-    tc4_comparator_timer_flag = 1;
+    freq_t *output_freq_var = (freq_t *) context;
+    
+    freq_t eic_freq_intermediary = eic_comparator_out_flag * 10;
+    
+    *output_freq_var = eic_freq_intermediary;
 }
 
-freq_t handle_freq_counter(freq_t previous_freq){ // to relocate into tc4 callback
-    if(tc4_comparator_timer_flag){
-        freq_t eic_freq_intermediary = eic_comparator_out_flag * 10;
-        return eic_freq_intermediary;
-    }
-    else {
-        return previous_freq;
-    }   
-}
-
-void freq_init(){
+void freq_init(freq_t *output_freq_var){
     TC4_TimerInitialize();
-    TC4_TimerCallbackRegister(tc4_comparator_timer_callback, (uintptr_t) NULL);
+    TC4_TimerCallbackRegister(tc4_comparator_timer_callback, (uintptr_t) output_freq_var);
     TC4_TimerStart();
     
     EIC_CallbackRegister(COMPARATOR_OUT_PIN, eic_comparator_out_callback, (uintptr_t) NULL);
