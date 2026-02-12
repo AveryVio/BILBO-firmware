@@ -158,7 +158,7 @@ int bilbo_tasks(){
                         throw_error(20);
                         break;
                     }
-                    if(last_error_code = 20) break;
+                    if(last_error_code == 20) break;
                     throw_error(20);
                     break;
                 }
@@ -185,7 +185,7 @@ int bilbo_tasks(){
     }
     
     for(uint8_t i = 0; i < frop_error_queue.queue_length; i++) {
-        last_error_code = frop_error_queue.error_queue[i]
+        last_error_code = frop_error_queue.error_queue[i].code;
         send_error(0);
         }
     
