@@ -24,9 +24,13 @@ freq_t freq_array[3] = { 0, 0, 0 };
 
 uint8_t current_tuning_level_in_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
-uint8_t calculated_note_octive = 0;
+musical_octive calculated_note_octive = (musical_octive) OCVIVE_NULL;
+
 tuning_profile current_profile = PROFILE_DEF_NULL;
 uint8_t tuning_range = TUNE_RANGE_GUITAR;
+
+uint8_t curent_note_check_status = NOTE_DEF_NULL_N;
+
 
 lengthy_buffer bt_incoming_message;
 lengthy_buffer bt_outgoing_message;
@@ -86,8 +90,10 @@ int bilbo_tasks(){
     //freq
     
     //tuning
-    calculated_note = find_currently_playing_note(freq_array[0], &current_profile);
-    calculated_note_octive = find_currently_playing_note_octive(freq_array[0], &current_profile).octive_number;
+    curent_note_check_status = precheck_currently_playing_note(freq_array[0], &current_profile);
+    /* note check handle */
+    calculated_note_octive = find_currently_playing_note_octive(freq_array[0], &current_profile);
+    calculated_note = find_currently_playing_note(freq_array[0], &calculated_note_octive, &current_profile);
     current_tuning_level_in_cents = decide_tuning_level_in_cents(freq_array[0], calculated_note.freq);
     
     //comm in
@@ -196,7 +202,7 @@ int bilbo_tasks(){
 
     if(tuning_ready){
         tuning_ready = 0;
-        send_message(build_tuning_data(calculated_note_octive, calculated_note.position_in_octive, freq_array[0], current_tuning_level_in_cents).data, 16);
+        send_message(build_tuning_data(calculated_note_octive.octive_number, calculated_note.position_in_octive, freq_array[0], current_tuning_level_in_cents).data, 16);
     }
     
     //buttons

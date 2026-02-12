@@ -14,9 +14,11 @@ musical_octive calculate_single_octive(musical_note octive_reference_note);
 tuning_profile calculate_base_tuning_profile(musical_note reference_note, int8_t reference_note_octive);
 
 
+uint8_t precheck_currently_playing_note(freq_t current_note_freq, tuning_profile *profile);
+
 musical_octive find_currently_playing_note_octive(freq_t current_note_freq, tuning_profile* profile);
 
-musical_note find_currently_playing_note(freq_t current_note_freq, tuning_profile *profile);
+musical_note find_currently_playing_note(freq_t current_note_freq, musical_octive *current_octive, tuning_profile *profile);
 
 
 uint8_t calculate_cents(freq_t freq_one, freq_t freq_two);
