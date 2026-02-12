@@ -20,7 +20,8 @@
 
 // tuning variables
 
-freq_t current_freq = 0;
+freq_t freq_array[3] = { 0, 0, 0 };
+
 uint8_t current_tuning_level_in_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
 uint8_t calculated_note_octive = 0;
@@ -43,7 +44,7 @@ uint16_t adc_count = 0;
 float input_voltage = 0.0;
 
 int bilbo_init(){
-    freq_init(&current_freq);
+    freq_init(&freq_array);
     
     init_tuning(&tuning_ready);
     
@@ -64,7 +65,7 @@ int bilbo_init(){
 int bilbo_tasks(){
     /* TODO:
      * handle freq
-     *      smoothening of freq output - ema //todo
+     *      smoothening of freq output - ema
      * handle tuning
      *      recognise the current note //handle error outputs
      *      compare witth the current note
@@ -85,9 +86,9 @@ int bilbo_tasks(){
     //freq
     
     //tuning
-    calculated_note = find_currently_playing_note(current_freq, &current_profile);
-    calculated_note_octive = find_currently_playing_note_octive(current_freq, &current_profile).octive_number;
-    current_tuning_level_in_cents = decide_tuning_level_in_cents(current_freq, calculated_note.freq);
+    calculated_note = find_currently_playing_note(freq_array[0], &current_profile);
+    calculated_note_octive = find_currently_playing_note_octive(freq_array[0], &current_profile).octive_number;
+    current_tuning_level_in_cents = decide_tuning_level_in_cents(freq_array[0], calculated_note.freq);
     
     //comm in
     
@@ -195,7 +196,7 @@ int bilbo_tasks(){
 
     if(tuning_ready){
         tuning_ready = 0;
-        send_message(build_tuning_data(calculated_note_octive, calculated_note.position_in_octive, current_freq, current_tuning_level_in_cents).data, 16);
+        send_message(build_tuning_data(calculated_note_octive, calculated_note.position_in_octive, freq_array[0], current_tuning_level_in_cents).data, 16);
     }
     
     //buttons

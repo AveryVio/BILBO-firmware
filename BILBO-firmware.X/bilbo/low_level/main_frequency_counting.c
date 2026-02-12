@@ -23,10 +23,12 @@ void tc4_comparator_timer_callback(TC_TIMER_STATUS status, uintptr_t context){
     
     freq_t eic_freq_intermediary = eic_comparator_out_flag * 10;
     
-    *output_freq_var = eic_freq_intermediary;
+    *output_freq_var = eic_freq_intermediary + (*(output_freq_var + 1) >> FREQ_BIT_SHIFT_1) + (*(output_freq_var + 2) >> FREQ_BIT_SHIFT_2);
+    *(output_freq_var + 2) = *(output_freq_var + 1);
+    *(output_freq_var + 1) = eic_freq_intermediary;
 }
 
-void freq_init(freq_t *output_freq_var){
+void freq_init(freq_t (*output_freq_var)[]){
     TC4_TimerInitialize();
     TC4_TimerCallbackRegister(tc4_comparator_timer_callback, (uintptr_t) output_freq_var);
     TC4_TimerStart();

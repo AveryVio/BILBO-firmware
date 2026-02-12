@@ -12,6 +12,6 @@
 
 freq_t handle_freq_counter(uint16_t previous_freq);
 
-void freq_init(freq_t *output_freq_var);
+void freq_init(freq_t (*output_freq_var)[]);
 
 #endif

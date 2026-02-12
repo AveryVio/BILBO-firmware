@@ -4,6 +4,9 @@
 // enable power preserving features
 //#define POWER_PRESERVE
 
+#define FREQ_BIT_SHIFT_1 1
+#define FREQ_BIT_SHIFT_2 4
+
 // (input time in ms) * (clock freq) / (prescaler * 1000)
 //
 // to use this, calculate:
