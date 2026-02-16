@@ -22,6 +22,7 @@
 
 freq_t freq_array[3] = { 0, 0, 0 };
 
+uint8_t cents_error = TUNE_FALSE_DIFF_NULL;
 uint8_t current_tuning_level_in_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
 musical_octive calculated_note_octive = (musical_octive) OCVIVE_NULL;
@@ -71,7 +72,7 @@ int bilbo_tasks(){
      * handle freq
      *      smoothening of freq output - ema
      * handle tuning
-     *      recognise the current note //handle error outputs
+     *      recognise the current note //handle error outputs (NOT FINISHED)
      *      compare witth the current note
      *      decide if the note is tuned or how much it's not tuned //revise make more modular //output cents
      * handle comm incoming //revise to make \n actually a thing
@@ -93,9 +94,23 @@ int bilbo_tasks(){
     current_note_check_status = precheck_currently_playing_note(freq_array[0], &current_profile);
     if(current_note_check_status == NOTE_CHECK_SUCCESSFULL){
         calculated_note_octive = find_currently_playing_note_octive(freq_array[0], &current_profile);
+        cents_error = TUNE_FALSE_DIFF_NULL;
         calculated_note = find_currently_playing_note(freq_array[0], &calculated_note_octive, &current_profile);
         current_tuning_level_in_cents = decide_tuning_level_in_cents(freq_array[0], calculated_note.freq);
     } /*bad frequencies handle */
+		else if((current_note_check_status == NOTE_DEF_UNDER) || (current_note_check_status == NOTE_DEF_OVER)) {
+            current_tuning_level_in_cents = 0;
+            cents_error = TUNE_FALSE_DIFF_OOR;
+            
+        }
+		else if((current_note_check_status == NOTE_DEF_UNDER_ABSOLUTE) || (current_note_check_status == NOTE_DEF_OVER_ABSOLUTE)) {
+            current_tuning_level_in_cents = 0;
+            cents_error = TUNE_FALSE_DIFF_OOR;
+        }
+		else if((current_note_check_status == NOTE_DEF_UNDER_OUT_OF_OCTIVES) || (current_note_check_status == NOTE_DEF_OVER_OUT_OF_OCTIVES)) {
+            current_tuning_level_in_cents = 0;
+            cents_error = TUNE_FALSE_DIFF_OOR_OUT_OF_OCTIVES;
+        }
     
     //comm in
     

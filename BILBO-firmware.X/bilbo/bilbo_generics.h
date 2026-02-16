@@ -24,6 +24,12 @@ typedef uint16_t freq_t;
 #define TUNE_DIFF_OVER_2 2
 #define TUNE_DIFF_OVER_1 1
 
+#define TUNE_FALSE_DIFF_NULL 0
+#define TUNE_FALSE_DIFF_ZERO 1
+#define TUNE_FALSE_DIFF_OOR 2
+#define TUNE_FALSE_DIFF_OOR_ABSOLUTE 3
+#define TUNE_FALSE_DIFF_OOR_OUT_OF_OCTIVES 4
+
 
 typedef struct {
     uint8_t code;
