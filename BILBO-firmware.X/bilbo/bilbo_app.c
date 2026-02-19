@@ -72,7 +72,7 @@ int bilbo_tasks(){
      * handle freq
      *      smoothening of freq output - ema
      * handle tuning
-     *      recognise the current note //handle error outputs (NOT FINISHED)
+     *      recognise the current note //handle error outputs (check done, but actions are not done)
      *      compare witth the current note
      *      decide if the note is tuned or how much it's not tuned //revise make more modular //output cents
      * handle comm incoming //revise to make \n actually a thing
@@ -98,19 +98,17 @@ int bilbo_tasks(){
         calculated_note = find_currently_playing_note(freq_array[0], &calculated_note_octive, &current_profile);
         current_tuning_level_in_cents = decide_tuning_level_in_cents(freq_array[0], calculated_note.freq);
     } /*bad frequencies handle */
-		else if((current_note_check_status == NOTE_DEF_UNDER) || (current_note_check_status == NOTE_DEF_OVER)) {
-            current_tuning_level_in_cents = 0;
-            cents_error = TUNE_FALSE_DIFF_OOR;
-            
-        }
-		else if((current_note_check_status == NOTE_DEF_UNDER_ABSOLUTE) || (current_note_check_status == NOTE_DEF_OVER_ABSOLUTE)) {
-            current_tuning_level_in_cents = 0;
-            cents_error = TUNE_FALSE_DIFF_OOR;
-        }
-		else if((current_note_check_status == NOTE_DEF_UNDER_OUT_OF_OCTIVES) || (current_note_check_status == NOTE_DEF_OVER_OUT_OF_OCTIVES)) {
-            current_tuning_level_in_cents = 0;
-            cents_error = TUNE_FALSE_DIFF_OOR_OUT_OF_OCTIVES;
-        }
+    else {
+        calculated_note_octive = (musical_octive) OCVIVE_NULL;
+        calculated_note = (musical_note) NOTE_DEF_NULL;
+        current_tuning_level_in_cents = 0;
+        
+        if(current_note_check_status == NOTE_DEF_UNDER) cents_error = TUNE_FALSE_DIFF_ZERO;
+        else if(current_note_check_status == NOTE_DEF_OVER) cents_error = TUNE_FALSE_DIFF_INFTY;
+        else if((current_note_check_status == NOTE_DEF_UNDER_ABSOLUTE) || (current_note_check_status == NOTE_DEF_OVER_ABSOLUTE)) cents_error = TUNE_FALSE_DIFF_OOR_ABSOLUTE;
+        else if((current_note_check_status == NOTE_DEF_UNDER_OUT_OF_OCTIVES) || (current_note_check_status == NOTE_DEF_OVER_OUT_OF_OCTIVES)) cents_error = TUNE_FALSE_DIFF_OOR_OUT_OF_OCTIVES;
+        else cents_error = TUNE_FALSE_DIFF_ERR;
+    }
     
     //comm in
     
