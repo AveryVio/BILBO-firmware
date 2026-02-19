@@ -30,7 +30,8 @@ void bt_usart_read_callback(SERCOM_USART_EVENT event, uintptr_t context){
             uint8_t c = (uint8_t)bt_temp_buffer[i];
             
             if (c == '\n'){
-                bt_usart_read_buffer->length = bt_temp_buffer_rx_index;
+                bt_usart_read_buffer->length = bt_temp_buffer_rx_index - 1; // intentionally does not add in the \n and does not include the terminator in the length (it's not needed for normal operations)
+                bt_usart_read_buffer->buffer[bt_temp_buffer_rx_index] = '\0';
                 bt_usart_read_buffer->buffer[0] = 0x65;
                 bt_temp_buffer_rx_index = 1; // the offset is intentional, it's because the first character in the buffer is used to mark that the transfer is avalible
             }
@@ -98,6 +99,7 @@ void send_message(uint8_t *message_data, uint8_t message_length){
 
 void init_bt_communication(lengthy_buffer *buffer){
     buffer->buffer[0] = '\0';
+    bt_temp_buffer_rx_index = 1;
     bt_start_transparent_uart();
     SERCOM0_USART_ReadCallbackRegister(bt_usart_read_callback, (uintptr_t) buffer);
     SERCOM0_USART_ReadThresholdSet(1);

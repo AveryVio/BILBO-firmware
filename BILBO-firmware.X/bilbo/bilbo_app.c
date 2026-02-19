@@ -75,10 +75,10 @@ int bilbo_tasks(){
      *      recognise the current note //handle error outputs (check done, but actions are not done)
      *      compare witth the current note
      *      decide if the note is tuned or how much it's not tuned //revise make more modular //output cents
-     * handle comm incoming //revise to make \n actually a thing
+     * handle comm incoming
      * handle parsing
      * handle parsing errors
-     * handle comm outgoing //revise to make \n actually a thing
+     * handle comm outgoing //revise to make \n actually a thing // need to change the data building on wrap in small function
      * handle buttons //finish the bt part
      * handle multiplexer //finish and make automatic mabye
      * handle leds //look at adding more mabye //add power saving features
