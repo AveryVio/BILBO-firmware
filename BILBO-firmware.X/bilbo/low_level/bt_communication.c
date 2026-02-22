@@ -10,6 +10,9 @@
 
 #include "frop.h"
 
+extern global_error_queue frop_error_queue;
+extern global_message_log frop_message_log;
+
 uint8_t bt_temp_buffer[RN4870_READ_WRITE_BUFFER_SIZE];
 uint16_t bt_temp_buffer_rx_index = 0;
 

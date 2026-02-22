@@ -6,6 +6,7 @@
 
 #define FREQ_BIT_SHIFT_1 1
 #define FREQ_BIT_SHIFT_2 4
+#define FREQ_BIT_SHIFT_3 8
 
 // (input time in ms) * (clock freq) / (prescaler * 1000)
 //

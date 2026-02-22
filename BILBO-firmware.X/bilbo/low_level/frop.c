@@ -9,6 +9,9 @@
 #include "../bilbo_globals.h"
 #include "../libraries/frop_types.h"
 
+extern global_error_queue frop_error_queue;
+extern global_message_log frop_message_log;
+
 short_error_message build_short_error_message(uint8_t error_code) {
     short_error_message message;
     message.structured.start_of_message = 'F';

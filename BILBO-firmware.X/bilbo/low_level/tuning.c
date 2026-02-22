@@ -21,12 +21,10 @@ void tuning_callback(TC_TIMER_STATUS status, uintptr_t context){
 musical_octive calculate_single_octive(musical_note octive_reference_note){
     musical_octive calculated_octive;
     
-    for(uint8_t j = 1; j < 12; j++){
-        calculated_octive.notes[j].freq = (octive_reference_note.freq * (freq_t) pow( 2.00 , ((double) j - (double) octive_reference_note.position_in_octive)/12.00 ));
+    for(uint8_t j = 0; j < 12; j++){
+        calculated_octive.notes[j].freq = (octive_reference_note.freq * pow( 2.00 , ((double) j - (double) octive_reference_note.position_in_octive)/12.00 ));
         calculated_octive.notes[j].position_in_octive = j;
     }
-    calculated_octive.notes[12].freq = (octive_reference_note.freq * (freq_t) pow( 2.00 , ((double) 12 - (double) octive_reference_note.position_in_octive)/12.00 ));
-    calculated_octive.notes[12].position_in_octive = 12;
     
     return calculated_octive;
 }
@@ -70,8 +68,8 @@ uint8_t precheck_currently_playing_note(freq_t current_note_freq, tuning_profile
     if(profile->octive_count < 11){
         while(current_note_freq < profile->octives[0].notes[0].freq){
             musical_note new_reference_note;
-            new_reference_note = profile->octives[0].notes[profile->reference_note.position_in_octive];
-            new_reference_note.freq = new_reference_note.freq / 2;
+            new_reference_note.freq = (freq_t)((double) profile->octives[0].notes[profile->reference_note.position_in_octive].freq / 2.00);
+            new_reference_note.position_in_octive = profile->octives[0].notes[profile->reference_note.position_in_octive].position_in_octive;
         
             profile->octive_count += 1;
             for(uint8_t i = profile->octive_count; i > 0 ; i--){
@@ -79,24 +77,24 @@ uint8_t precheck_currently_playing_note(freq_t current_note_freq, tuning_profile
             }
             profile->octives[0] = calculate_single_octive(new_reference_note);
         }
-        while(current_note_freq > profile->octives[profile->octive_count].notes[12].freq) {
+        while(current_note_freq > profile->octives[profile->octive_count - 1].notes[11].freq) {
             musical_note new_reference_note;
-            new_reference_note = profile->octives[profile->octive_count].notes[profile->reference_note.position_in_octive];
-            new_reference_note.freq = new_reference_note.freq * 2;
+            new_reference_note.freq = profile->octives[profile->octive_count].notes[profile->reference_note.position_in_octive].freq * 2;
+            new_reference_note.position_in_octive = profile->octives[profile->octive_count].notes[profile->reference_note.position_in_octive].position_in_octive;
         
             profile->octive_count += 1;
             profile->octives[profile->octive_count] = calculate_single_octive(new_reference_note);
         }
     } else {
         if(current_note_freq < profile->octives[0].notes[0].freq) return NOTE_DEF_UNDER_OUT_OF_OCTIVES;
-        if(current_note_freq > profile->octives[profile->octive_count].notes[12].freq) return NOTE_DEF_OVER_OUT_OF_OCTIVES;
+        if(current_note_freq > profile->octives[profile->octive_count].notes[11].freq) return NOTE_DEF_OVER_OUT_OF_OCTIVES;
     }
     return NOTE_CHECK_SUCCESSFULL;
 }
 
 musical_octive find_currently_playing_note_octive(freq_t current_note_freq, tuning_profile* profile){
-    for(uint8_t i = 0; i < profile->octive_count; i++){
-        if(current_note_freq > (profile->octives[i].notes[11].freq + (profile->octives[i + 1].notes[0].freq - profile->octives[i].notes[11].freq) / 2 )) continue;
+    for(uint8_t i = 0; i <= profile->octive_count; i++){
+        if(current_note_freq > (profile->octives[i].notes[11].freq + (freq_t) ((double)(profile->octives[i + 1].notes[0].freq - profile->octives[i].notes[11].freq) / 2.00 ))) continue;
         return profile->octives[i];
     }
     return profile->octives[profile->octive_count];
@@ -116,13 +114,7 @@ musical_note find_currently_playing_note(freq_t current_note_freq, musical_octiv
             found_note = 1;
         }
     }
-    if(!found_note) {
-        if(abs((int8_t) current_note_freq - current_octive->notes[11].freq) > abs((int8_t) current_note_freq - current_octive->notes[12].freq)){
-            current_note = current_octive->notes[11];
-            found_note = 1;
-        }
-    }
-    if(!found_note) current_note = current_octive->notes[12];
+    if(!found_note) current_note = current_octive->notes[11];
     
     return current_note;
 }

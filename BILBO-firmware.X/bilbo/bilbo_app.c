@@ -27,7 +27,7 @@ uint8_t current_tuning_level_in_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
 musical_octive calculated_note_octive = (musical_octive) OCVIVE_NULL;
 
-tuning_profile current_profile = PROFILE_DEF_NULL;
+tuning_profile current_profile = PROFILE_DEF_DEFAULT;
 uint8_t tuning_range = TUNE_RANGE_GUITAR;
 
 uint8_t current_note_check_status = NOTE_DEF_NULL_N;
@@ -91,23 +91,25 @@ int bilbo_tasks(){
     //freq
     
     //tuning
-    current_note_check_status = precheck_currently_playing_note(freq_array[0], &current_profile);
-    if(current_note_check_status == NOTE_CHECK_SUCCESSFULL){
-        calculated_note_octive = find_currently_playing_note_octive(freq_array[0], &current_profile);
-        cents_error = TUNE_FALSE_DIFF_NULL;
-        calculated_note = find_currently_playing_note(freq_array[0], &calculated_note_octive, &current_profile);
-        current_tuning_level_in_cents = decide_tuning_level_in_cents(freq_array[0], calculated_note.freq);
-    } /*bad frequencies handle */
-    else {
-        calculated_note_octive = (musical_octive) OCVIVE_NULL;
-        calculated_note = (musical_note) NOTE_DEF_NULL;
-        current_tuning_level_in_cents = 0;
+    if(tuning_ready){
+        current_note_check_status = precheck_currently_playing_note(freq_array[0], &current_profile);
+        if(current_note_check_status == NOTE_CHECK_SUCCESSFULL){
+            calculated_note_octive = find_currently_playing_note_octive(freq_array[0], &current_profile);
+            cents_error = TUNE_FALSE_DIFF_NULL;
+            calculated_note = find_currently_playing_note(freq_array[0], &calculated_note_octive, &current_profile);
+            current_tuning_level_in_cents = decide_tuning_level_in_cents(freq_array[0], calculated_note.freq);
+        }
+        else {
+            calculated_note_octive = (musical_octive) OCVIVE_NULL;
+            calculated_note = (musical_note) NOTE_DEF_NULL;
+            current_tuning_level_in_cents = 0;
         
-        if(current_note_check_status == NOTE_DEF_UNDER) cents_error = TUNE_FALSE_DIFF_ZERO;
-        else if(current_note_check_status == NOTE_DEF_OVER) cents_error = TUNE_FALSE_DIFF_INFTY;
-        else if((current_note_check_status == NOTE_DEF_UNDER_ABSOLUTE) || (current_note_check_status == NOTE_DEF_OVER_ABSOLUTE)) cents_error = TUNE_FALSE_DIFF_OOR_ABSOLUTE;
-        else if((current_note_check_status == NOTE_DEF_UNDER_OUT_OF_OCTIVES) || (current_note_check_status == NOTE_DEF_OVER_OUT_OF_OCTIVES)) cents_error = TUNE_FALSE_DIFF_OOR_OUT_OF_OCTIVES;
-        else cents_error = TUNE_FALSE_DIFF_ERR;
+            if(current_note_check_status == NOTE_DEF_UNDER) cents_error = TUNE_FALSE_DIFF_ZERO;
+            else if(current_note_check_status == NOTE_DEF_OVER) cents_error = TUNE_FALSE_DIFF_INFTY;
+            else if((current_note_check_status == NOTE_DEF_UNDER_ABSOLUTE) || (current_note_check_status == NOTE_DEF_OVER_ABSOLUTE)) cents_error = TUNE_FALSE_DIFF_OOR_ABSOLUTE;
+            else if((current_note_check_status == NOTE_DEF_UNDER_OUT_OF_OCTIVES) || (current_note_check_status == NOTE_DEF_OVER_OUT_OF_OCTIVES)) cents_error = TUNE_FALSE_DIFF_OOR_OUT_OF_OCTIVES;
+            else cents_error = TUNE_FALSE_DIFF_ERR;
+        }
     }
     
     //comm in

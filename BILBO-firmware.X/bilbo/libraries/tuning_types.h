@@ -34,6 +34,7 @@ typedef struct {
 #define NOTE_CHECK_SUCCESSFULL 255
 
 #define OCVIVE_NULL { .notes = { \
+    NOTE_DEF(0, 0),\
     NOTE_DEF(0, 1),\
     NOTE_DEF(0, 2),\
     NOTE_DEF(0, 3),\
@@ -44,38 +45,37 @@ typedef struct {
     NOTE_DEF(0, 8),\
     NOTE_DEF(0, 9),\
     NOTE_DEF(0, 10),\
-    NOTE_DEF(0, 11),\
-    NOTE_DEF(0, 12)\
+    NOTE_DEF(0, 11)\
 }, .octive_number = 0 }
 #define OCVIVE_DEFAULT { .notes = { \
-    NOTE_DEF(261.625, 1),\
-    NOTE_DEF(277.182, 2),\
-    NOTE_DEF(293.664, 3),\
-    NOTE_DEF(311.126, 4),\
-    NOTE_DEF(329.627, 5),\
-    NOTE_DEF(349.228, 6),\
-    NOTE_DEF(369.994, 7),\
-    NOTE_DEF(391.995, 8),\
-    NOTE_DEF(415.304, 9),\
-    NOTE_DEF(440, 10),\
-    NOTE_DEF(466.163, 11),\
-    NOTE_DEF(493.883, 12)\
+    NOTE_DEF(261, 0),\
+    NOTE_DEF(277, 1),\
+    NOTE_DEF(293, 2),\
+    NOTE_DEF(311, 3),\
+    NOTE_DEF(329, 4),\
+    NOTE_DEF(349, 5),\
+    NOTE_DEF(369, 6),\
+    NOTE_DEF(391, 7),\
+    NOTE_DEF(415, 8),\
+    NOTE_DEF(440, 9),\
+    NOTE_DEF(466, 10),\
+    NOTE_DEF(493, 11)\
 }, .octive_number = 4 }
 
 #define PROFILE_DEF_NULL { .octives = {}, .octive_count = 0, .reference_note = { .freq = 440, .position_in_octive = 10 }, .reference_note_octive = 4 }
 #define PROFILE_DEF_DEFAULT { .octives = { (musical_octive) { .notes = { \
-    NOTE_DEF(261.625, 1),\
-    NOTE_DEF(277.182, 2),\
-    NOTE_DEF(293.664, 3),\
-    NOTE_DEF(311.126, 4),\
-    NOTE_DEF(329.627, 5),\
-    NOTE_DEF(349.228, 6),\
-    NOTE_DEF(369.994, 7),\
-    NOTE_DEF(391.995, 8),\
-    NOTE_DEF(415.304, 9),\
-    NOTE_DEF(440, 10),\
-    NOTE_DEF(466.163, 11),\
-    NOTE_DEF(493.883, 12)\
-}, .octive_number = 4 } }, .octive_count = 1, .reference_note = NOTE_DEF(440, 10), .reference_note_octive = 4 }
+    NOTE_DEF(261, 0),\
+    NOTE_DEF(277, 1),\
+    NOTE_DEF(293, 2),\
+    NOTE_DEF(311, 3),\
+    NOTE_DEF(329, 4),\
+    NOTE_DEF(349, 5),\
+    NOTE_DEF(369, 6),\
+    NOTE_DEF(391, 7),\
+    NOTE_DEF(415, 8),\
+    NOTE_DEF(440, 9),\
+    NOTE_DEF(466, 10),\
+    NOTE_DEF(493, 11)\
+}, .octive_number = 4 } }, .octive_count = 1, .reference_note = (musical_note) NOTE_DEF(440, 9), .reference_note_octive = 4 }
 
 #endif
