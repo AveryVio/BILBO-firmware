@@ -76,6 +76,7 @@ uint8_t precheck_currently_playing_note(freq_t current_note_freq, tuning_profile
                 profile->octives[i] = profile->octives[i - 1];
             }
             profile->octives[0] = calculate_single_octive(new_reference_note);
+            profile->octives[0].octive_number = profile->octives[1].octive_number - 1;
         }
         while(current_note_freq > profile->octives[profile->octive_count - 1].notes[11].freq) {
             musical_note new_reference_note;
@@ -84,6 +85,7 @@ uint8_t precheck_currently_playing_note(freq_t current_note_freq, tuning_profile
         
             profile->octive_count += 1;
             profile->octives[profile->octive_count] = calculate_single_octive(new_reference_note);
+            profile->octives[profile->octive_count].octive_number = profile->octives[profile->octive_count - 1 ].octive_number + 1;
         }
     } else {
         if(current_note_freq < profile->octives[0].notes[0].freq) return NOTE_DEF_UNDER_OUT_OF_OCTIVES;
@@ -94,7 +96,8 @@ uint8_t precheck_currently_playing_note(freq_t current_note_freq, tuning_profile
 
 musical_octive find_currently_playing_note_octive(freq_t current_note_freq, tuning_profile* profile){
     for(uint8_t i = 0; i <= profile->octive_count; i++){
-        if(current_note_freq > (profile->octives[i].notes[11].freq + (freq_t) ((double)(profile->octives[i + 1].notes[0].freq - profile->octives[i].notes[11].freq) / 2.00 ))) continue;
+        freq_t between_notes = profile->octives[i].notes[11].freq + (freq_t) ((double)(profile->octives[i + 1].notes[0].freq - profile->octives[i].notes[11].freq) / 2.00 );
+        if(current_note_freq > between_notes) continue;
         return profile->octives[i];
     }
     return profile->octives[profile->octive_count];
@@ -124,16 +127,16 @@ uint8_t calculate_cents(freq_t freq_one, freq_t freq_two){
 }
 
 /* tuning
- * orange -> +-7 cents
- * red -> +-14 cents (mabye 13 or 12 idk) 
+ * orange -> +-20 cents
+ * red -> +-45 cents (mabye 13 or 12 idk) 
  */
 uint8_t decide_tuning_level_in_cents(freq_t current_note_freq, freq_t calculated_note_freq){
     uint8_t diff_in_cents = calculate_cents(calculated_note_freq, current_note_freq);
     
-    if(diff_in_cents >= 14) return TUNE_DIFF_OVER_2;
-    if(diff_in_cents >= 7) return TUNE_DIFF_OVER_1;
-    if(diff_in_cents <= -7) return TUNE_DIFF_UNDER_1;
-    if(diff_in_cents <= -14) return TUNE_DIFF_UNDER_2;
+    if(diff_in_cents >= 45) return TUNE_DIFF_OVER_2;
+    if(diff_in_cents >= 20) return TUNE_DIFF_OVER_1;
+    if(diff_in_cents <= -20) return TUNE_DIFF_UNDER_1;
+    if(diff_in_cents <= -45) return TUNE_DIFF_UNDER_2;
     
     return TUNE_DIFF_LEVEL;
 }
