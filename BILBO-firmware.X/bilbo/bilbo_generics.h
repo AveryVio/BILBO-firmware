@@ -12,11 +12,10 @@ typedef struct {
 typedef uint16_t freq_t;
 
 
-#define TUNE_RANGE_NULL 0
-#define TUNE_RANGE_PLACEHOLDER 1
-#define TUNE_RANGE_BASS 2
-#define TUNE_RANGE_GUITAR 3
-#define TUNE_RANGE_HIGH 4
+#define TUNE_RANGE_PLACEHOLDER 0
+#define TUNE_RANGE_BASS 1
+#define TUNE_RANGE_GUITAR 2
+#define TUNE_RANGE_HIGH 3
 
 #define TUNE_DIFF_LEVEL 0
 #define TUNE_DIFF_UNDER_2 -2
