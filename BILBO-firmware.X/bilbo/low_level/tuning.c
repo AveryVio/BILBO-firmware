@@ -122,21 +122,20 @@ musical_note find_currently_playing_note(freq_t current_note_freq, musical_octiv
     return current_note;
 }
 
-uint8_t calculate_cents(freq_t freq_one, freq_t freq_two){
-    return 1200 * log(((double)freq_one)/((double)freq_two));
+int8_t calculate_cents(freq_t freq_one, freq_t freq_two){
+    return (int8_t) (1200.00 * log10(((double)freq_one)/((double)freq_two)));
 }
 
 /* tuning
  * orange -> +-20 cents
  * red -> +-45 cents (mabye 13 or 12 idk) 
  */
-uint8_t decide_tuning_level_in_cents(freq_t current_note_freq, freq_t calculated_note_freq){
-    uint8_t diff_in_cents = calculate_cents(calculated_note_freq, current_note_freq);
+uint8_t decide_tuning_level_in_cents(int8_t diff_in_cents){
     
-    if(diff_in_cents >= 45) return TUNE_DIFF_OVER_2;
+    if(diff_in_cents >= 35) return TUNE_DIFF_OVER_2;
     if(diff_in_cents >= 20) return TUNE_DIFF_OVER_1;
     if(diff_in_cents <= -20) return TUNE_DIFF_UNDER_1;
-    if(diff_in_cents <= -45) return TUNE_DIFF_UNDER_2;
+    if(diff_in_cents <= -35) return TUNE_DIFF_UNDER_2;
     
     return TUNE_DIFF_LEVEL;
 }
