@@ -19,6 +19,7 @@ short_error_message build_short_error_message(uint8_t error_code) {
     message.structured.frop_message_format = 0x2;
     message.structured.error_code = error_code;
     message.structured.end_of_header = 'D';
+    message.data[5] = '\n';
     return message;
 }
 
@@ -28,6 +29,7 @@ ok_response build_ok_response() {
     message.structured.frop_message_type = 'R';
     message.structured.frop_message_format = 0x1;
     message.structured.end_of_header = 'D';
+    message.data[4] = '\n';
     return message;
 }
 
@@ -49,6 +51,7 @@ tuning_data build_tuning_data(uint8_t note_octive, uint8_t note_position_in_octi
     message.structured.block_data_freq = frequency;
     message.structured.block_length_diff = 1;
     message.structured.block_data_diff = tune_offset;
+    message.data[16] = '\n';
     return message;
 }
 
@@ -63,6 +66,7 @@ range_change build_range_change(uint8_t range) {
     message.structured.block_data_setting = 'R';
     message.structured.block_length_range = 1;
     message.structured.block_data_range = range;
+    message.data[9] = '\n';
     return message;
 }
 
