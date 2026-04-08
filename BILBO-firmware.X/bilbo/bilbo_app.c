@@ -43,7 +43,6 @@ global_message_log frop_message_log = {.log = { (global_message_log_entry) {.for
 uint8_t last_error_code;
 
 uint8_t ok_queued = 0;
-uint8_t range_changed = 0;
 uint8_t tuning_ready = 0;
 
 uint8_t batt_adc_ready = 0;
@@ -168,11 +167,6 @@ int bilbo_tasks(){
                 break;
             }
             
-            if(frop_organised_message.structured.error_code == 24){
-                range_changed = 1;
-                break;
-            }
-            
             if((frop_organised_message.structured.error_code == 18) || (frop_organised_message.structured.error_code == 19)){
                 break;
             }
@@ -213,11 +207,6 @@ int bilbo_tasks(){
         last_error_code = frop_error_queue.error_queue[i].code;
         send_error(0);
         }
-    
-    if(range_changed) {
-        send_message(build_range_change(tuning_range).data, 9 );
-        range_changed = 0;
-    }
 
     if(tuning_ready){
         tuning_ready = 0;
@@ -225,11 +214,6 @@ int bilbo_tasks(){
     }
     
     //buttons
-    /*to finish*/
-    if(eic_mode_butt_flag){
-        eic_mode_butt_flag = 0;
-        range_changed = 1;
-    }
     
     if(eic_bt_butt_flag){
         eic_bt_butt_flag = 0;
@@ -240,19 +224,9 @@ int bilbo_tasks(){
         }
     }
     
-    //multiplexer
-    
-    if(range_changed){
-        tuning_range++;
-        PORT_REGS->GROUP[0].PORT_OUT = (uint32_t)((tuning_range & 0b10U) >> 1U) << MULTIPLEX_1_PIN;
-        PORT_REGS->GROUP[0].PORT_OUT = (uint32_t)(tuning_range & 0b1U) << MULTIPLEX_0_PIN;
-    }
-    
     //leds
     /*to finish*/
-    handle_tuning_output_leds(current_tuning_level_in_cents);    
-    
-    handle_range_leds_out(tuning_range);
+    handle_tuning_output_leds(current_tuning_level_in_cents);
     
     batt_adc_handle(&batt_adc_ready, &adc_count, &input_voltage);
     
