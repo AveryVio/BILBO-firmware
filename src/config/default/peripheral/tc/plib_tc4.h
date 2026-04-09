@@ -1,14 +1,25 @@
 /*******************************************************************************
+<<<<<<<< HEAD:src/config/default/peripheral/tc/plib_tc5.h
+  Timer/Counter(TC5) PLIB
+========
   Timer/Counter(TC4) PLIB
+>>>>>>>> development:src/config/default/peripheral/tc/plib_tc4.h
 
   Company
     Microchip Technology Inc.
 
   File Name
+<<<<<<<< HEAD:src/config/default/peripheral/tc/plib_tc5.h
+    plib_tc5.h
+
+  Summary
+    TC5 PLIB Header File.
+========
     plib_tc4.h
 
   Summary
     TC4 PLIB Header File.
+>>>>>>>> development:src/config/default/peripheral/tc/plib_tc4.h
 
   Description
     This file defines the interface to the TC peripheral library. This
@@ -22,7 +33,7 @@
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 20124 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -45,16 +56,13 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
+<<<<<<<< HEAD:src/config/default/peripheral/tc/plib_tc5.h
+#ifndef PLIB_TC5_H      // Guards against multiple inclusion
+#define PLIB_TC5_H
+========
 #ifndef PLIB_TC4_H      // Guards against multiple inclusion
 #define PLIB_TC4_H
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files
-// *****************************************************************************
-// *****************************************************************************
-/* This section lists the other files that are included in this file.
-*/
+>>>>>>>> development:src/config/default/peripheral/tc/plib_tc4.h
 
 // *****************************************************************************
 // *****************************************************************************
@@ -95,6 +103,24 @@
 
 // *****************************************************************************
 
+<<<<<<<< HEAD:src/config/default/peripheral/tc/plib_tc5.h
+void TC5_TimerInitialize( void );
+
+void TC5_TimerStart( void );
+
+void TC5_TimerStop( void );
+
+uint32_t TC5_TimerFrequencyGet( void );
+
+
+void TC5_Timer16bitPeriodSet( uint16_t period );
+
+uint16_t TC5_Timer16bitPeriodGet( void );
+
+uint16_t TC5_Timer16bitCounterGet( void );
+
+void TC5_Timer16bitCounterSet( uint16_t count );
+========
 void TC4_TimerInitialize( void );
 
 void TC4_TimerStart( void );
@@ -111,14 +137,22 @@ uint16_t TC4_Timer16bitPeriodGet( void );
 uint16_t TC4_Timer16bitCounterGet( void );
 
 void TC4_Timer16bitCounterSet( uint16_t count );
+>>>>>>>> development:src/config/default/peripheral/tc/plib_tc4.h
 
 
 
 
+<<<<<<<< HEAD:src/config/default/peripheral/tc/plib_tc5.h
+void TC5_TimerCallbackRegister( TC_TIMER_CALLBACK callback, uintptr_t context );
+
+
+void TC5_TimerCommandSet(TC_COMMAND command);
+========
 void TC4_TimerCallbackRegister( TC_TIMER_CALLBACK callback, uintptr_t context );
 
 
 void TC4_TimerCommandSet(TC_COMMAND command);
+>>>>>>>> development:src/config/default/peripheral/tc/plib_tc4.h
 
 
 // DOM-IGNORE-BEGIN
@@ -129,4 +163,8 @@ void TC4_TimerCommandSet(TC_COMMAND command);
 #endif
 // DOM-IGNORE-END
 
+<<<<<<<< HEAD:src/config/default/peripheral/tc/plib_tc5.h
+#endif /* PLIB_TC5_H */
+========
 #endif /* PLIB_TC4_H */
+>>>>>>>> development:src/config/default/peripheral/tc/plib_tc4.h

@@ -20,22 +20,29 @@
 
 // tuning variables
 
-freq_t current_freq = 0;
+freq_t freq_array[3] = { 0, 0, 0 };
+
+uint8_t cents_error = TUNE_FALSE_DIFF_NULL;
 uint8_t current_tuning_level_in_cents = 0;
+int8_t note_cents = 0;
 musical_note calculated_note = NOTE_DEF_NULL;
-uint8_t calculated_note_octive = 0;
-tuning_profile current_profile = PROFILE_DEF_NULL;
+musical_octive calculated_note_octive = (musical_octive) OCVIVE_NULL;
+
+tuning_profile current_profile = PROFILE_DEF_DEFAULT;
 uint8_t tuning_range = TUNE_RANGE_GUITAR;
+
+uint8_t current_note_check_status = NOTE_DEF_NULL_N;
+
 
 lengthy_buffer bt_incoming_message;
 lengthy_buffer bt_outgoing_message;
+uint8_t bt_awake = 1;
 
 global_error_queue frop_error_queue = {.error_queue = { (global_error_handle) {.code = 0}, (global_error_handle) {.code = 0} }, .queue_length = 2};
 global_message_log frop_message_log = {.log = { (global_message_log_entry) {.format = 0}, (global_message_log_entry) {.format = 0} }, .log_length = 2};
 uint8_t last_error_code;
 
 uint8_t ok_queued = 0;
-uint8_t range_changed = 0;
 uint8_t tuning_ready = 0;
 
 uint8_t batt_adc_ready = 0;
@@ -43,7 +50,7 @@ uint16_t adc_count = 0;
 float input_voltage = 0.0;
 
 int bilbo_init(){
-    freq_init();
+    freq_init(&freq_array);
     
     init_tuning(&tuning_ready);
     
@@ -63,16 +70,16 @@ int bilbo_init(){
 
 int bilbo_tasks(){
     /* TODO:
-     * handle freq //revise to remove func from main loop (add it to tc4 callback)
-     *      smoothening of freq output - ema //todo
+     * handle freq
+     *      smoothening of freq output - ema
      * handle tuning
-     *      recognise the current note //handle error outputs
+     *      recognise the current note //handle error outputs (check done, but actions are not done)
      *      compare witth the current note
      *      decide if the note is tuned or how much it's not tuned //revise make more modular //output cents
-     * handle comm incoming //revise to make \n actually a thing
+     * handle comm incoming
      * handle parsing
      * handle parsing errors
-     * handle comm outgoing //revise to make \n actually a thing
+     * handle comm outgoing //revise to make \n actually a thing // need to change the data building on wrap in small function
      * handle buttons //finish the bt part
      * handle multiplexer //finish and make automatic mabye
      * handle leds //look at adding more mabye //add power saving features
@@ -83,12 +90,29 @@ int bilbo_tasks(){
      */
     
     //freq
-    current_freq = handle_freq_counter(current_freq);
     
     //tuning
-    calculated_note = find_currently_playing_note(current_freq, &current_profile);
-    calculated_note_octive = find_currently_playing_note_octive(current_freq, &current_profile).octive_number;
-    current_tuning_level_in_cents = decide_tuning_level_in_cents(current_freq, calculated_note.freq);
+    if(tuning_ready){
+            current_note_check_status = precheck_currently_playing_note(freq_array[0], &current_profile);
+            if(current_note_check_status == NOTE_CHECK_SUCCESSFULL){
+                calculated_note_octive = find_currently_playing_note_octive(freq_array[0], &current_profile);
+                cents_error = TUNE_FALSE_DIFF_NULL;
+                calculated_note = find_currently_playing_note(freq_array[0], &calculated_note_octive, &current_profile);
+                note_cents = calculate_cents(freq_array[0], calculated_note.freq);
+                current_tuning_level_in_cents = decide_tuning_level_in_cents(note_cents);
+            }
+            else {
+                calculated_note_octive = (musical_octive) OCVIVE_NULL;
+                calculated_note = (musical_note) NOTE_DEF_NULL;
+                current_tuning_level_in_cents = 0;
+                
+                if(current_note_check_status == NOTE_DEF_UNDER) cents_error = TUNE_FALSE_DIFF_ZERO;
+                else if(current_note_check_status == NOTE_DEF_OVER) cents_error = TUNE_FALSE_DIFF_INFTY;
+                else if((current_note_check_status == NOTE_DEF_UNDER_ABSOLUTE) || (current_note_check_status == NOTE_DEF_OVER_ABSOLUTE)) cents_error = TUNE_FALSE_DIFF_OOR_ABSOLUTE;
+                else if((current_note_check_status == NOTE_DEF_UNDER_OUT_OF_OCTIVES) || (current_note_check_status == NOTE_DEF_OVER_OUT_OF_OCTIVES)) cents_error = TUNE_FALSE_DIFF_OOR_OUT_OF_OCTIVES;
+                else cents_error = TUNE_FALSE_DIFF_ERR;
+            }
+        }
     
     //comm in
     
@@ -143,11 +167,6 @@ int bilbo_tasks(){
                 break;
             }
             
-            if(frop_organised_message.structured.error_code == 24){
-                range_changed = 1;
-                break;
-            }
-            
             if((frop_organised_message.structured.error_code == 18) || (frop_organised_message.structured.error_code == 19)){
                 break;
             }
@@ -188,23 +207,13 @@ int bilbo_tasks(){
         last_error_code = frop_error_queue.error_queue[i].code;
         send_error(0);
         }
-    
-    if(range_changed) {
-        send_message(build_range_change(tuning_range).data, 9 );
-        range_changed = 0;
-    }
 
     if(tuning_ready){
         tuning_ready = 0;
-        send_message(build_tuning_data(calculated_note_octive, calculated_note.position_in_octive, current_freq, current_tuning_level_in_cents).data, 16);
+        send_message(build_tuning_data(calculated_note_octive.octive_number, calculated_note.position_in_octive, freq_array[0], current_tuning_level_in_cents).data, 16);
     }
     
     //buttons
-    /*to finish*/
-    if(eic_mode_butt_flag){
-        eic_mode_butt_flag = 0;
-        range_changed = 1;
-    }
     
     if(eic_bt_butt_flag){
         eic_bt_butt_flag = 0;
@@ -215,19 +224,9 @@ int bilbo_tasks(){
         }
     }
     
-    //multiplexer
-    
-    if(range_changed){
-        tuning_range++;
-        PORT_REGS->GROUP[0].PORT_OUT = (uint32_t)((tuning_range & 0b10U) >> 1U) << MULTIPLEX_1_PIN;
-        PORT_REGS->GROUP[0].PORT_OUT = (uint32_t)(tuning_range & 0b1U) << MULTIPLEX_0_PIN;
-    }
-    
     //leds
     /*to finish*/
-    handle_tuning_output_leds(current_tuning_level_in_cents);    
-    
-    handle_range_leds_out(tuning_range);
+    handle_tuning_output_leds(current_tuning_level_in_cents);
     
     batt_adc_handle(&batt_adc_ready, &adc_count, &input_voltage);
     

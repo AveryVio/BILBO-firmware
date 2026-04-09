@@ -22,6 +22,7 @@
         <itemPath>bilbo/bilbo_config.h</itemPath>
         <itemPath>bilbo/bilbo_generics.h</itemPath>
         <itemPath>bilbo/bilbo_globals.h</itemPath>
+        <itemPath>bilbo/bilbo_app.h</itemPath>
       </logicalFolder>
       <logicalFolder name="config" displayName="config" projectFiles="true">
         <logicalFolder name="default" displayName="default" projectFiles="true">

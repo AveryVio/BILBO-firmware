@@ -62,6 +62,7 @@ void NonMaskableInt_Handler (void);
 void HardFault_Handler (void);
 void EIC_InterruptHandler (void);
 void SERCOM0_USART_InterruptHandler (void);
+void TC3_TimerInterruptHandler (void);
 void TC4_TimerInterruptHandler (void);
 void TC5_TimerInterruptHandler (void);
 void ADC_InterruptHandler (void);

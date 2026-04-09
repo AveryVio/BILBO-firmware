@@ -13,7 +13,7 @@
 void batt_adc_callback(ADC_STATUS status, uintptr_t context){
     uint8_t *batt_adc_ready = (uint8_t *) context;
     
-    (*batt_adc_ready) = 1;
+    *batt_adc_ready = 1;
 }
 
 void batt_adc_init(uint8_t *batt_adc_ready){
