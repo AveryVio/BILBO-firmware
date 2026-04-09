@@ -63,6 +63,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
+volatile static TC_TIMER_CALLBACK_OBJ TC3_CallbackObject;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -91,6 +92,9 @@ void TC3_TimerInitialize( void )
     /* Clear all interrupt flags */
     TC3_REGS->COUNT16.TC_INTFLAG = TC_INTFLAG_Msk;
 
+    TC3_CallbackObject.callback = NULL;
+    /* Enable interrupt*/
+    TC3_REGS->COUNT16.TC_INTENSET = TC_INTENSET_OVF_Msk;
 
 
     while((TC3_REGS->COUNT16.TC_STATUS & TC_STATUS_SYNCBUSY_Msk)!= 0U)
@@ -184,10 +188,25 @@ uint16_t TC3_Timer16bitPeriodGet( void )
 
 
 
-/* Polling method to check if timer period interrupt flag is set */
-bool TC3_TimerPeriodHasExpired( void )
+/* Register callback function */
+void TC3_TimerCallbackRegister( TC_TIMER_CALLBACK callback, uintptr_t context )
 {
-    uint8_t timer_status = ((TC3_REGS->COUNT16.TC_INTFLAG) & TC_INTFLAG_OVF_Msk);
-    TC3_REGS->COUNT16.TC_INTFLAG = timer_status;
-    return (timer_status != 0U);
+    TC3_CallbackObject.callback = callback;
+
+    TC3_CallbackObject.context = context;
 }
+
+/* Timer Interrupt handler */
+void __attribute__((used)) TC3_TimerInterruptHandler( void )
+{
+    TC_TIMER_STATUS status;
+    status = (TC_TIMER_STATUS) (TC3_REGS->COUNT16.TC_INTFLAG);
+    /* Clear interrupt flags */
+    TC3_REGS->COUNT16.TC_INTFLAG = TC_INTFLAG_Msk;
+    if(TC3_CallbackObject.callback != NULL)
+    {
+        uintptr_t context = TC3_CallbackObject.context;
+        TC3_CallbackObject.callback(status, context);
+    }
+}
+

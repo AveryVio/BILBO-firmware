@@ -106,7 +106,9 @@ void TC3_Timer16bitCounterSet( uint16_t count );
 
 
 
-bool TC3_TimerPeriodHasExpired( void );
+
+void TC3_TimerCallbackRegister( TC_TIMER_CALLBACK callback, uintptr_t context );
+
 
 void TC3_TimerCommandSet(TC_COMMAND command);
 

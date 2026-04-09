@@ -13,6 +13,16 @@
 
 void send_error(uint8_t queue_index);
 
+
+void bt_communication_tasks();
+
+void bt_trigger_pairing();
+
+void bt_trigger_sleep();
+
+void bt_trigger_wakeup();
+
+
 void send_message(uint8_t *message_data, uint8_t message_length);
 
 void init_bt_communication(lengthy_buffer *buffer);

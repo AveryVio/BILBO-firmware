@@ -3,13 +3,19 @@
 
 #include <bits/alltypes.h>
 
+typedef struct {
+    uint8_t buffer[RN4870_READ_WRITE_BUFFER_SIZE];
+    uint8_t length;
+} lengthy_buffer;
+
+
 typedef uint16_t freq_t;
 
-#define TUNE_RANGE_NULL 0
-#define TUNE_RANGE_PLACEHOLDER 1
-#define TUNE_RANGE_BASS 2
-#define TUNE_RANGE_GUITAR 3
-#define TUNE_RANGE_HIGH 4
+
+#define TUNE_RANGE_PLACEHOLDER 0
+#define TUNE_RANGE_BASS 1
+#define TUNE_RANGE_GUITAR 2
+#define TUNE_RANGE_HIGH 3
 
 #define TUNE_DIFF_LEVEL 0
 #define TUNE_DIFF_UNDER_2 -2
@@ -17,10 +23,14 @@ typedef uint16_t freq_t;
 #define TUNE_DIFF_OVER_2 2
 #define TUNE_DIFF_OVER_1 1
 
-typedef struct {
-    uint8_t buffer[RN4870_READ_WRITE_BUFFER_SIZE];
-    uint8_t length;
-} lengthy_buffer;
+#define TUNE_FALSE_DIFF_NULL 0
+#define TUNE_FALSE_DIFF_ZERO 1
+#define TUNE_FALSE_DIFF_INFTY 2
+#define TUNE_FALSE_DIFF_OOR 3
+#define TUNE_FALSE_DIFF_OOR_ABSOLUTE 4
+#define TUNE_FALSE_DIFF_OOR_OUT_OF_OCTIVES 5
+#define TUNE_FALSE_DIFF_ERR 6
+
 
 typedef struct {
     uint8_t code;
@@ -39,6 +49,7 @@ typedef struct {
     global_message_log_entry log[9];
     uint8_t log_length;
 } global_message_log;
+
 
 #define ADC_VREF (1.65f)
 #define ADC_MAX_COUNT 4095

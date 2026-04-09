@@ -15,26 +15,45 @@ volatile uint16_t tc4_comparator_timer_flag = 0;
 volatile uint16_t eic_comparator_out_flag = 0;
 
 void eic_comparator_out_callback(){
-    eic_comparator_out_flag = 1;
+    eic_comparator_out_flag += 1;
 }
 
 void tc4_comparator_timer_callback(TC_TIMER_STATUS status, uintptr_t context){
-    tc4_comparator_timer_flag = 1;
-}
+    freq_t *output_freq_var = (freq_t *) context;
+    
+    freq_t eic_freq_intermediary = eic_comparator_out_flag * 10;
+    
+    int32_t diff1 = (int32_t)eic_freq_intermediary - (int32_t)*output_freq_var;
+    int32_t step1 = diff1 >> FREQ_BIT_SHIFT_1;
+    if (step1 == 0 && diff1 > 0) step1 = 1;
+    else if (step1 == 0 && diff1 < 0) step1 = -1;
+    
+    int32_t diff2 = ((int32_t)*output_freq_var - (int32_t)*(output_freq_var + 1)) >> FREQ_BIT_SHIFT_2;
+    int32_t step2 = diff2 >> FREQ_BIT_SHIFT_2;
+    if (step2 == 0 && diff2 > 0) step2 = 1;
+    else if (step2 == 0 && diff2 < 0) step2 = -1;
+    
+    int32_t diff3 = ((int32_t)*(output_freq_var + 1) - (int32_t)*(output_freq_var + 2)) >> FREQ_BIT_SHIFT_3;
+    int32_t step3 = diff3 >> FREQ_BIT_SHIFT_3;
+    if (step3 == 0 && diff3 > 0) step3 = 1;
+    else if (step3 == 0 && diff3 < 0) step3 = -1;
 
-freq_t handle_freq_counter(freq_t previous_freq){ // to relocate into tc4 callback
-    if(tc4_comparator_timer_flag){
-        freq_t eic_freq_intermediary = eic_comparator_out_flag * 10;
-        return eic_freq_intermediary;
+    int32_t calculation_intermediary = (int32_t)*output_freq_var + step1 + step2 + step3;
+    
+    if (calculation_intermediary < 0) {
+        calculation_intermediary = eic_freq_intermediary;
     }
-    else {
-        return previous_freq;
-    }   
+    
+    *(output_freq_var + 2) = *(output_freq_var + 1);
+    *(output_freq_var + 1) = *output_freq_var;
+    *output_freq_var = (freq_t) calculation_intermediary;
+    
+    eic_comparator_out_flag = 0;
 }
 
-void freq_init(){
+void freq_init(freq_t (*output_freq_var)[]){
     TC4_TimerInitialize();
-    TC4_TimerCallbackRegister(tc4_comparator_timer_callback, (uintptr_t) NULL);
+    TC4_TimerCallbackRegister(tc4_comparator_timer_callback, (uintptr_t) output_freq_var);
     TC4_TimerStart();
     
     EIC_CallbackRegister(COMPARATOR_OUT_PIN, eic_comparator_out_callback, (uintptr_t) NULL);
