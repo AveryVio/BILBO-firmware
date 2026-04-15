@@ -11,6 +11,10 @@
 
 void handle_tuning_output_leds(int8_t level);
 
-void led_init();
+void handle_sound_input_leds(sound_input_t soundInput, uint8_t second_int);
+
+void handle_batt_adc_leds(float batt_voltage);
+
+void led_init(sound_input_t defaultSoundInput);
 
 #endif

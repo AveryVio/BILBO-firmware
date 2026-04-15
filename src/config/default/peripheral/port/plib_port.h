@@ -77,49 +77,25 @@
 #define BT_BUTT_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 2U)) & 0x01U)
 #define BT_BUTT_PIN                  PORT_PIN_PA02
 
-/*** Macros for LED_BASS pin ***/
-#define LED_BASS_Set()               (PORT_REGS->GROUP[1].PORT_OUTSET = ((uint32_t)1U << 8U))
-#define LED_BASS_Clear()             (PORT_REGS->GROUP[1].PORT_OUTCLR = ((uint32_t)1U << 8U))
-#define LED_BASS_Toggle()            (PORT_REGS->GROUP[1].PORT_OUTTGL = ((uint32_t)1U << 8U))
-#define LED_BASS_OutputEnable()      (PORT_REGS->GROUP[1].PORT_DIRSET = ((uint32_t)1U << 8U))
-#define LED_BASS_InputEnable()       (PORT_REGS->GROUP[1].PORT_DIRCLR = ((uint32_t)1U << 8U))
-#define LED_BASS_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 8U)) & 0x01U)
-#define LED_BASS_PIN                  PORT_PIN_PB08
+/*** Macros for MODE_BUTT pin ***/
+#define MODE_BUTT_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 3U)) & 0x01U)
+#define MODE_BUTT_PIN                  PORT_PIN_PA03
 
-/*** Macros for LED_HIGH pin ***/
-#define LED_HIGH_Set()               (PORT_REGS->GROUP[1].PORT_OUTSET = ((uint32_t)1U << 9U))
-#define LED_HIGH_Clear()             (PORT_REGS->GROUP[1].PORT_OUTCLR = ((uint32_t)1U << 9U))
-#define LED_HIGH_Toggle()            (PORT_REGS->GROUP[1].PORT_OUTTGL = ((uint32_t)1U << 9U))
-#define LED_HIGH_OutputEnable()      (PORT_REGS->GROUP[1].PORT_DIRSET = ((uint32_t)1U << 9U))
-#define LED_HIGH_InputEnable()       (PORT_REGS->GROUP[1].PORT_DIRCLR = ((uint32_t)1U << 9U))
-#define LED_HIGH_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 9U)) & 0x01U)
-#define LED_HIGH_PIN                  PORT_PIN_PB09
+/*** Macros for MICROPHONE_IN pin ***/
+#define MICROPHONE_IN_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 4U)) & 0x01U)
+#define MICROPHONE_IN_PIN                  PORT_PIN_PA04
 
-/*** Macros for LED_GUITAR pin ***/
-#define LED_GUITAR_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 4U))
-#define LED_GUITAR_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 4U))
-#define LED_GUITAR_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 4U))
-#define LED_GUITAR_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 4U))
-#define LED_GUITAR_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 4U))
-#define LED_GUITAR_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 4U)) & 0x01U)
-#define LED_GUITAR_PIN                  PORT_PIN_PA04
+/*** Macros for MICROPHONE_ADC pin ***/
+#define MICROPHONE_ADC_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 5U)) & 0x01U)
+#define MICROPHONE_ADC_PIN                  PORT_PIN_PA05
 
-/*** Macros for LED_CHROMATIC pin ***/
-#define LED_CHROMATIC_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 5U))
-#define LED_CHROMATIC_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 5U))
-#define LED_CHROMATIC_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 5U))
-#define LED_CHROMATIC_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 5U))
-#define LED_CHROMATIC_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 5U))
-#define LED_CHROMATIC_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 5U)) & 0x01U)
-#define LED_CHROMATIC_PIN                  PORT_PIN_PA05
+/*** Macros for PIEZO_IN pin ***/
+#define PIEZO_IN_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 6U)) & 0x01U)
+#define PIEZO_IN_PIN                  PORT_PIN_PA06
 
-/*** Macros for FILTRY pin ***/
-#define FILTRY_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 6U)) & 0x01U)
-#define FILTRY_PIN                  PORT_PIN_PA06
-
-/*** Macros for COMPARATOR_OUT pin ***/
-#define COMPARATOR_OUT_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 7U)) & 0x01U)
-#define COMPARATOR_OUT_PIN                  PORT_PIN_PA07
+/*** Macros for PIEZO_ADC pin ***/
+#define PIEZO_ADC_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 7U)) & 0x01U)
+#define PIEZO_ADC_PIN                  PORT_PIN_PA07
 
 /*** Macros for BT_TX pin ***/
 #define BT_TX_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 8U)) & 0x01U)
@@ -129,104 +105,104 @@
 #define BT_RX_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 9U)) & 0x01U)
 #define BT_RX_PIN                  PORT_PIN_PA09
 
-/*** Macros for BLE_MODE pin ***/
-#define BLE_MODE_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 12U))
-#define BLE_MODE_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 12U))
-#define BLE_MODE_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 12U))
-#define BLE_MODE_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 12U))
-#define BLE_MODE_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 12U))
-#define BLE_MODE_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 12U)) & 0x01U)
-#define BLE_MODE_PIN                  PORT_PIN_PA12
+/*** Macros for LED_BATT_OK pin ***/
+#define LED_BATT_OK_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 14U))
+#define LED_BATT_OK_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 14U))
+#define LED_BATT_OK_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 14U))
+#define LED_BATT_OK_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 14U))
+#define LED_BATT_OK_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 14U))
+#define LED_BATT_OK_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 14U)) & 0x01U)
+#define LED_BATT_OK_PIN                  PORT_PIN_PA14
 
-/*** Macros for LED_RE1 pin ***/
-#define LED_RE1_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 13U))
-#define LED_RE1_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 13U))
-#define LED_RE1_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 13U))
-#define LED_RE1_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 13U))
-#define LED_RE1_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 13U))
-#define LED_RE1_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 13U)) & 0x01U)
-#define LED_RE1_PIN                  PORT_PIN_PA13
-
-/*** Macros for LED_OR1 pin ***/
-#define LED_OR1_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 14U))
-#define LED_OR1_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 14U))
-#define LED_OR1_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 14U))
-#define LED_OR1_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 14U))
-#define LED_OR1_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 14U))
-#define LED_OR1_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 14U)) & 0x01U)
-#define LED_OR1_PIN                  PORT_PIN_PA14
-
-/*** Macros for LED_GREE pin ***/
-#define LED_GREE_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 15U))
-#define LED_GREE_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 15U))
-#define LED_GREE_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 15U))
-#define LED_GREE_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 15U))
-#define LED_GREE_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 15U))
-#define LED_GREE_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 15U)) & 0x01U)
-#define LED_GREE_PIN                  PORT_PIN_PA15
-
-/*** Macros for LED_OR2 pin ***/
-#define LED_OR2_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 16U))
-#define LED_OR2_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 16U))
-#define LED_OR2_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 16U))
-#define LED_OR2_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 16U))
-#define LED_OR2_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 16U))
-#define LED_OR2_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 16U)) & 0x01U)
-#define LED_OR2_PIN                  PORT_PIN_PA16
+/*** Macros for LED_BATT_KO pin ***/
+#define LED_BATT_KO_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 15U))
+#define LED_BATT_KO_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 15U))
+#define LED_BATT_KO_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 15U))
+#define LED_BATT_KO_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 15U))
+#define LED_BATT_KO_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 15U))
+#define LED_BATT_KO_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 15U)) & 0x01U)
+#define LED_BATT_KO_PIN                  PORT_PIN_PA15
 
 /*** Macros for LED_RE2 pin ***/
-#define LED_RE2_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 17U))
-#define LED_RE2_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 17U))
-#define LED_RE2_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 17U))
-#define LED_RE2_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 17U))
-#define LED_RE2_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 17U))
-#define LED_RE2_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 17U)) & 0x01U)
-#define LED_RE2_PIN                  PORT_PIN_PA17
+#define LED_RE2_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 16U))
+#define LED_RE2_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 16U))
+#define LED_RE2_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 16U))
+#define LED_RE2_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 16U))
+#define LED_RE2_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 16U))
+#define LED_RE2_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 16U)) & 0x01U)
+#define LED_RE2_PIN                  PORT_PIN_PA16
 
-/*** Macros for MULTIPLEX_1 pin ***/
-#define MULTIPLEX_1_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 18U))
-#define MULTIPLEX_1_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 18U))
-#define MULTIPLEX_1_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 18U))
-#define MULTIPLEX_1_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 18U))
-#define MULTIPLEX_1_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 18U))
-#define MULTIPLEX_1_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 18U)) & 0x01U)
-#define MULTIPLEX_1_PIN                  PORT_PIN_PA18
+/*** Macros for LED_OR2 pin ***/
+#define LED_OR2_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 17U))
+#define LED_OR2_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 17U))
+#define LED_OR2_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 17U))
+#define LED_OR2_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 17U))
+#define LED_OR2_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 17U))
+#define LED_OR2_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 17U)) & 0x01U)
+#define LED_OR2_PIN                  PORT_PIN_PA17
 
-/*** Macros for MULTIPLEX_0 pin ***/
-#define MULTIPLEX_0_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 19U))
-#define MULTIPLEX_0_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 19U))
-#define MULTIPLEX_0_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 19U))
-#define MULTIPLEX_0_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 19U))
-#define MULTIPLEX_0_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 19U))
-#define MULTIPLEX_0_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 19U)) & 0x01U)
-#define MULTIPLEX_0_PIN                  PORT_PIN_PA19
+/*** Macros for LED_GREE pin ***/
+#define LED_GREE_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 18U))
+#define LED_GREE_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 18U))
+#define LED_GREE_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 18U))
+#define LED_GREE_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 18U))
+#define LED_GREE_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 18U))
+#define LED_GREE_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 18U)) & 0x01U)
+#define LED_GREE_PIN                  PORT_PIN_PA18
 
-/*** Macros for MULTIPLEX_ON pin ***/
-#define MULTIPLEX_ON_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 20U))
-#define MULTIPLEX_ON_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 20U))
-#define MULTIPLEX_ON_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 20U))
-#define MULTIPLEX_ON_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 20U))
-#define MULTIPLEX_ON_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 20U))
-#define MULTIPLEX_ON_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 20U)) & 0x01U)
-#define MULTIPLEX_ON_PIN                  PORT_PIN_PA20
+/*** Macros for LED_OR1 pin ***/
+#define LED_OR1_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 19U))
+#define LED_OR1_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 19U))
+#define LED_OR1_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 19U))
+#define LED_OR1_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 19U))
+#define LED_OR1_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 19U))
+#define LED_OR1_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 19U)) & 0x01U)
+#define LED_OR1_PIN                  PORT_PIN_PA19
 
-/*** Macros for AMP_ON pin ***/
-#define AMP_ON_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 24U))
-#define AMP_ON_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 24U))
-#define AMP_ON_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 24U))
-#define AMP_ON_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 24U))
-#define AMP_ON_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 24U))
-#define AMP_ON_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 24U)) & 0x01U)
-#define AMP_ON_PIN                  PORT_PIN_PA24
+/*** Macros for LED_RE1 pin ***/
+#define LED_RE1_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 20U))
+#define LED_RE1_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 20U))
+#define LED_RE1_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 20U))
+#define LED_RE1_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 20U))
+#define LED_RE1_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 20U))
+#define LED_RE1_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 20U)) & 0x01U)
+#define LED_RE1_PIN                  PORT_PIN_PA20
 
-/*** Macros for PIEZO_MEX pin ***/
-#define PIEZO_MEX_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 25U))
-#define PIEZO_MEX_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 25U))
-#define PIEZO_MEX_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 25U))
-#define PIEZO_MEX_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 25U))
-#define PIEZO_MEX_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 25U))
-#define PIEZO_MEX_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 25U)) & 0x01U)
-#define PIEZO_MEX_PIN                  PORT_PIN_PA25
+/*** Macros for LEDC pin ***/
+#define LEDC_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 21U))
+#define LEDC_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 21U))
+#define LEDC_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 21U))
+#define LEDC_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 21U))
+#define LEDC_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 21U))
+#define LEDC_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 21U)) & 0x01U)
+#define LEDC_PIN                  PORT_PIN_PA21
+
+/*** Macros for LEDG pin ***/
+#define LEDG_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 22U))
+#define LEDG_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 22U))
+#define LEDG_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 22U))
+#define LEDG_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 22U))
+#define LEDG_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 22U))
+#define LEDG_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 22U)) & 0x01U)
+#define LEDG_PIN                  PORT_PIN_PA22
+
+/*** Macros for LEDH pin ***/
+#define LEDH_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 23U))
+#define LEDH_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 23U))
+#define LEDH_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 23U))
+#define LEDH_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 23U))
+#define LEDH_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 23U))
+#define LEDH_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 23U)) & 0x01U)
+#define LEDH_PIN                  PORT_PIN_PA23
+
+/*** Macros for LEDB pin ***/
+#define LEDB_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 24U))
+#define LEDB_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 24U))
+#define LEDB_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 24U))
+#define LEDB_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 24U))
+#define LEDB_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 24U))
+#define LEDB_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 24U)) & 0x01U)
+#define LEDB_PIN                  PORT_PIN_PA24
 
 /*** Macros for SVCLK pin ***/
 #define SVCLK_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 30U))
@@ -247,12 +223,8 @@
 #define SVDIO_PIN                  PORT_PIN_PA31
 
 /*** Macros for ADC_BATT pin ***/
-#define ADC_BATT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 2U)) & 0x01U)
-#define ADC_BATT_PIN                  PORT_PIN_PB02
-
-/*** Macros for MODE_BUTT pin ***/
-#define MODE_BUTT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 3U)) & 0x01U)
-#define MODE_BUTT_PIN                  PORT_PIN_PB03
+#define ADC_BATT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 3U)) & 0x01U)
+#define ADC_BATT_PIN                  PORT_PIN_PB03
 
 // *****************************************************************************
 /* PORT Group

@@ -15,6 +15,7 @@ volatile uint8_t eic_mode_butt_flag = 0;
 
 volatile uint8_t eic_bt_butt_second_interrupt = 0;
 volatile uint8_t eic_bt_butt_long_press = 0;
+volatile uint8_t eic_mode_butt_second_interrupt;
 
 volatile uint16_t tc_bt_butt_timer_value = 0;
 
@@ -34,6 +35,8 @@ void eic_bt_butt_callback(){
     
 }
 void eic_mode_butt_callback(){
+    if(eic_mode_butt_second_interrupt == 0) eic_mode_butt_second_interrupt = 1;
+    else eic_mode_butt_second_interrupt = 0;
     eic_mode_butt_flag = 1;
 }
 
@@ -42,6 +45,5 @@ void button_init(){
     EIC_CallbackRegister(MODE_BUTT_PIN, eic_mode_butt_callback, (uintptr_t) NULL);
     
     //TC3_TimerCallbackRegister(tc_bt_butt_timer_callback, (uintptr_t) NULL);
-    TC3_Timer16bitPeriodSet(TC3_DELAY(BT_BUTTON_LONG_PRESS_DEFAULT_DELAY));
     TC3_TimerStart();
 }

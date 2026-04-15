@@ -51,10 +51,21 @@ void tc4_comparator_timer_callback(TC_TIMER_STATUS status, uintptr_t context){
     eic_comparator_out_flag = 0;
 }
 
+sound_input_t switchSoundInput(sound_input_t previousInput){
+    if(previousInput == piezo){
+        EIC_CallbackRegister(microphone, eic_comparator_out_callback, (uintptr_t) NULL);
+        return microphone;
+    }
+    else {
+        EIC_CallbackRegister(piezo, eic_comparator_out_callback, (uintptr_t) NULL);
+        return piezo;
+    }
+}
+
 void freq_init(freq_t (*output_freq_var)[]){
     TC4_TimerInitialize();
     TC4_TimerCallbackRegister(tc4_comparator_timer_callback, (uintptr_t) output_freq_var);
     TC4_TimerStart();
     
-    EIC_CallbackRegister(COMPARATOR_OUT_PIN, eic_comparator_out_callback, (uintptr_t) NULL);
+    EIC_CallbackRegister(PIEZO_IN_PIN, eic_comparator_out_callback, (uintptr_t) NULL);
 }

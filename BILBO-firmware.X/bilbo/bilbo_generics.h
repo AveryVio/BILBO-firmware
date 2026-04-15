@@ -2,6 +2,7 @@
 #define BILBO_GENERICS_H
 
 #include <bits/alltypes.h>
+#include "peripheral/port/plib_port.h"
 
 typedef struct {
     uint8_t buffer[RN4870_READ_WRITE_BUFFER_SIZE];
@@ -50,6 +51,10 @@ typedef struct {
     uint8_t log_length;
 } global_message_log;
 
+typedef enum {
+    piezo = PIEZO_IN_PIN,
+    microphone = MICROPHONE_IN_PIN,
+}sound_input_t;
 
 #define ADC_VREF (1.65f)
 #define ADC_MAX_COUNT 4095
