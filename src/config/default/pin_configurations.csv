@@ -21,12 +21,12 @@ Pin Number,Pin ID,Custom Name,Function,Mode, Direction,Latch,Pull Up,Pull Down,D
 24,PA15,LED_BATT_KO,GPIO,Digital,Out,Low,,,NORMAL
 25,PA16,LED_RE2,GPIO,Digital,Out,Low,,,NORMAL
 26,PA17,LED_OR2,GPIO,Digital,Out,Low,,,NORMAL
-27,PA18,LED_GREE,GPIO,Digital,Out,Low,,,NORMAL
-28,PA19,LED_OR1,GPIO,Digital,Out,Low,,,NORMAL
+27,PA18,LED_GREE,GPIO,Digital,Out,High,,,NORMAL
+28,PA19,LED_OR1,GPIO,Digital,Out,High,,,NORMAL
 29,PA20,LED_RE1,GPIO,Digital,Out,Low,,,NORMAL
 30,PA21,LEDC,GPIO,Digital,Out,Low,,,NORMAL
-31,PA22,LEDG,GPIO,Digital,Out,Low,,,NORMAL
-32,PA23,LEDH,GPIO,Digital,Out,Low,,,NORMAL
+31,PA22,LEDG,GPIO,Digital,Out,High,,,NORMAL
+32,PA23,LEDH,GPIO,Digital,Out,High,,,NORMAL
 33,PA24,LEDB,GPIO,Digital,Out,Low,,,NORMAL
 34,PA25,,Available,,,,,,NORMAL
 37,PB22,,Available,,,,,,NORMAL
