@@ -21,6 +21,7 @@
 // tuning variables
 
 freq_t freq_array[3] = { 0, 0, 0 };
+sound_input_t SoundSource = piezo;
 
 uint8_t cents_error = TUNE_FALSE_DIFF_NULL;
 uint8_t current_tuning_level_in_cents = 0;
@@ -61,7 +62,7 @@ int bilbo_init(){
     last_error_code = 0;
     
     button_init();
-    led_init();
+    led_init(SoundSource);
     
     batt_adc_init(&batt_adc_ready);
     
@@ -218,17 +219,31 @@ int bilbo_tasks(){
     if(eic_bt_butt_flag){
         eic_bt_butt_flag = 0;
         if(eic_bt_butt_long_press == 0){
-            // TODO: handle bt pairing
+            bt_trigger_pairing();
         } else {
-            // TODO: toggle on off bluetooth
+            if(bt_awake){
+                bt_trigger_sleep();
+                bt_awake = 0;
+            } else {
+                bt_trigger_wakeup();
+                bt_awake = 1;
+            }
         }
     }
     
+    if(eic_mode_butt_flag){
+        eic_mode_butt_flag = 0;
+        SoundSource = switchSoundInput(SoundSource);
+        handle_sound_input_leds(SoundSource, eic_mode_butt_second_interrupt);
+    }
+    
+    //batt adc
+    batt_adc_handle(&batt_adc_ready, &adc_count, &input_voltage);
+    
     //leds
-    /*to finish*/
     handle_tuning_output_leds(current_tuning_level_in_cents);
     
-    batt_adc_handle(&batt_adc_ready, &adc_count, &input_voltage);
+    handle_batt_adc_leds(input_voltage);
     
     return 0;
 }

@@ -1,15 +1,10 @@
 /*******************************************************************************
-<<<<<<<< HEAD:src/config/default/peripheral/adc/plib_adc.h
   Analog-to-Digital Converter(ADC) PLIB
-========
-  Timer/Counter(TC5) PLIB
->>>>>>>> development:src/config/default/peripheral/tc/plib_tc5.h
 
   Company
     Microchip Technology Inc.
 
   File Name
-<<<<<<<< HEAD:src/config/default/peripheral/adc/plib_adc.h
     plib_adc.h
 
   Summary
@@ -17,15 +12,6 @@
 
   Description
     This file defines the interface to the ADC peripheral library. This
-========
-    plib_tc5.h
-
-  Summary
-    TC5 PLIB Header File.
-
-  Description
-    This file defines the interface to the TC peripheral library. This
->>>>>>>> development:src/config/default/peripheral/tc/plib_tc5.h
     library provides access to and control of the associated peripheral
     instance.
 
@@ -59,13 +45,8 @@
 *******************************************************************************/
 // DOM-IGNORE-END
 
-<<<<<<<< HEAD:src/config/default/peripheral/adc/plib_adc.h
 #ifndef PLIB_ADC_H      // Guards against multiple inclusion
 #define PLIB_ADC_H
-========
-#ifndef PLIB_TC5_H      // Guards against multiple inclusion
-#define PLIB_TC5_H
->>>>>>>> development:src/config/default/peripheral/tc/plib_tc5.h
 
 // *****************************************************************************
 // *****************************************************************************
@@ -76,11 +57,7 @@
 */
 
 #include "device.h"
-<<<<<<<< HEAD:src/config/default/peripheral/adc/plib_adc.h
 #include "plib_adc_common.h"
-========
-#include "plib_tc_common.h"
->>>>>>>> development:src/config/default/peripheral/tc/plib_tc5.h
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus // Provide C Compatibility
@@ -99,12 +76,9 @@
     interface and should be considered part it.
 */
 
-<<<<<<<< HEAD:src/config/default/peripheral/adc/plib_adc.h
 // *****************************************************************************
 
 
-========
->>>>>>>> development:src/config/default/peripheral/tc/plib_tc5.h
 // *****************************************************************************
 // *****************************************************************************
 // Section: Interface Routines
@@ -114,7 +88,6 @@
     this interface.
 */
 
-<<<<<<<< HEAD:src/config/default/peripheral/adc/plib_adc.h
 void ADC_Initialize( void );
 
 void ADC_Enable( void );
@@ -142,35 +115,6 @@ void ADC_CallbackRegister( ADC_CALLBACK callback, uintptr_t context );
 
 
 
-========
-// *****************************************************************************
-
-void TC5_TimerInitialize( void );
-
-void TC5_TimerStart( void );
-
-void TC5_TimerStop( void );
-
-uint32_t TC5_TimerFrequencyGet( void );
-
-
-void TC5_Timer16bitPeriodSet( uint16_t period );
-
-uint16_t TC5_Timer16bitPeriodGet( void );
-
-uint16_t TC5_Timer16bitCounterGet( void );
-
-void TC5_Timer16bitCounterSet( uint16_t count );
-
-
-
-
-void TC5_TimerCallbackRegister( TC_TIMER_CALLBACK callback, uintptr_t context );
-
-
-void TC5_TimerCommandSet(TC_COMMAND command);
-
->>>>>>>> development:src/config/default/peripheral/tc/plib_tc5.h
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -180,8 +124,4 @@ void TC5_TimerCommandSet(TC_COMMAND command);
 #endif
 // DOM-IGNORE-END
 
-<<<<<<<< HEAD:src/config/default/peripheral/adc/plib_adc.h
 #endif /* PLIB_ADC_H */
-========
-#endif /* PLIB_TC5_H */
->>>>>>>> development:src/config/default/peripheral/tc/plib_tc5.h
